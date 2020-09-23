@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="EmployeeCheckInOut\" />
+    <Folder Include="EmployeeContract\" />
+    <Folder Include="EmployeeDayOff\" />
+    <Folder Include="EmployeeDocument\" />
+    <Folder Include="EmployeeHistory\" />
+    <Folder Include="EmployeePaper\" />
+    <Folder Include="Holiday\" />
+    <Folder Include="EmployeePayroll\" />
+    <Folder Include="EmployeeRelative\" />
+    <Folder Include="Navigation\" />
+    <Folder Include="TrainingCourseEmployee\" />
+    <Folder Include="TrainingCourse\" />
+    <Folder Include="ShiftEmployee\" />
+    <Folder Include="Shift\" />
+    <Folder Include="Role\" />
+    <Folder Include="RecruitmentPlan\" />
+    <Folder Include="Post\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ERP.Model\ERP.Model.csproj" />
+  </ItemGroup>
+
+</Project>

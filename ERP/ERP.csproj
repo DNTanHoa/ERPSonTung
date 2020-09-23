@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="RequestModel\Employee\" />
+    <Folder Include="RequestModel\EmployeeCheckInOut\" />
+    <Folder Include="RequestModel\EmployeeContract\" />
+    <Folder Include="RequestModel\EmployeeDayOff\" />
+    <Folder Include="RequestModel\EmployeeDocument\" />
+    <Folder Include="RequestModel\EmployeeHistory\" />
+    <Folder Include="RequestModel\EmployeePaper\" />
+    <Folder Include="RequestModel\EmployeePayroll\" />
+    <Folder Include="RequestModel\EmployeeRelative\" />
+    <Folder Include="RequestModel\Holiday\" />
+    <Folder Include="RequestModel\Navigation\" />
+    <Folder Include="RequestModel\TrainingCourseEmployee\" />
+    <Folder Include="RequestModel\TrainingCourse\" />
+    <Folder Include="RequestModel\ShiftEmployee\" />
+    <Folder Include="RequestModel\Shift\" />
+    <Folder Include="RequestModel\Role\" />
+    <Folder Include="RequestModel\RecruitmentPlan\" />
+    <Folder Include="RequestModel\Post\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ERP.Repository\ERP.Repository.csproj" />
+    <ProjectReference Include="..\ERP.Ultilities\ERP.Ultilities.csproj" />
+  </ItemGroup>
+
+
+</Project>
