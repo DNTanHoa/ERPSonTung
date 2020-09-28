@@ -37,6 +37,7 @@ namespace ERP.Model.Models
         public virtual DbSet<TrainingCourse> TrainingCourse { get; set; }
         public virtual DbSet<TrainingCourseEmployee> TrainingCourseEmployee { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<EntityCenter> EntityCenter { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -75,9 +76,32 @@ namespace ERP.Model.Models
                 entity.Property(e => e.UpdateUser).HasMaxLength(4000);
             });
 
+            modelBuilder.Entity<EntityCenter>(entity =>
+            {
+                entity.HasKey(e => new { e.Id });
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CreateDate).HasColumnType("smalldatetime");
+
+                entity.Property(e => e.CreateUser).HasMaxLength(4000);
+
+                entity.Property(e => e.Entity).HasMaxLength(4000);
+
+                entity.Property(e => e.PrefixCode).HasMaxLength(4000);
+
+                entity.Property(e => e.Note).HasMaxLength(4000);
+
+                entity.Property(e => e.NumberCount).HasMaxLength(4000);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("smalldatetime");
+
+                entity.Property(e => e.UpdateUser).HasMaxLength(4000);
+            });
+
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.HasKey(e => new { e.Id, e.Code })
+                entity.HasKey(e => new { e.Id })
                     .HasName("Code");
 
                 entity.HasIndex(e => e.Id)
@@ -89,7 +113,7 @@ namespace ERP.Model.Models
 
                 entity.Property(e => e.BankCode).HasMaxLength(4000);
 
-                entity.Property(e => e.CitizenNumber).HasMaxLength(4000);
+                entity.Property(e => e.IdentityLicenseDate).HasColumnType("smalldatetime");
 
                 entity.Property(e => e.CompanyEmail).HasMaxLength(4000);
 
@@ -127,7 +151,7 @@ namespace ERP.Model.Models
 
                 entity.Property(e => e.OriginAddress).HasMaxLength(4000);
 
-                entity.Property(e => e.Passport).HasMaxLength(4000);
+                entity.Property(e => e.IdentityLicensePlaceCode).HasMaxLength(4000);
 
                 entity.Property(e => e.PersonalEmail).HasMaxLength(4000);
 
@@ -376,9 +400,9 @@ namespace ERP.Model.Models
 
             modelBuilder.Entity<Navigation>(entity =>
             {
-                entity.Property(e => e.Action).HasMaxLength(4000);
+                entity.Property(e => e.ActionName).HasMaxLength(4000);
 
-                entity.Property(e => e.Controller).HasMaxLength(4000);
+                entity.Property(e => e.ControllerName).HasMaxLength(4000);
 
                 entity.Property(e => e.CreateDate).HasColumnType("smalldatetime");
 

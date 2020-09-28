@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@using ERP.Ultilities.Global
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@ViewData["Title"] - @AppGlobal.AppTitle</title>
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="~/plugins/jsgrid/jsgrid.min.css">
+    <link rel="apple-touch-icon" href="~/images/sontung.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/sontung.png">
+    <link rel="stylesheet" href="~/plugins/jsgrid/jsgrid-theme.min.css">
+    <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="~/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+    <script src="~/dist/js/adminlte.js"></script>
+    <script src="~/dist/js/demo.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/plugins/moment/moment.min.js"></script>
+    <script src="~/js/notify.js"></script>
+    <script src="~/js/mustache.min.js"></script>
+    <script src="~/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <link href="https://kendo.cdn.telerik.com/2019.3.1023/styles/kendo.bootstrap-v4.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/kendo.aspnetmvc.min.js"></script>
+    <script src="~/js/jquery.cookie.js"></script>
+</head>
+<body class="hold-transition sidebar-mini m-0">
+    <div class="wrapper">
+        <div class="wrapper">
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" style="font-size:16px;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Hướng dẫn
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Thông tin nhân viên</a>
+                            <a class="dropdown-item" href="#">Chấm công</a>
+                            <a class="dropdown-item" href="#">Tuyển dụng</a>
+                            <a class="dropdown-item" href="#">Thông tin chung</a>
+                        </div>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown user-menu" id="HeaderInfor">
+
+                    </li>
+                </ul>
+            </nav>
+            <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color:black;">
+                <a asp-action="Index" asp-controller="Dashboard" class="brand-link text-center" style="font-size: 25px;">
+                    <span class="brand-text font-weight-light text-center">QUẢN LÝ NHÂN SỰ</span>
+                </a>
+                <div class="sidebar">
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex" id="SidebarInfor">
+
+                    </div>
+                    <nav class="mt-2">
+                        <ul id="userMenuLeft" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+
+            <div class="content-wrapper">
+                <div class="container-fluid" id="AppContent">
+                    @RenderBody()
+                </div>
+            </div>
+            <aside class="control-sidebar control-sidebar-dark">
+            </aside>
+            <footer class="main-footer">
+                <div class="row">
+                    <strong class="col-sm-6">Bản quyền &copy; 2020 <a class="text-primary" href="https://google.com">Sơn Tùng</a>. Bảo lưu tất cả quyền.</strong>
+                    <strong class="col-sm-6 text-sm-left text-md-right hiden-xs">Một sản phẩm của SOHU</strong>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <div id="change-password-modal"></div>
+    <script>
+        $(document).ready(() => {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("MenuLeft","Navigation")",
+                success: (res) => {
+                    $("#userMenuLeft").empty();
+                    $("#userMenuLeft").html(res);
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("HeaderInfor","User")",
+                success: (res) => {
+                    $("#HeaderInfor").empty();
+                    $("#HeaderInfor").html(res);
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("SidebarInfor","User")",
+                success: (res) => {
+                    $("#SidebarInfor").empty();
+                    $("#SidebarInfor").html(res);
+                }
+            });
+        });
+
+        function onChangePassword() {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("ChangePassword","User")",
+                success: (res) => {
+                    $("#change-password-modal").empty();
+                    $("#change-password-modal").html(res);
+                }
+            }).done(() => {
+                Initialization(null, () => {},() => {});
+            });
+        }
+    </script>
+</body>
+</html>

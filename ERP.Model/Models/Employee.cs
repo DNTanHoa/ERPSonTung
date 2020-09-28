@@ -3,15 +3,9 @@ using System.Collections.Generic;
 
 namespace ERP.Model.Models
 {
-    public partial class Employee
+    public partial class Employee : BaseModel
     {
-        public long Id { get; set; }
-        public string CreateUser { get; set; }
-        public DateTime? CreateDate { get; set; }
-        public string UpdateUser { get; set; }
-        public DateTime? UpdateDate { get; set; }
-        public bool? Deleted { get; set; }
-        public string Note { get; set; }
+        
         public string Code { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -25,8 +19,8 @@ namespace ERP.Model.Models
         public string NationCode { get; set; }
         public string NationalityCode { get; set; }
         public string IdentityNumber { get; set; }
-        public string CitizenNumber { get; set; }
-        public string Passport { get; set; }
+        public DateTime? IdentityLicenseDate { get; set; }
+        public string IdentityLicensePlaceCode { get; set; }
         public string Phone { get; set; }
         public string CompanyEmail { get; set; }
         public string PersonalEmail { get; set; }
@@ -41,5 +35,13 @@ namespace ERP.Model.Models
         public string JobCode { get; set; }
         public string LaborGroupCode { get; set; }
         public string BankNumber { get; set; }
+        public string TemporaryProvinceCode { get; set; }
+        public string TemporaryDistrictCode { get; set; }
+        public string TemporaryWardCode { get; set; }
+        public string TemporaryAddtional { get; set; }
+        public string OriginProvinceCode { get; set; }
+        public string OriginDistrictCode { get; set; }
+        public string OriginWardCode { get; set; }
+        public string OriginAddtional { get; set; }
     }
 }

@@ -1,0 +1,8 @@
+﻿@model ERP.Model.DataTransferObjects.CategoryModelTemplate
+@using Kendo.Mvc.UI;
+@(Html.Kendo().DropDownListFor(t => t)
+  .DataValueField("Code")
+  .DataTextField("Display")
+  .HtmlAttributes(new { data_bind = ViewData["ValueBind"] })
+  .Filter(FilterType.Contains)
+  .DataSource(dataSource => dataSource.Read(t => t.Action("GetModelTemplateByEntity", "Category", new { Entity = ViewData["Entity"] }))))

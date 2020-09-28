@@ -25,5 +25,16 @@ namespace ERP.Repository
             DataTable table = SqlHelper.Fill(AppGlobal.ConnectionString, "sprocEmployeeSelectAll");
             return table.ToList<EmployeeDataTransfer>();
         }
+
+        public IEnumerable<EmployeeModelTemplate> GetModelTemplates()
+        {
+            var query = from employee in context.Employee
+                        select new EmployeeModelTemplate
+                        {
+                            Code = employee.Code,
+                            Display = employee.Code + " - " + employee.FullName
+                        };
+            return query.ToList();
+        }
     }
 }

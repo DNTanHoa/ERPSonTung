@@ -1,0 +1,141 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập - Hệ thống quản lý nhân sự";
+    Layout = null;
+}
+
+@model ERP.MVC.Models.UserLoginViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Việt Úc: Hệ thống hỗ trợ - Viet Uc Ticket System - Viet Uc Ticket">
+    <meta name="keywords" content="Việt Úc: Hệ thống hỗ trợ - Viet Uc Ticket System - Viet Uc Ticket">
+    <meta name="author" content="Việt Úc">
+    <title>Đăng nhập - Việt Úc nuôi tôm - Việt Úc Shrimp Farming - VSF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <link rel="manifest" href="~/manifest.json">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="apple-touch-icon" href="~/images/sontung.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/sontung.png">
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="~/css/account.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body class="hold-transition login-page" style="background-image: url('images/hrm.jpg'); background-size:cover;">
+    <div class="d-flex justify-content-center align-items-center login-page" style="min-height:100%;" id="loginContent">
+        <div style="z-index: 2; padding-bottom: 10px;">
+            <p class="text-white h4 text-center h4"><b>THÔNG TIN NHÂN SỰ</b></p>
+        </div>
+        <div class="login-box">
+            <div class="card">
+                <div class="card-body login-card-body">
+                    <div class="d-flex justify-content-center flex-row align-items-center">
+                        <img src="~/images/sontung.png" style="width:20%;" />
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-danger text-center" id="loginResult">@Model?.ErrorMessage</div>
+                        <form id="loginForm">
+                            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                            <div class="input-group mb-2">
+                                @(Html.TextBoxFor(Model => Model.Username, new {@class="form-control", @placeholder = "Tên Đăng Nhập" }))
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-user-alt"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            <div class="input-group mb-2">
+                                @(Html.TextBoxFor(Model => Model.Password, new {@class="form-control", @type="password" ,@placeholder = "Mật Khẩu" }))
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-lock"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="icheck-primary">
+                                        @Html.CheckBoxFor(model => model.RememberPassword, new { @id = "remember" })
+                                        <label for="remember">
+                                            Lưu mật khẩu
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <a onclick="onLogin()" style="cursor:pointer;" class="btn btn-primary btn-block text-white"><i class="fas fa-sign-in-alt"></i></a>
+                                </div>
+                            </div>
+                            <div class="social-auth-links text-center mb-3">
+                                <a asp-controller="Home" asp-action="LoginByEmail" id="loginEmailButton" class="btn btn-block btn-danger">
+                                    <i class="fab fa-google-plus mr-2"></i> Sử dụng email
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/dist/js/adminlte.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).bind('keydown', function (e) {
+            if (e.which === 13) {
+                onLogin();
+            }
+        });
+
+        $(document).keypress("m", function (e) {
+            if (e.ctrlKey) {
+                let href = $("#loginEmailButton").attr('href');
+                window.location.href = href;
+            }
+        });
+
+        function onLogin() {
+            $.blockUI({
+                message: null
+            });
+            if ($("#loginForm").valid()) {
+                $.ajax({
+                    type: "POST",
+                    datatype: "JSON",
+                    url: '@Url.Action("Login", "Home")',
+                    data: $('#loginForm').serialize(),
+                    success: function (res) {
+                        console.log(res);
+                        if (res.Status === "Success") {
+                            window.location = res.Message;
+                        }
+                        else {
+                            $("#loginResult").empty();
+                            $("#loginResult").append(res.Message);
+                        }
+                    },
+                    error: function (jqXHR, exception) {
+                        $.unblockUI()
+                    },
+                    complete: function () {
+                        $.unblockUI()
+                    },
+                });
+            }
+            else {
+                $.unblockUI();
+            }
+        }
+    </script>
+    <script src="~/js/jquery.blockUI.js"></script>
+</body>
+</html>

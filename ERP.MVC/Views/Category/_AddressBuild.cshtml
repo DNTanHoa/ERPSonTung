@@ -1,0 +1,120 @@
+﻿@{
+    ViewData["Title"] = "Thông tin địa chỉ";
+    Layout = "~/Views/Shared/_ModalLayout.cshtml";
+    ViewData["ModalId"] = "address";
+}
+@using Kendo.Mvc.UI
+@using ERP.MVC.Models
+@using ERP.Ultilities.Global
+@model ERP.MVC.Models.Category.AddressBuildViewModel
+<script>
+
+    function filterDistrict() {
+        return {
+            ParentCode: $("#ProvinceCode").data("kendoDropDownList").value()
+        }
+    }
+
+    function filterWard() {
+        return {
+            ParentCode: $("#DistrictCode").data("kendoDropDownList").value()
+        }
+    }
+
+    function onProvinceChange() {
+        $("#DistrictCode").data("kendoDropDownList").dataSource.read();
+        updateAddress();
+    }
+
+    function onDistrictChange() {
+        $("#WardCode").data("kendoDropDownList").dataSource.read();
+        updateAddress();
+    }
+
+    function onWardChange() {
+        updateAddress();
+    }
+
+    function updateAddress() {
+        let ward = $("#WardCode").data("kendoDropDownList").text() != "" ? $("#WardCode").data("kendoDropDownList").text() + "," : "";
+        let district = $("#DistrictCode").data("kendoDropDownList").text() != "" ? $("#DistrictCode").data("kendoDropDownList").text() + "," : "";
+        let province = $("#ProvinceCode").data("kendoDropDownList").text() != "" ? $("#ProvinceCode").data("kendoDropDownList").text() + "" : "";
+        let additional = $("#Addtional").val();
+        let address = additional + ward + district + province;
+        $("#Address").val(address);
+    }
+
+    $(document).ready(() => {
+        $("#Addtional").on('change', () => {
+            updateAddress();
+        });
+    });
+
+</script>
+<form id="AddressForm" class="w-100">
+    <div class="container-fluid w-100">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Tỉnh</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.ProvinceCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .OptionLabel(new { Display = "", Code = "" })
+                    .Filter(FilterType.Contains)
+                    .HtmlAttributes(new { style = "width:100%;" })
+                    .Events(e => e.Change("onProvinceChange"))
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntityAndParentCode", "Category", new { Entity = AppGlobal.ProvinceCode })))
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Huyện</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.DistrictCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .HtmlAttributes(new { style = "width:100%;" })
+                    .OptionLabel(new { Display = "", Code = "" })
+                    .Events(e => e.Change("onDistrictChange"))
+                    .Filter(FilterType.Contains)
+                    .DataSource(ds => ds.Custom().Transport(t => t.Read("GetModelTemplateByEntityAndParentCode", "Category", new { Entity = AppGlobal.DistrictCode }).ParameterMap("filterDistrict"))))
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Xã</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.WardCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .HtmlAttributes(new { style = "width:100%;" })
+                    .Events(e => e.Change("onWardChange"))
+                    .OptionLabel(new { Display = "", Code = "" })
+                    .Filter(FilterType.Contains)
+                    .DataSource(ds => ds.Custom().Transport(t => t.Read("GetModelTemplateByEntityAndParentCode", "Category", new { Entity = AppGlobal.WardCode }).ParameterMap("filterWard"))))
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Số nhà</label>
+                    @(Html.TextBoxFor(Model => Model.Addtional,"",new { @class = "form-control w-100", placeholder = "Số nhà, thôn ấp, đường" }))
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Địa chỉ</label>
+                    @(Html.TextBoxFor(Model => Model.Address,"",new { @class = "form-control w-100", placeholder = "Địa chỉ", @readonly = "readonly" }))
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+

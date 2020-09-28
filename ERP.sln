@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP", "ERP\ERP.csproj", "{DB8E2E13-C4B3-4CBE-AC84-EDC685A3931A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP", "ERP\ERP.csproj", "{DB8E2E13-C4B3-4CBE-AC84-EDC685A3931A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Model", "ERP.Model\ERP.Model.csproj", "{A7B24D05-1525-4F1B-8C48-CC6679D1F98D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.Model", "ERP.Model\ERP.Model.csproj", "{A7B24D05-1525-4F1B-8C48-CC6679D1F98D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Repository", "ERP.Repository\ERP.Repository.csproj", "{D31F16B6-AF11-4A5C-875C-18FFB36CF587}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.Repository", "ERP.Repository\ERP.Repository.csproj", "{D31F16B6-AF11-4A5C-875C-18FFB36CF587}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Ultilities", "ERP.Ultilities\ERP.Ultilities.csproj", "{C98F5DC3-57AB-43B5-8BEA-A78AB9A893F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.Ultilities", "ERP.Ultilities\ERP.Ultilities.csproj", "{C98F5DC3-57AB-43B5-8BEA-A78AB9A893F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Service", "ERP.Service\ERP.Service.csproj", "{579C3C08-C9B9-46AE-B29D-91105283FEA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.Service", "ERP.Service\ERP.Service.csproj", "{579C3C08-C9B9-46AE-B29D-91105283FEA5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.React", "ERP.React\ERP.React.csproj", "{45AEA4B3-7321-4BD2-AD56-B4CE87F7F0D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.MVC", "ERP.MVC\ERP.MVC.csproj", "{33A1B865-A4D9-46D0-AB11-7C7EAB03AB10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{579C3C08-C9B9-46AE-B29D-91105283FEA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{579C3C08-C9B9-46AE-B29D-91105283FEA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{579C3C08-C9B9-46AE-B29D-91105283FEA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45AEA4B3-7321-4BD2-AD56-B4CE87F7F0D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45AEA4B3-7321-4BD2-AD56-B4CE87F7F0D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45AEA4B3-7321-4BD2-AD56-B4CE87F7F0D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45AEA4B3-7321-4BD2-AD56-B4CE87F7F0D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A1B865-A4D9-46D0-AB11-7C7EAB03AB10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A1B865-A4D9-46D0-AB11-7C7EAB03AB10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A1B865-A4D9-46D0-AB11-7C7EAB03AB10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A1B865-A4D9-46D0-AB11-7C7EAB03AB10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -68,6 +68,10 @@ namespace ERP.Ultilities.Global
             }
         }
 
+
+        /// <summary>
+        /// Message thông báo đăng nhập thất bại
+        /// </summary>
         public static string LoginFailMessage
         {
             get
@@ -77,6 +81,9 @@ namespace ERP.Ultilities.Global
             }
         }
         
+        /// <summary>
+        /// Key bảo mật của server
+        /// </summary>
         public static string TokenSecretKey
         {
             get
@@ -103,5 +110,213 @@ namespace ERP.Ultilities.Global
                 return builder.Build().GetSection("AppSettings").GetSection("DeleteSuccess").Value;
             }
         }
+
+        public static string EditError
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("EditError").Value;
+            }
+        }
+
+        public static string EditSuccess
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("EditSuccess").Value;
+            }
+        }
+
+        public static string CreateError
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("CreateError").Value;
+            }
+        }
+
+        public static string CreateSucess
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("CreateSucess").Value;
+            }
+        }
+
+        public static string RedirectDefault
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("RedirectDefault").Value;
+            }
+        }
+
+        public static string AppTitle
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("AppTitle").Value;
+            }
+        }
+
+        public static string PositionCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("PositionCode").Value;
+            }
+        }
+
+        public static string DepartmentCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("DepartmentCode").Value;
+            }
+        }
+        
+        public static string GroupCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("GroupCode").Value;
+            }
+        }
+        
+        public static string LaborGroupCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("LaborGroupCode").Value;
+            }
+        }
+
+        public static string ProvinceCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("ProvinceCode").Value;
+            }
+        }
+
+        public static string DistrictCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("DistrictCode").Value;
+            }
+        }
+
+        public static string WardCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("WardCode").Value;
+            }
+        }
+
+        public static string JobCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("JobCode").Value;
+            }
+        }
+
+        public static string DefaultAvatar
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("DefaultAvatar").Value;
+            }
+        }
+
+        public static string Morning
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("Morning").Value;
+            }
+        }
+
+        public static string Afternoon
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("Afternoon").Value;
+            }
+        }
+
+        public static string Evenning
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("Evenning").Value;
+            }
+        }
+
+        public static string Night
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("Night").Value;
+            }
+        }
+
+        public static string NavigationTypeCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("NavigationTypeCode").Value;
+            }
+        }
+
+        public static string BankCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("BankCode").Value;
+            }
+        }
+
+        public static string SchoolCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("SchoolCode").Value;
+            }
+        }
+
+        public static string NationCode
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("NationCode").Value;
+            }
+        }
+
     }
 }

@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<script>
+    var _fnCallBack = null;
+    var _closefnCallBack = null;
+    var _Data = null;
+    function Initialization(initData, fnCallBack, _closefnCallBack) {
+        _fnCallBack = fnCallBack;
+        _Data = initData;
+        $('#@("modal-popup" + ViewData["ModalId"]?.ToString())').on('shown.bs.modal', function () {
+            _fnCallBack();
+        });
+
+        $('#@("modal-popup" + ViewData["ModalId"]?.ToString())').on('hidden.bs.modal', () => {
+            _closefnCallBack();
+        });
+
+        $('#@("modal-popup" + ViewData["ModalId"]?.ToString())').modal('show');
+    }
+
+</script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<div class="modal fade" id=@("modal-popup" + ViewData["ModalId"]?.ToString())>
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center">
+                <h5 class="modal-title">@ViewData["Title"]</h5>
+                <button type="button" class="btn btn-danger" onclick="onClose()" data-dismiss=@("modal-popup" + ViewData["ModalId"]?.ToString()) aria-label="Close" title="Đóng">
+                    <i class="far fa-window-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function onClose() {
+        $('#@("modal-popup" + ViewData["ModalId"]?.ToString())').modal('hide');
+    }
+
+</script>

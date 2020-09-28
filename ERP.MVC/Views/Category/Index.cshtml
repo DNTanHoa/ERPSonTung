@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@using Kendo.Mvc.UI
+@using ERP.Model.Models
+@using ERP.Model.DataTransferObjects
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="#">Quản lý danh mục</a></li>
+                    <li class="breadcrumb-item active">Hệ thống</li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <h1 class="float-sm-right">Danh mục hệ thống</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100" style="overflow-x:auto;">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-1 mt-md-1">
+                            <b>Danh mục</b>
+                        </div>
+                        <div class="col-md-4">
+                            @(Html.Kendo().DropDownList()
+                            .Name("Entity")
+                            .DataValueField("Code")
+                            .HtmlAttributes( new { style = "width: 100%;" })
+                            .DataTextField("Display")
+                            .OptionLabel(new { Display = "- Tất cả -" })
+                            .Filter(FilterType.Contains)
+                            .DataSource(ds => ds.Read("GetSavedEntityType", "Category")))
+                        </div>
+                        <div class="col-md-1 mt-1 mt-md-0">
+                            <button type="button" class="btn btn-success w-100" onclick="onSearchForDataGrid('Category')">
+                                <span class="fa fa-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @(Html.Kendo().Grid<Category>()
+                    .Name("Category")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(t => t.Code).Title("Mã quản lý").Width(150);
+                        columns.Bound(t => t.SubCode).Title("Mã phụ").Width(150);
+                        columns.Bound(t => t.Name).Title("Tên hiển thị").Width(350);
+                        columns.Bound(t => t.Deleted).Title("Trạng thái").Width(200);
+                        columns.Bound(t => t.Note).Title("Ghi chú").Width(200);
+                        columns.Command(command =>
+                        {
+                            command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-left:14px; padding-top:10px; border-radius: 6px; font-weight:bold;" });
+                            command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#dc3545; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                        }).Width(150).Locked(true);
+                    })
+                    .ToolBar(toolBar => toolBar.Create().Text("&nbsp;").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                    .ToolBar(toolBar => toolBar.Search())
+                    .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                    .Sortable()
+                    .Scrollable()
+                    .Reorderable(r => r.Columns(true))
+                    .Resizable(r => r.Columns(true))
+                    .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(true)
+                    .ButtonCount(10))
+                    .Excel(excel => excel
+                    .FileName("NhanVien.xlsx")
+                    .Filterable(true)
+                    .ProxyURL(Url.Action("ExportExcel", "CauHinh")))
+                    .Pdf(pdf => pdf
+                    .AllPages()
+                    .AvoidLinks()
+                    .PaperSize("A4")
+                    .Margin("2cm", "1cm", "1cm", "1cm")
+                    .Landscape()
+                    .RepeatHeaders()
+                    .FileName("NhanVien.pdf"))
+                    .Search(search=> {
+                        search.Field(f => f.Code);
+                        search.Field(f => f.Name);
+                        search.Field(f => f.Note);
+                    })
+                    .DataSource(dataSource => dataSource
+                    .Custom()
+                    .PageSize(1000)
+                    .Schema(s => {
+                        s.Model(m =>
+                        {
+                            m.Id(t => t.Id);
+                            m.Field(t => t.Code).Editable(false);
+                        });
+                    })
+                    .Transport(t => {
+                        t.Read("GetByEntity", "Category");
+                        t.Destroy("Delete", "Category");
+                        t.Create("Create", "Category");
+                        t.Update("Update", "Category");
+                        t.ParameterMap("filterCategory");
+                    })))
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+    function filterCategory() {
+        return {
+            Entity: $("#Entity").data("kendoDropDownList").value()
+        }
+    }
+
+</script>

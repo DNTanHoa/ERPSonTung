@@ -12,12 +12,6 @@ namespace ERP.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return Content("OK");
-        }
-
         public string RequestUsername
         {
             get

@@ -1,0 +1,134 @@
+﻿@{
+    ViewData["Title"] = "Danh sách thành viên";
+}
+@using Kendo.Mvc.UI
+@using ERP.Model.Models
+@using ERP.Model.DataTransferObjects
+@using ERP.Ultilities.Global
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="#">Quản lý hệ thống</a></li>
+                    <li class="breadcrumb-item active">Danh sách thành viên</li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <h1 class="float-sm-right">Danh sách thành viên</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100" style="overflow-x:auto">
+                <div class="card-header">
+                    <h3 class="card-title">Danh sách thành viên</h3>
+                </div>
+                <div class="card-body">
+                    @(Html.Kendo().Grid<UserDataTransfer>()
+                    .Name("UserDataTransfer")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(t => t.Username).Title("Tài khoản").Width(150);
+                        columns.Bound(t => t.Password).Title("Mật khẩu").Width(150);
+                        columns.Bound(t => t.GuidCode).Title("Khóa bảo mật").Width(350);
+                        columns.Bound(t => t.cbxEmployee).ClientTemplate("#=cbxEmployee.Display#").EditorTemplateName("EmployeeDropDown").EditorViewData(new { ValueBind = "value : cbxEmployee"}).Title("Nhân viên").Width(350);
+                        columns.Bound(t => t.Note).Title("Ghi chú").Width(200);
+                        columns.Command(command =>
+                        {
+                            command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-left:14px; padding-top:10px; border-radius: 6px; font-weight:bold;" });
+                            command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#dc3545; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                        }).Width(150).Locked(true);
+                    })
+                    .ToolBar(toolBar => toolBar.Create().Text("&nbsp;").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                    .ToolBar(toolBar => toolBar.Search())
+                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                    .Sortable()
+                    .Scrollable()
+                    .Reorderable(r => r.Columns(true))
+                    .Resizable(r => r.Columns(true))
+                    .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(true)
+                    .ButtonCount(10))
+                    .Excel(excel => excel
+                    .FileName("NhanVien.xlsx")
+                    .Filterable(true)
+                    .ProxyURL(Url.Action("ExportExcel", "CauHinh")))
+                    .Pdf(pdf => pdf
+                    .AllPages()
+                    .AvoidLinks()
+                    .PaperSize("A4")
+                    .Margin("2cm", "1cm", "1cm", "1cm")
+                    .Landscape()
+                    .RepeatHeaders()
+                    .FileName("NhanVien.pdf"))
+                    .Search(search=> {
+                        search.Field(f => f.Username);
+                        search.Field(f => f.Note);
+                    })
+                    .DataSource(dataSource => dataSource
+                    .Custom()
+                    .PageSize(1000)
+                    .Schema(s => {
+                        s.Model(m =>
+                        {
+                            m.Id(t => t.Id);
+                            m.Field(t => t.GuidCode).Editable(false);
+                            m.Field(t => t.cbxEmployee).DefaultValue(new EmployeeModelTemplate());
+                        });
+                    })
+                    .Events(e => e.RequestEnd("onGridRequestEnd"))
+                    .Transport(t => {
+                        t.Read("GetDataTransfers", "User");
+                        t.Destroy("Delete", "User");
+                        t.Create("Create", "User");
+                        t.Update("Update", "User");
+                        t.ParameterMap("parameterMapCallBack");
+                    })))
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+    function onGridRequestEnd(e) {
+        if (e.type == "create" || e.type == "update" || e.type == "destroy") {
+            var res = e.response;
+            var type = res.Status.toLowerCase();
+            var message = res.Message;
+            Notify(type, message);
+            $("#UserDataTransfer").data("kendoGrid").dataSource.read();
+        }
+    }
+
+    function parameterMapCallBack(data, option) {
+        if (option != "read") {
+            data.EmployeeCode = data.cbxEmployee.Code
+            return data;
+        }
+    }
+
+    function Notify(type, message) {
+        switch (type) {
+            case "success":
+                toastr.success(message);
+                break;
+            case "info":
+                toastr.info(message);
+                break;
+            case "error":
+                toastr.error(message);
+                break;
+            case "warning":
+                toastr.warning(message);
+                break;
+        }
+    }
+
+</script>
+

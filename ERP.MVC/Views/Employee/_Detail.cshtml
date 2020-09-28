@@ -1,0 +1,141 @@
+﻿@{
+    Layout = "~/Views/Shared/_ModalLayout.cshtml";
+    ViewData["Title"] = "Thông tin cơ bản";
+}
+@using Kendo.Mvc.UI
+@using ERP.MVC.Models
+@using ERP.Ultilities.Global
+@model EmployeeDetailModel
+<form id="EmployeeForm" class="w-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Mã nhân viên @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })</label>
+                    @(Html.TextBoxFor(Model => Model.Code,"",new { @class = "form-control w-100", placeholder = "Mã nhân viên" }))
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Họ @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })</label>
+                    @(Html.TextBoxFor(Model => Model.FirstName,"",new { @class = "form-control w-100", placeholder = "Họ và tên đệm" }))
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Tên @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })</label>
+                    @(Html.TextBoxFor(Model => Model.LastName,"",new { @class = "form-control w-100", placeholder = "Tên" }))
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Vào làm @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })</label>
+                    @(Html.Kendo().DatePickerFor(Model => Model.StartDate)
+                      .HtmlAttributes(new { @class = "form-control" })
+                      .Format("dd-MM-yyyy"))
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Trạng thái</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.StatusCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category")))
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Quản lý</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.SupervisorCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Employee")))
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Công việc</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.JobCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.JobCode})))
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Bộ phận</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.DepartmentCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .OptionLabel(new { Display = "" })
+                    .Filter(FilterType.Contains)
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.DepartmentCode })))
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Tổ</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.GroupCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .OptionLabel(new { Display = "" })
+                    .Filter(FilterType.Contains)
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.GroupCode })))
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Nhóm</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.LaborGroupCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .OptionLabel( new { Display = "" })
+                    .Filter(FilterType.Contains)
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.LaborGroupCode })))
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group m-0">
+                    <label for="Code" class="m-0">Chức vụ</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.PositionCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .OptionLabel( new { Display = "" })
+                    .Filter(FilterType.Contains)
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.PositionCode })))
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-md-11"></div>
+            <div class="col-md-1">
+                <button class="btn btn-primary w-100" onclick="onSaveChange()"><i class="fas fa-save"></i></button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function onSaveChange() {
+        $.blockUI({
+            message: "Hệ thống đang xử lý, vui lòng đợi...."
+        });
+        if ($("#EmployeeForm").valid()) {
+
+        }
+        else {
+            $.unblockUI();
+        }
+    }
+</script>

@@ -18,4 +18,8 @@
     <ProjectReference Include="..\ERP.Ultilities\ERP.Ultilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataTransferObjects\Report\" />
+  </ItemGroup>
+
 </Project>

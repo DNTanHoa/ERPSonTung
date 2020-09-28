@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Theo dõi tổng quan";
+}
+@using Kendo.Mvc.UI
+@using ERP.Model.Models
+@using ERP.Model.DataTransferObjects
+
+@model DashboardOverviewDataTransfer
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="#">Theo dõi tổng quan</a></li>
+                    <li class="breadcrumb-item active">Tình hình nhân sự</li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <h1 class="float-sm-right">Bảng giám sát ngày @DateTime.Now.ToString("dd-MM-yyyy")</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!--Tổng nhân viên-->
+            <div class="col-6 col-lg-3">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>@Model?.EmployeeCount</h3>
+                        <p>Nhân viên</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <a asp-action="Index" asp-controller="Employee" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!--Nghỉ phép trong ngày-->
+            <div class="col-6 col-lg-3">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>@Model?.EmployeeLeaveWithPermission</h3>
+                        <p>Nghỉ có phép</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!--Nghỉ không phép trong ngày-->
+            <div class="col-6 col-lg-3">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>@Model?.EmployeeLeaveNoPermission</h3>
+                        <p>Nghỉ không phép</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!--Tỷ lệ vắng-->
+            <div class="col-6 col-lg-3">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>@Model?.PercentLeave</h3>
+                        <p>Tỷ lệ vắng</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

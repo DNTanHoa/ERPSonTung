@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.User;
 using ERP.ResponeModel;
@@ -10,6 +11,7 @@ using ERP.Ultilities.Global;
 using ERP.Ultilities.Providers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +52,13 @@ namespace ERP.Controllers
                 responeModel.Message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
             }
             return responeModel;
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult<List<User>> Get()
+        {
+            return userRepository.Get().ToList();
         }
     }
 }

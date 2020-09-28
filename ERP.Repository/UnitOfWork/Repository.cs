@@ -42,7 +42,7 @@ namespace ERP.Repository
             }
             else
             {
-                return query.ToList();
+                return query?.ToList();
             }
         }
 
@@ -60,6 +60,7 @@ namespace ERP.Repository
         public virtual int Update(T entity)
         {
             dbSet.Attach(entity);
+            context.Entry(entity).State = EntityState.Modified;
             return context.SaveChanges();
         }
 

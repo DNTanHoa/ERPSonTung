@@ -11,5 +11,7 @@ namespace ERP.Repository
     public interface IEmployeeRepository : IRepository<Employee>
     {
         public IEnumerable<EmployeeDataTransfer> GetDataTransfer();
+
+        public IEnumerable<EmployeeModelTemplate> GetModelTemplates();
     }
 }

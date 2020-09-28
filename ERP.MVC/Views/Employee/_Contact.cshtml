@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = Model.Code + " - " + Model.FullName;
+    Layout = "~/Views/Shared/_ModalLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using ERP.MVC.Models
+@using ERP.Ultilities.Global
+@model ERP.MVC.Models.Employee.EmployeeContactDetailModel
+
+<form id="ContactForm" class="w-100">
+    <div class="container-fluid">
+        @Html.HiddenFor(Model => Model.OriginProvinceCode)
+        @Html.HiddenFor(Model => Model.OriginDistrictCode)
+        @Html.HiddenFor(Model => Model.OriginWardCode)
+        @Html.HiddenFor(Model => Model.OriginAddtional)
+        @Html.HiddenFor(Model => Model.TemporaryProvinceCode)
+        @Html.HiddenFor(Model => Model.TemporaryDistrictCode)
+        @Html.HiddenFor(Model => Model.TemporaryWardCode)
+        @Html.HiddenFor(Model => Model.TemporaryAddtional)
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Điện thoại @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })</label>
+                    @(Html.TextBoxFor(Model => Model.Phone,"",new { @class = "form-control w-100", placeholder = "Điện thoại" }))
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Email cá nhân @Html.ValidationMessageFor(model => model.PersonalEmail, "", new { @class = "text-danger" })</label>
+                    @(Html.TextBoxFor(Model => Model.PersonalEmail,"",new { @class = "form-control w-100", placeholder = "Email cá nhân" }))
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Email công ty @Html.ValidationMessageFor(model => model.CompanyEmail, "", new { @class = "text-danger" })</label>
+                    @(Html.TextBoxFor(Model => Model.CompanyEmail,"",new { @class = "form-control w-100", placeholder = "Email cá nhân" }))
+                </div>
+            </div>
+        </div>
+        <!--Địa chỉ thường trú-->
+        <div class="row">
+            <div class="col-10 col-md-11">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Thường trú @Html.ValidationMessageFor(model => model.OriginAddress, "", new { @class = "text-danger" })</label>
+                    @(Html.TextBoxFor(Model => Model.OriginAddress,"",new { @class = "form-control w-100", placeholder = "Email cá nhân", @readonly = "readonly" }))
+                </div>
+            </div>
+            <div class="col-2 col-md-1 mt-4">
+                <button class="btn btn-success w-100" type="button" onclick="onAddressEdit('Origin')"><i class="fas fa-pencil-alt"></i></button>
+            </div>
+        </div>
+        <!--Địa chỉ tạm trú-->
+        <div class="row">
+            <div class="col-10 col-md-11">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Tạm trú @Html.ValidationMessageFor(model => model.TemporaryAddress, "", new { @class = "text-danger" })</label>
+                    @(Html.TextBoxFor(Model => Model.TemporaryAddress,"",new { @class = "form-control w-100", placeholder = "Email cá nhân", @readonly = "readonly" }))
+                </div>
+            </div>
+            <div class="col-2 col-md-1 mt-4">
+                <button class="btn btn-success w-100" type="button" onclick="onAddressEdit('Temporary')"><i class="fas fa-pencil-alt"></i></button>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-md-11"></div>
+            <div class="col-md-1">
+                <button class="btn btn-primary w-100" type="button" onclick="onSaveChangeContact()"><i class="fas fa-save"></i></button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+
+    function onAddressEdit(addressType) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("AddressBuild","Category")",
+            success: (res) => {
+                $("#modal-address-area").empty();
+                $("#modal-address-area").html(res);
+            }
+        }).done(() => {
+            Initialization(null, () => { }, () => {
+                udpateAddressResult(addressType);
+            });
+        })
+    }
+
+    function udpateAddressResult(addressType) {
+        $('#' + addressType + 'WardCode').val($("#WardCode").data("kendoDropDownList").value());
+        $('#' + addressType + 'DistrictCode').val($("#DistrictCode").data("kendoDropDownList").value());
+        $('#' + addressType + 'ProvinceCode').val($("#ProvinceCode").data("kendoDropDownList").value());
+        $('#' + addressType + 'Addtional').val($("#Addtional").val());
+        $('#' + addressType + 'Address').val($("#Address").val());
+    }
+
+    function onSaveChangeContact() {
+        if ($("#ContactForm").valid()) {
+
+        }
+        else {
+
+        }
+    }
+
+</script>

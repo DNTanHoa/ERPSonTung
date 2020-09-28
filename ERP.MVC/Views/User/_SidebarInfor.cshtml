@@ -1,0 +1,15 @@
+﻿@using Kendo.Mvc.UI
+@using ERP.Model.DataTransferObjects
+@using ERP.Model.Models
+@using ERP.Ultilities.Helpers
+@using ERP.Ultilities.Global
+
+@model UserDataTransfer
+<div class="image">
+    <img src="~/images/sontung.png" class="img-circle elevation-2" alt="@AppGlobal.AppTitle">
+</div>
+<div class="info">
+    <a asp-action="Index" asp-controller="Employee" class="d-block text-center" id="UsernameSideBar">@ViewData["Greeting"]</a>
+</div>
+
+

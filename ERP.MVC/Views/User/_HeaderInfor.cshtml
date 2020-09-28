@@ -1,0 +1,35 @@
+﻿@using Kendo.Mvc.UI
+@using ERP.Model.DataTransferObjects
+@using ERP.Model.Models
+@using ERP.Ultilities.Helpers
+@using ERP.Ultilities.Global
+@model UserDataTransfer
+
+<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+    <img src="@(Model.Image != ""? Model.Image : AppGlobal.DefaultAvatar)" class="user-image img-circle elevation-2" alt="@Model.Name">
+    <span class="d-none d-md-inline" id="UsernameHeader">@Model.Username - @Model.Name</span>
+</a>
+<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+    <li class="user-header bg-primary">
+        <img src=@(Model.Image != ""? Model.Image : AppGlobal.DefaultAvatar) class="img-circle elevation-2" alt="@Model.Username - @Model.Name">
+        <p>
+            <span id="Username">@Model.Username - @Model.Name</span>
+        </p>
+    </li>
+    <li class="user-body">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="text-center col-8">
+                Công ty TNHH Sơn Tùng
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </li>
+    <li class="user-footer">
+        <a onclick="onChangePassword(@Model.Username)" class="btn btn-default btn-flat">Đổi Mật Khẩu</a>
+        <a asp-action="Logout" asp-controller="User" class="btn btn-default btn-flat float-right">Thoát</a>
+    </li>
+</ul>
+
+
+

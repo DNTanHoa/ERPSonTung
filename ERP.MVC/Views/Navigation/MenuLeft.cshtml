@@ -1,0 +1,34 @@
+﻿@model IEnumerable<TreeNavigation<Navigation>>
+@using ERP.Model.Models
+@using ERP.Model.DataTransferObjects
+@using ERP.Ultilities.TemplateModel
+@foreach (var item in Model)
+{
+    @if (item.Childrens.Any())
+    {
+        <li class="nav-item has-treeview">
+            <a class="nav-link" asp-action="@item.Item.ActionName" asp-controller="@item.Item.ControllerName" title="@item.Item.Note">
+                <i class="nav-icon @item.Item.Icon"></i>
+                <p>
+                    @item.Item.DisplayName
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                @Html.Partial("~/Views/Navigation/MenuLeft.cshtml", item.Childrens)
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-action="@item.Item.ActionName" asp-controller="@item.Item.ControllerName" title="@item.Item.Note">
+                <i class="nav-icon @item.Item.Icon"></i>
+                <p>
+                    @item.Item.DisplayName
+                </p>
+            </a>
+        </li>
+    }
+}
+

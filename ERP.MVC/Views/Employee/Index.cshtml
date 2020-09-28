@@ -1,0 +1,159 @@
+﻿@{
+    ViewData["Title"] = "Danh sách nhân viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using ERP.Model.Models 
+@using ERP.Model.DataTransferObjects
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="#">Quản lý nhân viên</a></li>
+                    <li class="breadcrumb-item active">Danh sách</li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <h1 class="float-sm-right">Danh sách nhân viên</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100" style="overflow-x:auto;">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-success w-100" onclick="onSearchForDataGrid('PhieuYeuCauMuaHangDataTransfer')">
+                                <span class="fa fa-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @(Html.Kendo().Grid<EmployeeDataTransfer>()
+                    .Name("Employee")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(t => t.Code).Title("Mã quản lý").Width(100);
+                        columns.Bound(t => t.FullName).Title("Nhân viên").Width(350);
+                        columns.Bound(t => t.StartDate).Format("{0:dd-MM-yyyy}").Title("Ngày vào").Width(100);
+                        columns.Bound(t => t.Status).Title("Trạng thái").Width(150);
+                        columns.Bound(t => t.Job).Title("Chuyên môn").Width(200);
+                        columns.Bound(t => t.Position).Title("Chức vụ").Width(200);
+                        columns.Bound(t => t.Department).Title("Bộ phận").Width(200);
+                        columns.Bound(t => t.Group).Title("Tổ nhóm").Width(200);
+                        columns.Bound(t => t.Supervisor).Title("Quản lý").Width(350);
+                        columns.Command(command => {
+                            command.Custom("basicDetail").Text("&nbsp;").Click("onOpenBasicDetail").IconClass("fas fa-info-circle").HtmlAttributes(new { style= "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" });
+                            command.Custom("contactDetail").Text("&nbsp;").Click("onOpenContactDetail").IconClass("fas fa-id-badge").HtmlAttributes(new { style= "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" });
+                        }).Width(180);
+                    })
+                    .ToolBar(toolBar => toolBar.Custom().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { onclick = "onCreate()", style = "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" }))
+                    .ToolBar(toolBar => toolBar.Search())
+                    .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                    .Sortable()
+                    .Scrollable()
+                    .Reorderable(r => r.Columns(true))
+                    .Resizable(r => r.Columns(true))
+                    .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(true)
+                    .ButtonCount(10))
+                    .Excel(excel => excel
+                    .FileName("NhanVien.xlsx")
+                    .Filterable(true)
+                    .ProxyURL(Url.Action("ExportExcel", "CauHinh")))
+                    .Pdf(pdf => pdf
+                    .AllPages()
+                    .AvoidLinks()
+                    .PaperSize("A4")
+                    .Margin("2cm", "1cm", "1cm", "1cm")
+                    .Landscape()
+                    .RepeatHeaders()
+                    .FileName("NhanVien.pdf")
+                    )
+                    .Search(search=> {
+                        search.Field(f => f.Code);
+                        search.Field(f => f.FullName);
+                        search.Field(f => f.Note);
+                    })
+                    .DataSource(dataSource => dataSource
+                    .Custom()
+                    .PageSize(1000)
+                    .Schema(s => {
+                        s.Model(m =>
+                        {
+                            m.Id(t => t.Id);
+                            m.Field(t => t.FullName).Editable(false);
+                        });
+                    })
+                    .Transport(t => {
+                        t.Read("GetDataTransfer", "Employee");
+                        t.Destroy("Delete", "Employee");
+                        t.Create("Create", "Employee");
+                        t.Update("Update", "Employee");
+                    })))
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="modal-content-place"></div>
+<div id="modal-address-area"></div>
+<script>
+
+    function onCreate() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("Detail","Employee")",
+            data: {
+                Id: 0,
+            },
+            success: (res) => {
+                $("#modal-content-place").empty();
+                $("#modal-content-place").html(res);
+            }
+        }).done(() => {
+            Initialization(null, () => { }, () => { });
+        })
+    }
+
+    function onOpenBasicDetail(e) {
+        var employee = this.dataItem($(e.currentTarget).closest("tr"));
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("Detail","Employee")",
+            data: {
+                Id: employee.Id,
+            },
+            success: (res) => {
+                $("#modal-content-place").empty();
+                $("#modal-content-place").html(res);
+            }
+        }).done(() => {
+            Initialization(null, () => { }, () => { });
+        })
+    }
+
+    function onOpenContactDetail(e) {
+        var employee = this.dataItem($(e.currentTarget).closest("tr"));
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("Contact","Employee")",
+            data: {
+                Id: employee.Id,
+            },
+            success: (res) => {
+                $("#modal-content-place").empty();
+                $("#modal-content-place").html(res);
+            }
+        }).done(() => {
+            Initialization(null, () => { }, () => { });
+        })
+    }
+
+</script>
