@@ -8,8 +8,10 @@ using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.Employee;
 using ERP.ResponeModel;
+using ERP.Ultilities.Enum;
 using ERP.Ultilities.Extensions;
 using ERP.Ultilities.Global;
+using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -41,11 +43,11 @@ namespace ERP.Controllers
             int result = employeeRepository.Delete(Code);
             if(result > 0)
             {
-                respone = new BaseResponeModel().setStatus(AppGlobal.Error).setMessage(AppGlobal.DeleteError);
+                respone = new BaseResponeModel(null, new SuccessResult(AppGlobal.DeleteSuccess));
             }
             else
             {
-                respone = new BaseResponeModel().setStatus(AppGlobal.Success).setMessage(AppGlobal.DeleteSuccess);
+                respone = new BaseResponeModel(null, new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteError));
             }
             return respone;
         }
@@ -61,20 +63,30 @@ namespace ERP.Controllers
             if(string.IsNullOrEmpty(model.Code))
             {
                 result = employeeRepository.Insert(databaseObject);
+
+                if (result > 0)
+                {
+                    respone = new BaseResponeModel(null, new SuccessResult(AppGlobal.CreateSucess));
+                }
+                else
+                {
+                    respone = new BaseResponeModel(null, new ErrorResult(ErrorType.InsertError, AppGlobal.CreateError));
+                }
             }
             else
             {
                 result = employeeRepository.Update(databaseObject);
+
+                if (result > 0)
+                {
+                    respone = new BaseResponeModel(null, new SuccessResult(AppGlobal.EditSuccess));
+                }
+                else
+                {
+                    respone = new BaseResponeModel(null, new ErrorResult(ErrorType.EditError, AppGlobal.EditError));
+                }
             }
             
-            if (result > 0)
-            {
-                respone = new BaseResponeModel().setStatus(AppGlobal.Error).setMessage(AppGlobal.DeleteError);
-            }
-            else
-            {
-                respone = new BaseResponeModel().setStatus(AppGlobal.Success).setMessage(AppGlobal.DeleteSuccess);
-            }
             return respone;
         }
     }

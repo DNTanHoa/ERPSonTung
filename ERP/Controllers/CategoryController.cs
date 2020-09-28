@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ERP.Model.Models;
+﻿using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.Category;
 using ERP.ResponeModel;
+using ERP.Ultilities.Enum;
 using ERP.Ultilities.Global;
-using Microsoft.AspNetCore.Http;
+using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ERP.Controllers
 {
@@ -39,13 +38,14 @@ namespace ERP.Controllers
         public ActionResult<BaseResponeModel> DeleteByCode(string Code)
         {
             int result =  categoryRepository.Delete(Code);
+
             if (result > 0)
             {
-                return new BaseResponeModel { Message = "", Status = AppGlobal.Success };
+                return new BaseResponeModel(null, new SuccessResult(AppGlobal.DeleteSuccess));
             }
             else
             {
-                return new BaseResponeModel { Message = "", Status = AppGlobal.Error };
+                return new BaseResponeModel(null, new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteError));
             }    
         }
     }
