@@ -22,6 +22,7 @@ namespace ERP.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class EmployeeController : BaseController
     {
         private readonly IEmployeeRepository employeeRepository;
