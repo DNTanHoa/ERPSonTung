@@ -10,6 +10,7 @@ using ERP.RequestModel.Employee;
 using ERP.ResponeModel;
 using ERP.Ultilities.Enum;
 using ERP.Ultilities.Extensions;
+using ERP.Ultilities.Factory.Implement;
 using ERP.Ultilities.Global;
 using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -43,11 +44,11 @@ namespace ERP.Controllers
             int result = employeeRepository.Delete(Code);
             if(result > 0)
             {
-                respone = new BaseResponeModel(null, new SuccessResult(AppGlobal.DeleteSuccess));
+                respone = new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Delete));
             }
             else
             {
-                respone = new BaseResponeModel(null, new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteError));
+                respone = new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Delete));
             }
             return respone;
         }
@@ -66,11 +67,11 @@ namespace ERP.Controllers
 
                 if (result > 0)
                 {
-                    respone = new BaseResponeModel(null, new SuccessResult(AppGlobal.CreateSucess));
+                    respone = new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Insert));
                 }
                 else
                 {
-                    respone = new BaseResponeModel(null, new ErrorResult(ErrorType.InsertError, AppGlobal.CreateError));
+                    respone = new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Insert));
                 }
             }
             else
@@ -79,11 +80,11 @@ namespace ERP.Controllers
 
                 if (result > 0)
                 {
-                    respone = new BaseResponeModel(null, new SuccessResult(AppGlobal.EditSuccess));
+                    respone = new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Edit));
                 }
                 else
                 {
-                    respone = new BaseResponeModel(null, new ErrorResult(ErrorType.EditError, AppGlobal.EditError));
+                    respone = new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Edit));
                 }
             }
             

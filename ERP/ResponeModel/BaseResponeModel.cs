@@ -17,6 +17,23 @@ namespace ERP.ResponeModel
         /// <summary>
         /// Initialize Response model
         /// </summary>
+        /// <param name="Result">Result respones, Success if null</param>
+        public BaseResponeModel(BaseResult Result)
+        {
+            BaseResult result = Result;
+
+            if (result == null)
+            {
+                //default result is success
+                result = new SuccessResult();
+            }
+
+            this.Result = result;
+        }
+
+        /// <summary>
+        /// Initialize Response model
+        /// </summary>
         /// <param name="Data">Data response</param>
         /// <param name="Result">Result respones, Success if null</param>
         public BaseResponeModel(Object Data, BaseResult Result = null)

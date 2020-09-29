@@ -4,12 +4,12 @@ using System.Text;
 
 namespace ERP.Ultilities.Enum
 {
-    public enum ErrorType
+    public enum ActionType
     {
         None = 0,
-        InsertError = 100,
-        EditError = 101,
-        DeleteError = 102,
-        LoginError = 500
+        Insert = 100,
+        Edit = 101,
+        Delete = 102,
+        Login = 500
     }
 }

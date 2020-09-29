@@ -5,23 +5,42 @@ namespace ERP.Ultilities.Results
 {
     public class ErrorResult : BaseResult
     {
-        public ErrorType ErrorType;
+        /// <summary>
+        /// Default Result Initialial Default value
+        /// ResultType = ResultType.Error
+        /// ActionType = ActionType.None
+        /// Message = AppGlobal.Error
+        /// </summary>
+        public ErrorResult()
+        {
+            this.ActionType = ActionType.None;
+            this.Message = AppGlobal.Error;
+            this.ResultType = ResultType.Error;
+        }
 
         /// <summary>
-        /// Initialize ErrorResult
+        /// Default Result Initialial Default value
+        /// ResultType = ResultType.Error
+        /// Message = AppGlobal.Error
         /// </summary>
-        /// <param name="ErrorType">Error type is defined in enum ErrorType</param>
-        /// <param name="Message">Message error, default is message in AppGlobal.Error</param>
-        public ErrorResult(ErrorType ErrorType, string Message = null)
-        { 
-            //message is empty
-            if (string.IsNullOrWhiteSpace(Message))
-                Message = AppGlobal.Error;
+        /// <param name="ActionType">Delete, Insert, Update, ...</param>
+        public ErrorResult(ActionType ActionType)
+        {
+            this.ActionType = ActionType;
+            this.ResultType = ResultType.Error;
+            this.Message = AppGlobal.Error;
+        }
 
-            base.Message = Message;
-            base.ResultType = ResultType.Error;
-
-            this.ErrorType = ErrorType;
+        /// <summary>
+        /// Result Initialial full
+        /// </summary>
+        /// <param name="ActionType">Delete, Insert, Update, ...</param>
+        /// <param name="Message">Action Message</param>
+        public ErrorResult(ActionType ActionType, string Message)
+        {
+            this.ActionType = ActionType;
+            this.Message = Message;
+            this.ResultType = ResultType.Error;
         }
     }
 }

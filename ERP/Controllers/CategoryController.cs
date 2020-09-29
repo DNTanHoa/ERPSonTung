@@ -3,6 +3,7 @@ using ERP.Repository;
 using ERP.RequestModel.Category;
 using ERP.ResponeModel;
 using ERP.Ultilities.Enum;
+using ERP.Ultilities.Factory.Implement;
 using ERP.Ultilities.Global;
 using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -41,11 +42,11 @@ namespace ERP.Controllers
 
             if (result > 0)
             {
-                return new BaseResponeModel(null, new SuccessResult(AppGlobal.DeleteSuccess));
+                return new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Delete));
             }
             else
             {
-                return new BaseResponeModel(null, new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteError));
+                return new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Delete));
             }    
         }
     }
