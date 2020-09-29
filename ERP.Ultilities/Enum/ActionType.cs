@@ -10,6 +10,7 @@ namespace ERP.Ultilities.Enum
         Insert = 100,
         Edit = 101,
         Delete = 102,
+        Select = 103,
         Login = 500
     }
 }

@@ -24,15 +24,17 @@ namespace ERP.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Category>> GetByEntity(CategoryGetRequestModel model)
+        public ActionResult<BaseResponeModel> GetByEntity(CategoryGetRequestModel model)
         {
-            return categoryRepository.GetByEntity(model.Entity).ToList();
+            var Data =  categoryRepository.GetByEntity(model.Entity).ToList();
+            return new BaseResponeModel(Data, new SuccessResultFactory().Factory(ActionType.Select));
         }
 
         [HttpGet]
-        public ActionResult<List<Category>> GetAll(CategoryGetRequestModel model)
+        public ActionResult<BaseResponeModel> GetAll(CategoryGetRequestModel model)
         {
-            return categoryRepository.Get().ToList();
+            var Data =  categoryRepository.Get().ToList();
+            return new BaseResponeModel(Data, new SuccessResultFactory().Factory(ActionType.Select));
         }
 
         [HttpDelete]

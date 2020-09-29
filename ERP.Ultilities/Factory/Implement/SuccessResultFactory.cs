@@ -20,6 +20,8 @@ namespace ERP.Ultilities.Factory.Implement
                     return new SuccessResult(ActionType, AppGlobal.DeleteSuccess);
                 case ActionType.Login:
                     return new SuccessResult(ActionType, AppGlobal.Success);
+                case ActionType.Select:
+                    return new SuccessResult(ActionType, AppGlobal.Success);
                 case ActionType.None:
                     return new SuccessResult(ActionType, AppGlobal.Success);
                 default:

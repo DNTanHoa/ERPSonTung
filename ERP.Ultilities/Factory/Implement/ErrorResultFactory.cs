@@ -22,6 +22,8 @@ namespace ERP.Ultilities.Factory.Implement
                     return new ErrorResult(ActionType, AppGlobal.DeleteError);
                 case ActionType.Login:
                     return new ErrorResult(ActionType, AppGlobal.LoginFailMessage);
+                case ActionType.Select:
+                    return new ErrorResult(ActionType, AppGlobal.Error);
                 case ActionType.None:
                     return new ErrorResult(ActionType, AppGlobal.Error);
                 default:
