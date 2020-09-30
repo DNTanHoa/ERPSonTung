@@ -6,9 +6,12 @@ using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.User;
 using ERP.ResponeModel;
+using ERP.Ultilities.Enum;
 using ERP.Ultilities.Extensions;
+using ERP.Ultilities.Factory.Implement;
 using ERP.Ultilities.Global;
 using ERP.Ultilities.Providers;
+using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +22,7 @@ namespace ERP.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository userRepository;
@@ -29,36 +33,39 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
-        public ActionResult<LoginResponeModel> Login(LoginUserRequestModel model)
+        [AllowAnonymous]
+        public ActionResult<BaseResponeModel> Login(LoginUserRequestModel model)
         {
-            var responeModel = new LoginResponeModel();
+            var LoginResponeModel = new LoginResponeModel();
+            BaseResult Result;
+
             if(ModelState.IsValid)
             {
                 if (userRepository.IsValidUser(model.Username, model.Password))
                 {
-                    responeModel.Status = AppGlobal.Success;
-                    responeModel.TokenExpireDate = DateTime.Now.AddDays(1);
-                    responeModel.Token = TokenProvider.GenerateTokenString(model.ToDictionaryStringString());
+                    Result = new SuccessResultFactory().Factory(ActionType.Login);
+                    LoginResponeModel.TokenExpireDate = DateTime.Now.AddDays(1);
+                    LoginResponeModel.Token = TokenProvider.GenerateTokenString(model.ToDictionaryStringString());
                 }
                 else
                 {
-                    responeModel.Status = AppGlobal.Fail;
-                    responeModel.Message = AppGlobal.LoginFailMessage;
+                    Result = new ErrorResultFactory().Factory(ActionType.Login);
                 }
             }
             else
             {
-                responeModel.Status = AppGlobal.Error;
-                responeModel.Message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                Result = new ErrorResult(ActionType.Login, message);
             }
-            return responeModel;
+
+            return new BaseResponeModel(LoginResponeModel, Result);
         }
 
         [HttpGet]
-        [Authorize]
-        public ActionResult<List<User>> Get()
+        public ActionResult<BaseResponeModel> Get()
         {
-            return userRepository.Get().ToList();
+            var Data = userRepository.Get().ToList();
+            return new BaseResponeModel(Data, new SuccessResultFactory().Factory(ActionType.Select));
         }
     }
 }

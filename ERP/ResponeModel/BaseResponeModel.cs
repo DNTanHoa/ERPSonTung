@@ -1,25 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ERP.Ultilities.Results;
+using System;
 
 namespace ERP.ResponeModel
 {
     public class BaseResponeModel
     {
-        public string Message { get; set; }
+        public BaseResult Result { get; set; }
+        public Object Data { get; set; }
 
-        public string Status { get; set; }
-
-        public BaseResponeModel setMessage(string message)
+        public BaseResponeModel()
         {
-            this.Message = message;
+            //default result is success
+            this.Result = new SuccessResult();
+        }
+
+        /// <summary>
+        /// Initialize Response model
+        /// </summary>
+        /// <param name="Result">Result respones, Success if null</param>
+        public BaseResponeModel(BaseResult Result)
+        {
+            BaseResult result = Result;
+
+            if (result == null)
+            {
+                //default result is success
+                result = new SuccessResult();
+            }
+
+            this.Result = result;
+        }
+
+        /// <summary>
+        /// Initialize Response model
+        /// </summary>
+        /// <param name="Data">Data response</param>
+        /// <param name="Result">Result respones, Success if null</param>
+        public BaseResponeModel(Object Data, BaseResult Result = null)
+        {
+            this.Data = Data;
+
+            BaseResult result = Result;
+
+            if (result == null)
+            {
+                //default result is success
+                result = new SuccessResult();
+            }
+
+            this.Result = result;
+        }
+
+        public BaseResponeModel setResult(BaseResult Result)
+        {
+            this.Result = Result;
             return this;
         }
 
-        public BaseResponeModel setStatus(string Status)
+        public BaseResponeModel setData(Object Data)
         {
-            this.Status = Status;
+            this.Data = Data;
             return this;
         }
     }

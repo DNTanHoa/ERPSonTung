@@ -8,10 +8,6 @@ namespace ERP.ResponeModel
 {
     public class LoginResponeModel
     {
-        public string Status { get; set; }
-
-        public string Message { get; set; }
-
         public DateTime? TokenExpireDate { get; set; }
 
         public string Token { get; set; }

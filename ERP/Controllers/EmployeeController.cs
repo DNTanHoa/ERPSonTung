@@ -8,8 +8,11 @@ using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.Employee;
 using ERP.ResponeModel;
+using ERP.Ultilities.Enum;
 using ERP.Ultilities.Extensions;
+using ERP.Ultilities.Factory.Implement;
 using ERP.Ultilities.Global;
+using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +22,7 @@ namespace ERP.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class EmployeeController : BaseController
     {
         private readonly IEmployeeRepository employeeRepository;
@@ -41,11 +45,11 @@ namespace ERP.Controllers
             int result = employeeRepository.Delete(Code);
             if(result > 0)
             {
-                respone = new BaseResponeModel().setStatus(AppGlobal.Error).setMessage(AppGlobal.DeleteError);
+                respone = new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Delete));
             }
             else
             {
-                respone = new BaseResponeModel().setStatus(AppGlobal.Success).setMessage(AppGlobal.DeleteSuccess);
+                respone = new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Delete));
             }
             return respone;
         }
@@ -61,20 +65,30 @@ namespace ERP.Controllers
             if(string.IsNullOrEmpty(model.Code))
             {
                 result = employeeRepository.Insert(databaseObject);
+
+                if (result > 0)
+                {
+                    respone = new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Insert));
+                }
+                else
+                {
+                    respone = new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Insert));
+                }
             }
             else
             {
                 result = employeeRepository.Update(databaseObject);
+
+                if (result > 0)
+                {
+                    respone = new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Edit));
+                }
+                else
+                {
+                    respone = new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Edit));
+                }
             }
             
-            if (result > 0)
-            {
-                respone = new BaseResponeModel().setStatus(AppGlobal.Error).setMessage(AppGlobal.DeleteError);
-            }
-            else
-            {
-                respone = new BaseResponeModel().setStatus(AppGlobal.Success).setMessage(AppGlobal.DeleteSuccess);
-            }
             return respone;
         }
     }
