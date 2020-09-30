@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERP.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace ERP.MVC.Models
 {
-    public class EmployeeDetailModel
+    public class EmployeeDetailModel : BaseModel
     {
-        [Required(ErrorMessage = "không được để trống")]
         public string Code { get; set; }
 
         [Required(ErrorMessage = "không được để trống")]
@@ -34,5 +34,6 @@ namespace ERP.MVC.Models
         public string SupervisorCode { get; set; }
 
         public string JobCode { get; set; }
+
     }
 }

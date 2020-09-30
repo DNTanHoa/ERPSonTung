@@ -9,6 +9,12 @@
 
 <form id="ContactForm" class="w-100">
     <div class="container-fluid">
+        @Html.HiddenFor(Model => Model.Id)
+        @Html.HiddenFor(Model => Model.CreateDate)
+        @Html.HiddenFor(Model => Model.CreateUser)
+        @Html.HiddenFor(Model => Model.UpdateDate)
+        @Html.HiddenFor(Model => Model.UpdateUser)
+        @Html.HiddenFor(Model => Model.Deleted)
         @Html.HiddenFor(Model => Model.OriginProvinceCode)
         @Html.HiddenFor(Model => Model.OriginDistrictCode)
         @Html.HiddenFor(Model => Model.OriginWardCode)
@@ -42,7 +48,7 @@
             <div class="col-10 col-md-11">
                 <div class="form-group m-0">
                     <label class="m-0" for="Code">Thường trú @Html.ValidationMessageFor(model => model.OriginAddress, "", new { @class = "text-danger" })</label>
-                    @(Html.TextBoxFor(Model => Model.OriginAddress,"",new { @class = "form-control w-100", placeholder = "Email cá nhân", @readonly = "readonly" }))
+                    @(Html.TextBoxFor(Model => Model.OriginAddress,"",new { @class = "form-control w-100", placeholder = "Thường trú", @readonly = "readonly" }))
                 </div>
             </div>
             <div class="col-2 col-md-1 mt-4">
@@ -54,7 +60,7 @@
             <div class="col-10 col-md-11">
                 <div class="form-group m-0">
                     <label class="m-0" for="Code">Tạm trú @Html.ValidationMessageFor(model => model.TemporaryAddress, "", new { @class = "text-danger" })</label>
-                    @(Html.TextBoxFor(Model => Model.TemporaryAddress,"",new { @class = "form-control w-100", placeholder = "Email cá nhân", @readonly = "readonly" }))
+                    @(Html.TextBoxFor(Model => Model.TemporaryAddress,"",new { @class = "form-control w-100", placeholder = "Tạm trú", @readonly = "readonly" }))
                 </div>
             </div>
             <div class="col-2 col-md-1 mt-4">
@@ -72,9 +78,17 @@
 <script>
 
     function onAddressEdit(addressType) {
+        var model = {
+            ProvinceCode: $('#' + addressType + 'ProvinceCode').val(),
+            DistrictCode: $('#' + addressType + 'DistrictCode').val(),
+            WardCode: $('#' + addressType + 'DistrictCode').val(),
+            Addtional: $('#' + addressType + 'Addtional').val(),
+            Address: $('#' + addressType + 'Address').val(),
+        };
         $.ajax({
             type: "GET",
             url: "@Url.Action("AddressBuild","Category")",
+            data: model,
             success: (res) => {
                 $("#modal-address-area").empty();
                 $("#modal-address-area").html(res);
@@ -95,11 +109,26 @@
     }
 
     function onSaveChangeContact() {
+        $.blockUI({
+            message: "Hệ thống đang xử lý, vui lòng đợi...."
+        });
         if ($("#ContactForm").valid()) {
-
+            var model = formDataToObject('ContactForm');
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveChangeContact","Employee")",
+                data: model,
+                success: (res) => {
+                    var type = res.Status.toLowerCase();
+                    var message = res.Message;
+                    Notify(type, message);
+                }
+            });
+            $('#modal-popup' + "@ViewData["ModalId"]?.ToString()").modal('hide');
+            $.unblockUI();
         }
         else {
-
+            $.unblockUI();
         }
     }
 

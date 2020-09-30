@@ -18,6 +18,9 @@ namespace ERP.Model.Extensions
             }
             model.UpdateDate = DateTime.Now;
             model.UpdateUser = initUser;
+
+            if (model.Deleted == null)
+                model.Deleted = false;
         }
     }
 }

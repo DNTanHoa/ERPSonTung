@@ -1,0 +1,165 @@
+﻿@{
+    ViewData["Title"] = "Báo cáo chấm công theo tháng";
+}
+@using Kendo.Mvc.UI
+@using ERP.Model.Models
+@using ERP.Model.DataTransferObjects
+@using ERP.Ultilities.Global
+@using ERP.MVC.Models;
+
+@model EmployeeCheckInOutFilterModel
+
+<style>
+    .k-header > .k-link {
+        font-weight: bold;
+    }
+</style>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="#">Báo cáo nhân sự</a></li>
+                    <li class="breadcrumb-item active">Bảng chám công tháng</li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <h1 class="float-sm-right">Báo cáo chấm công</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100" style="overflow-x:auto">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group m-0">
+                                <label class="m-0" for="Code">Vào từ</label>
+                                @(Html.Kendo().DatePickerFor(Model => Model.FromDate)
+                                .HtmlAttributes(new { @class = "form-control" })
+                                .Value(DateTime.Now)
+                                .Format("dd-MM-yyyy"))
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group m-0">
+                                <label class="m-0" for="Code">Đến</label>
+                                @(Html.Kendo().DatePickerFor(Model => Model.ToDate)
+                                .HtmlAttributes(new { @class = "form-control" })
+                                .Value(DateTime.Now)
+                                .Format("dd-MM-yyyy"))
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-success w-100 mt-1 mt-md-4" onclick="onSearch()">
+                                <span class="fa fa-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @(Html.Kendo().Grid<EmployeCheckInOutDataTransfer>()
+                    .Name("EmployeCheckInOutDataTransfer")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(t => t.EmployeeCode).Title("Mã").Width(100);
+                        columns.Bound(t => t.EmployeeName).Title("Nhân viên").Width(250);
+                    })
+                    .ToolBar(toolBar => toolBar.Search())
+                    .ToolBar(toolBar => toolBar.Excel().Text("&nbsp;").HtmlAttributes(new { }))
+                    .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                    .Sortable()
+                    .Scrollable()
+                    .Reorderable(r => r.Columns(true))
+                    .Resizable(r => r.Columns(true))
+                    .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(true)
+                    .ButtonCount(10))
+                    .Excel(excel => excel
+                    .FileName("NhanVien.xlsx")
+                    .Filterable(true)
+                    .ProxyURL(Url.Action("ExportExcel", "CauHinh")))
+                    .Pdf(pdf => pdf
+                    .AllPages()
+                    .AvoidLinks()
+                    .PaperSize("A4")
+                    .Margin("2cm", "1cm", "1cm", "1cm")
+                    .Landscape()
+                    .RepeatHeaders()
+                    .FileName("NhanVien.pdf"))
+                    .Search(search=> {
+                        search.Field(f => f.EmployeeCode);
+                        search.Field(f => f.EmployeeName);
+                        search.Field(f => f.Note);
+                    })
+                    .DataSource(dataSource => dataSource
+                    .Custom()
+                    .PageSize(1000)
+                    .Transport(t => {
+                        t.Read("GetDataTransferHasFilter", "Employee");
+                    })))
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+    var gridColumns = [];
+
+    function onSearch() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetTimeRangeDataTransfer", "EmployeeCheckInOut")",
+            data: {
+                FromDate: stringToDateDefault($("#FromDate").val()),
+                ToDate: stringToDateDefault($("#ToDate").val()),
+            },
+            success: (res) => {
+                console.log(res);
+                var columns = res.map((item) => {
+                    var htmlAttribute = {}
+                    if (item.IsHoliday) {
+                        htmlAttribute = {
+                            title: item.DateDescription,
+                            style: "text-align:center; color: red; background-color: #008000",
+                        }
+                    }
+                    else if (item.IsWeekend) {
+                        htmlAttribute = {
+                            title: item.DateDescription,
+                            style: "text-align:center; color: green; background-color: #ffa64d",
+                        }
+                    }
+                    else {
+                        htmlAttribute = {
+                            title: item.DateDescription,
+                            style: "text-align:center;"
+                        }
+                    }
+                    return {
+                        title: item.DateTitle,
+                        width: "80px",
+                        headerAttributes: htmlAttribute,
+                        field: item.DateField,
+                        endcoded:true,
+                    }
+                });
+                var grid = $("#EmployeCheckInOutDataTransfer").data("kendoGrid");
+                grid.columns = gridColumns.concat(columns);
+                var gridOptions = grid.getOptions();
+                grid.setOptions(gridOptions);
+            }
+        });
+    }
+
+    $(document).ready(() => {
+        gridColumns = $("#EmployeCheckInOutDataTransfer").data("kendoGrid").columns;
+    })
+
+</script>

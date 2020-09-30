@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="EmployeeCheckInOut\" />
     <Folder Include="EmployeeContract\" />
     <Folder Include="EmployeeDayOff\" />
     <Folder Include="EmployeeDocument\" />
@@ -25,6 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
   <ItemGroup>

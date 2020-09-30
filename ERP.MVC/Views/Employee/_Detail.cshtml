@@ -9,6 +9,12 @@
 <form id="EmployeeForm" class="w-100">
     <div class="container-fluid">
         <div class="row">
+            @Html.HiddenFor(Model => Model.Id)
+            @Html.HiddenFor(Model => Model.CreateDate)
+            @Html.HiddenFor(Model => Model.CreateUser)
+            @Html.HiddenFor(Model => Model.UpdateDate)
+            @Html.HiddenFor(Model => Model.UpdateUser)
+            @Html.HiddenFor(Model => Model.Deleted)
             <div class="col-md-4">
                 <div class="form-group m-0">
                     <label class="m-0" for="Code">Mã nhân viên @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })</label>
@@ -34,6 +40,7 @@
                     <label class="m-0" for="Code">Vào làm @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })</label>
                     @(Html.Kendo().DatePickerFor(Model => Model.StartDate)
                       .HtmlAttributes(new { @class = "form-control" })
+                      .Value(DateTime.Now)
                       .Format("dd-MM-yyyy"))
                 </div>
             </div>
@@ -44,7 +51,7 @@
                     .HtmlAttributes(new { @class = "form-control" })
                     .DataTextField("Display")
                     .DataValueField("Code")
-                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category")))
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category",new { Entity =  AppGlobal.EmployeeStatusCode } )))
                 </div>
             </div>
             <div class="col-md-3">
@@ -54,7 +61,7 @@
                     .HtmlAttributes(new { @class = "form-control" })
                     .DataTextField("Display")
                     .DataValueField("Code")
-                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Employee")))
+                    .DataSource(ds => ds.Read("GetModelTemplates", "Employee")))
                 </div>
             </div>
             <div class="col-md-3">
@@ -121,21 +128,41 @@
         <div class="row mt-1">
             <div class="col-md-11"></div>
             <div class="col-md-1">
-                <button class="btn btn-primary w-100" onclick="onSaveChange()"><i class="fas fa-save"></i></button>
+                <button type="button" class="btn btn-primary w-100" onclick="onSaveChange()"><i class="fas fa-save"></i></button>
             </div>
         </div>
     </div>
 </form>
+<script src="~/js/jquery.blockUI.js"></script>
 <script>
     function onSaveChange() {
         $.blockUI({
             message: "Hệ thống đang xử lý, vui lòng đợi...."
         });
         if ($("#EmployeeForm").valid()) {
-
+            var model = formDataToObject('EmployeeForm');
+            model.StartDate = stringToDateDefault($("#StartDate").val());
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveChangeContact","Employee")",
+                data: model,
+                success: (res) => {
+                    var type = res.Status.toLowerCase();
+                    var message = res.Message;
+                    Notify(type, message);
+                }
+            });
+            $('#modal-popup').modal('hide');
+            $.unblockUI();
         }
         else {
             $.unblockUI();
         }
     }
+
+    $(document).ready(() => {
+        if ($("#Code").val() != '') {
+            $("#Code").attr('readonly', true)
+        }
+    });
 </script>

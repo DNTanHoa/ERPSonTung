@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
@@ -47,6 +48,21 @@ namespace ERP.Ultilities.Extensions
             return obj;
         }
 
-        
+        public static Dictionary<string, object> ToDictionaryStringObject(this DataRow tableRow)
+        {
+            var content = new Dictionary<string, object>();
+            foreach(DataColumn column in tableRow.Table.Columns)
+            {
+                content.Add(column.ColumnName, tableRow[column]);
+            }
+            return content;
+        }
+
+        public static string ToJson(this DataTable table)
+        {
+            string JSONString = string.Empty;
+            JSONString = JsonConvert.SerializeObject(table);
+            return JSONString;
+        }
     }
 }

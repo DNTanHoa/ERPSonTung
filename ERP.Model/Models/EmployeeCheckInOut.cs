@@ -8,5 +8,6 @@ namespace ERP.Model.Models
         public string EmployeeCode { get; set; }
         public DateTime? CheckTime { get; set; }
         public string CheckWay { get; set; }
+        public string CheckTypeCode { get; set; }
     }
 }

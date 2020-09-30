@@ -3,6 +3,7 @@ using ERP.Model.Models;
 using ERP.Ultilities.Extensions;
 using ERP.Ultilities.Global;
 using ERP.Ultilities.Helpers;
+using System.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,6 +27,21 @@ namespace ERP.Repository
             return table.ToList<EmployeeDataTransfer>();
         }
 
+        public IEnumerable<EmployeeDataTransfer> GetDataTransferHasFilter(string DepartmentCode, string GroupCode, string LaborGroupCode, string StatusCode, DateTime? StartFromDate, DateTime? StartToDate)
+        {
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@DepartmentCode",DepartmentCode),
+                new SqlParameter("@GroupCode",GroupCode),
+                new SqlParameter("@LaborGroupCode",LaborGroupCode),
+                new SqlParameter("@StatusCode",StatusCode),
+                new SqlParameter("@StartToDate", StartToDate),
+                new SqlParameter("@StartFromDate", StartFromDate)
+            };
+            DataTable table = SqlHelper.FillByReader(AppGlobal.ConnectionString, "sprocEmployeeSelectHasFilter", parameters);
+            return table.ToList<EmployeeDataTransfer>();
+        }
+
         public IEnumerable<EmployeeModelTemplate> GetModelTemplates()
         {
             var query = from employee in context.Employee
@@ -35,6 +51,12 @@ namespace ERP.Repository
                             Display = employee.Code + " - " + employee.FullName
                         };
             return query.ToList();
+        }
+
+        public bool IsExistCode(string Code)
+        {
+            var employee = context.Employee.Where(item => item.Code.Equals(Code)).FirstOrDefault();
+            return employee != null ? true : false;
         }
     }
 }

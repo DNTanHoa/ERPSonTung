@@ -1,7 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -142,6 +142,32 @@ namespace ERP.Ultilities.Helpers
             catch (Exception e)
             {
                 result = e.Message;
+            }
+            return dt;
+        }
+
+        public static DataTable FillByReader(string connectionString, string storedProcedureName, params SqlParameter[] parameters)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand cmd = new SqlCommand(storedProcedureName, connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddRange(parameters);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        dt.Load(reader);
+                    }
+                    else
+                    {
+                        Console.WriteLine("No rows found.");
+                    }
+                    reader.Close();
+                }
             }
             return dt;
         }

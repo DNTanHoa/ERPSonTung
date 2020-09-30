@@ -1,0 +1,60 @@
+﻿@using Kendo.Mvc.UI
+@using ERP.Model.Models
+@using ERP.Model.DataTransferObjects
+@using ERP.Ultilities.Global
+@model ERP.MVC.Models.EmployeeTimeKeepingTableModel
+
+
+@(Html.Kendo().Grid<EmployeeDataTransfer>()
+.Name("Employee")
+.Columns(columns =>
+{
+    columns.Bound(t => t.Code).Title("Mã").Width(60);
+    columns.Bound(t => t.FullName).Title("Nhân viên").Width(250);
+})
+.ToolBar(toolBar => toolBar.Custom().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { onclick = "onCreate()", title = "Thêm mới nhân viên" ,style = "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" }))
+.ToolBar(toolBar => toolBar.Search())
+.Editable(editable => editable.Mode(GridEditMode.PopUp))
+.Sortable()
+.Scrollable()
+.Reorderable(r => r.Columns(true))
+.Resizable(r => r.Columns(true))
+.Pageable(pageable => pageable
+.Refresh(true)
+.PageSizes(true)
+.ButtonCount(10))
+.Excel(excel => excel
+.FileName("NhanVien.xlsx")
+.Filterable(true)
+.ProxyURL(Url.Action("ExportExcel", "CauHinh")))
+.Pdf(pdf => pdf
+.AllPages()
+.AvoidLinks()
+.PaperSize("A4")
+.Margin("2cm", "1cm", "1cm", "1cm")
+.Landscape()
+.RepeatHeaders()
+.FileName("NhanVien.pdf")
+)
+.Search(search=> {
+    search.Field(f => f.Code);
+    search.Field(f => f.FullName);
+    search.Field(f => f.Note);
+})
+.DataSource(dataSource => dataSource
+.Custom()
+.PageSize(1000)
+.Schema(s => {
+    s.Model(m =>
+    {
+        m.Id(t => t.Id);
+        m.Field(t => t.FullName).Editable(false);
+    });
+})
+.Transport(t => {
+    t.Read("GetDataTransferHasFilter", "Employee");
+    t.Destroy("Delete", "Employee");
+    t.Create("Create", "Employee");
+    t.Update("Update", "Employee");
+    t.ParameterMap("parameterMapCallback");
+})))

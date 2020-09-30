@@ -56,7 +56,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group m-0">
-                    <label class="m-0" for="Code">Tỉnh</label>
+                    <label class="m-0" for="Code">Tỉnh/Thành phố</label>
                     @(Html.Kendo().DropDownListFor(Model => Model.ProvinceCode)
                     .HtmlAttributes(new { @class = "form-control" })
                     .DataTextField("Display")
@@ -70,7 +70,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group m-0">
-                    <label class="m-0" for="Code">Huyện</label>
+                    <label class="m-0" for="Code">Quận/Huyện</label>
                     @(Html.Kendo().DropDownListFor(Model => Model.DistrictCode)
                     .HtmlAttributes(new { @class = "form-control" })
                     .DataTextField("Display")
@@ -84,7 +84,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group m-0">
-                    <label class="m-0" for="Code">Xã</label>
+                    <label class="m-0" for="Code">Xã/Phường</label>
                     @(Html.Kendo().DropDownListFor(Model => Model.WardCode)
                     .HtmlAttributes(new { @class = "form-control" })
                     .DataTextField("Display")

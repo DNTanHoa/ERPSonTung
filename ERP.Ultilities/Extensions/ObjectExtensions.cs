@@ -73,14 +73,9 @@ namespace ERP.Ultilities.Extensions
                 PropertyInfo[] props = obj.GetType().GetProperties();
                 foreach (var prop in props)
                 {
-                    try
-                    {
-                        prop.SetValue(obj, prop.GetValue(source));
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
+                    var pairValue = source.GetType()?.GetProperty(prop.Name)?.GetValue(source);
+                    if (pairValue != null)
+                        obj.GetType().GetProperty(prop.Name).SetValue(obj, pairValue);
                 }
             }
         }

@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = Model.Code + " - " + Model.FullName;
+    Layout = "~/Views/Shared/_ModalLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using ERP.MVC.Models
+@using ERP.Ultilities.Global
+@model ERP.MVC.Models.Employee.EmployeeIdentityDetailModel
+
+<form id="IdentityForm" class="w-100">
+    <div class="container-fluid">
+        @Html.HiddenFor(Model => Model.Id)
+        @Html.HiddenFor(Model => Model.CreateDate)
+        @Html.HiddenFor(Model => Model.CreateUser)
+        @Html.HiddenFor(Model => Model.UpdateDate)
+        @Html.HiddenFor(Model => Model.UpdateUser)
+        @Html.HiddenFor(Model => Model.Deleted)
+        <div class="row">
+            <div class="col-md-6">
+                <div class="text-center">
+                    <img src="@(AppGlobal.DefaultAvatar)" class="text-center user-image img-circle elevation-2" alt="@Model.FullName" />
+                </div>
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Quốc tịch</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.NationCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .Filter(FilterType.Contains)
+                    .HtmlAttributes(new { style = "width:100%;" })
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.NationCode })))
+                </div>
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Dân tộc</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.NationalityCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .Filter(FilterType.Contains)
+                    .HtmlAttributes(new { style = "width:100%;" })
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.NationalityCode })))
+                </div>
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Tôn giáo</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.ReligionCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .Filter(FilterType.Contains)
+                    .HtmlAttributes(new { style = "width:100%;" })
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.ReligionCode })))
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group m-0">
+                            <label class="m-0" for="Code">Danh xưng</label>
+                            @(Html.Kendo().DropDownListFor(Model => Model.TitleCode)
+                            .HtmlAttributes(new { @class = "form-control" })
+                            .DataTextField("Display")
+                            .DataValueField("Code")
+                            .Filter(FilterType.Contains)
+                            .HtmlAttributes(new { style = "width:100%;" })
+                            .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.TitleCode })))
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group m-0">
+                            <label class="m-0" for="Code">Giới tính</label>
+                            @(Html.Kendo().DropDownListFor(Model => Model.GenderCode)
+                            .HtmlAttributes(new { @class = "form-control" })
+                            .DataTextField("Display")
+                            .DataValueField("Code")
+                            .Filter(FilterType.Contains)
+                            .HtmlAttributes(new { style = "width:100%;" })
+                            .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.GenderCode })))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">CMND/CCCD/Passport @Html.ValidationMessageFor(model => model.IdentityNumber, "", new { @class = "text-danger" })</label>
+                    @(Html.TextBoxFor(Model => Model.IdentityNumber,"",new { @class = "form-control w-100", placeholder = "Điện thoại" }))
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Ngày cấp @Html.ValidationMessageFor(model => model.IdentityLicenseDate, "", new { @class = "text-danger" })</label>
+                    @(Html.Kendo().DatePickerFor(Model => Model.IdentityLicenseDate)
+                      .HtmlAttributes(new { @class = "form-control" })
+                      .Value(DateTime.Now)
+                      .Format("dd-MM-yyyy"))
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group m-0">
+                    <label class="m-0" for="Code">Nơi cấp @Html.ValidationMessageFor(model => model.IdentityLicensePlaceCode, "", new { @class = "text-danger" })</label>
+                    @(Html.Kendo().DropDownListFor(Model => Model.IdentityLicensePlaceCode)
+                    .HtmlAttributes(new { @class = "form-control" })
+                    .DataTextField("Display")
+                    .DataValueField("Code")
+                    .OptionLabel(new { Display = "", Code = "" })
+                    .Filter(FilterType.Contains)
+                    .HtmlAttributes(new { style = "width:100%;" })
+                    .DataSource(ds => ds.Read("GetModelTemplateByEntityAndParentCode", "Category", new { Entity = AppGlobal.ProvinceCode })))
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-1">
+            <div class="col-md-11"></div>
+            <div class="col-md-1">
+                <button class="btn btn-primary w-100" type="button" onclick="onSaveChangeContact()"><i class="fas fa-save"></i></button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function onSaveChangeIdentity() {
+        $.blockUI({
+            message: "Hệ thống đang xử lý, vui lòng đợi...."
+        });
+        if ($("#ContactForm").valid()) {
+            var model = formDataToObject('ContactForm');
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveChangeContact","Employee")",
+                data: model,
+                success: (res) => {
+                    var type = res.Status.toLowerCase();
+                    var message = res.Message;
+                    Notify(type, message);
+                }
+            });
+            $('#modal-popup' + "@ViewData["ModalId"]?.ToString()").modal('hide');
+            $.unblockUI();
+        }
+        else {
+            $.unblockUI();
+        }
+    }
+
+</script>

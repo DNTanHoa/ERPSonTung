@@ -25,9 +25,10 @@ namespace ERP.MVC.Controllers
             return View();
         }
 
-        public IActionResult AddressBuild()
+        public IActionResult AddressBuild(AddressBuildViewModel model)
         {
-            var model = new AddressBuildViewModel();
+            if(model == null)
+                model = new AddressBuildViewModel();
             return PartialView("~/Views/Category/_AddressBuild.cshtml", model);
         }
 

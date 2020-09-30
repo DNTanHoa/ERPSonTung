@@ -13,5 +13,9 @@ namespace ERP.Repository
         public IEnumerable<EmployeeDataTransfer> GetDataTransfer();
 
         public IEnumerable<EmployeeModelTemplate> GetModelTemplates();
+
+        public IEnumerable<EmployeeDataTransfer> GetDataTransferHasFilter(string DepartmentCode, string GroupCode, string LaborGroupCode, string StatusCode, DateTime? StartFromDate, DateTime? StartToDate);
+
+        public bool IsExistCode(string Code);
     }
 }

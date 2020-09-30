@@ -3,8 +3,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using Kendo.Mvc.UI
-@using ERP.Model.Models 
+@using ERP.Model.Models
 @using ERP.Model.DataTransferObjects
+@using ERP.Ultilities.Global
+@model ERP.MVC.Models.Employee.EmployeeFilterModel
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -26,8 +28,75 @@
             <div class="card w-100" style="overflow-x:auto;">
                 <div class="card-header">
                     <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group m-0">
+                                <label class="m-0" for="Code">Bộ phận</label>
+                                @(Html.Kendo().DropDownListFor(Model => Model.DepartmentCode)
+                                .HtmlAttributes(new { @class = "form-control" })
+                                .DataTextField("Display")
+                                .DataValueField("Code")
+                                .OptionLabel(new { Display = "-Tất cả-", Code = "" })
+                                .Filter(FilterType.Contains)
+                                .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.DepartmentCode })))
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group m-0">
+                                <label class="m-0" for="Code">Tổ</label>
+                                @(Html.Kendo().DropDownListFor(Model => Model.GroupCode)
+                                .HtmlAttributes(new { @class = "form-control" })
+                                .DataTextField("Display")
+                                .DataValueField("Code")
+                                .OptionLabel(new { Display = "-Tất cả-", Code = "" })
+                                .Filter(FilterType.Contains)
+                                .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.GroupCode })))
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group m-0">
+                                <label class="m-0" for="Code">Nhóm</label>
+                                @(Html.Kendo().DropDownListFor(Model => Model.LaborGroupCode)
+                                .HtmlAttributes(new { @class = "form-control" })
+                                .DataTextField("Display")
+                                .DataValueField("Code")
+                                .OptionLabel(new { Display = "-Tất cả-", Code = "" })
+                                .Filter(FilterType.Contains)
+                                .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category", new { Entity = AppGlobal.LaborGroupCode })))
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group m-0">
+                                <label class="m-0" for="Code">Trạng thái</label>
+                                @(Html.Kendo().DropDownListFor(Model => Model.StatusCode)
+                                .HtmlAttributes(new { @class = "form-control" })
+                                .OptionLabel(new { Display = "-Tất cả-", Code = "" })
+                                .DataTextField("Display")
+                                .DataValueField("Code")
+                                .DataSource(ds => ds.Read("GetModelTemplateByEntity", "Category",new { Entity =  AppGlobal.EmployeeStatusCode } )))
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-md-1">
+                        <div class="col-md-3">
+                            <div class="form-group m-0">
+                                <label class="m-0" for="Code">Vào từ</label>
+                                @(Html.Kendo().DatePickerFor(Model => Model.StartFromDate)
+                                .HtmlAttributes(new { @class = "form-control" })
+                                .Value(DateTime.Now)
+                                .Format("dd-MM-yyyy"))
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group m-0">
+                                <label class="m-0" for="Code">Đến</label>
+                                @(Html.Kendo().DatePickerFor(Model => Model.StartToDate)
+                                .HtmlAttributes(new { @class = "form-control" })
+                                .Value(DateTime.Now)
+                                .Format("dd-MM-yyyy"))
+                            </div>
+                        </div>
                         <div class="col-sm-1">
-                            <button type="button" class="btn btn-success w-100" onclick="onSearchForDataGrid('PhieuYeuCauMuaHangDataTransfer')">
+                            <button type="button" class="btn btn-success w-100 mt-1 mt-md-4" onclick="onSearchForDataGrid('Employee')">
                                 <span class="fa fa-search"></span>
                             </button>
                         </div>
@@ -45,14 +114,16 @@
                         columns.Bound(t => t.Job).Title("Chuyên môn").Width(200);
                         columns.Bound(t => t.Position).Title("Chức vụ").Width(200);
                         columns.Bound(t => t.Department).Title("Bộ phận").Width(200);
-                        columns.Bound(t => t.Group).Title("Tổ nhóm").Width(200);
+                        columns.Bound(t => t.Group).Title("Tổ").Width(200);
+                        columns.Bound(t => t.LaborGroup).Title("Nhóm").Width(200);
                         columns.Bound(t => t.Supervisor).Title("Quản lý").Width(350);
                         columns.Command(command => {
-                            command.Custom("basicDetail").Text("&nbsp;").Click("onOpenBasicDetail").IconClass("fas fa-info-circle").HtmlAttributes(new { style= "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" });
-                            command.Custom("contactDetail").Text("&nbsp;").Click("onOpenContactDetail").IconClass("fas fa-id-badge").HtmlAttributes(new { style= "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" });
-                        }).Width(180);
+                            command.Custom("basicDetail").Text("&nbsp;").Click("onOpenBasicDetail").IconClass("fas fa-info-circle").HtmlAttributes(new { title = "Thông tin công việc", style= "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" });
+                            command.Custom("contactDetail").Text("&nbsp;").Click("onOpenContactDetail").IconClass("fas fa-id-badge").HtmlAttributes(new { title = "Thông tin liên lạc", style= "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" });
+                            command.Custom("identityDetail").Text("&nbsp;").Click("onOpenIdentityDetail").IconClass("fas fa-address-card").HtmlAttributes(new { title = "Thông tin định danh", style= "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" });
+                        }).Width(200).Locked(true);
                     })
-                    .ToolBar(toolBar => toolBar.Custom().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { onclick = "onCreate()", style = "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" }))
+                    .ToolBar(toolBar => toolBar.Custom().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { onclick = "onCreate()", title = "Thêm mới nhân viên" ,style = "border-radius: 6px; font-weight:bold; background-color:#28a745; color:#ffffff; padding-left:16px;" }))
                     .ToolBar(toolBar => toolBar.Search())
                     .Editable(editable => editable.Mode(GridEditMode.PopUp))
                     .Sortable()
@@ -92,10 +163,11 @@
                         });
                     })
                     .Transport(t => {
-                        t.Read("GetDataTransfer", "Employee");
+                        t.Read("GetDataTransferHasFilter", "Employee");
                         t.Destroy("Delete", "Employee");
                         t.Create("Create", "Employee");
                         t.Update("Update", "Employee");
+                        t.ParameterMap("parameterMapCallback");
                     })))
                 </div>
             </div>
@@ -135,7 +207,9 @@
                 $("#modal-content-place").html(res);
             }
         }).done(() => {
-            Initialization(null, () => { }, () => { });
+            Initialization(null, () => { }, () => {
+                onSearchForDataGrid('Employee');
+            });
         })
     }
 
@@ -152,8 +226,62 @@
                 $("#modal-content-place").html(res);
             }
         }).done(() => {
-            Initialization(null, () => { }, () => { });
+            Initialization(null, () => { }, () => {
+                onSearchForDataGrid('Employee');
+            });
         })
+    }
+
+    function onOpenIdentityDetail(e) {
+        var employee = this.dataItem($(e.currentTarget).closest("tr"));
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("Identity","Employee")",
+            data: {
+                Id: employee.Id,
+            },
+            success: (res) => {
+                $("#modal-content-place").empty();
+                $("#modal-content-place").html(res);
+            }
+        }).done(() => {
+            Initialization(null, () => { }, () => {
+                onSearchForDataGrid('Employee');
+            });
+        })
+    }
+
+    function Notify(type, message) {
+        switch (type) {
+            case "success":
+                toastr.success(message);
+                break;
+            case "info":
+                toastr.info(message);
+                break;
+            case "error":
+                toastr.error(message);
+                break;
+            case "warning":
+                toastr.warning(message);
+                break;
+        }
+    }
+
+    function parameterMapCallback(data, option) {
+        if (option != 'read') {
+
+        }
+        else {
+            return {
+                DepartmentCode: $("#DepartmentCode").data('kendoDropDownList').value(),
+                GroupCode: $("#GroupCode").data('kendoDropDownList').value(),
+                LaborGroupCode: $("#LaborGroupCode").data('kendoDropDownList').value(),
+                StatusCode: $("#StatusCode").data('kendoDropDownList').value(),
+                StartFromDate: stringToDateDefault($("#StartFromDate").val()),
+                StartToDate: stringToDateDefault($("#StartToDate").val()),
+            }
+        }
     }
 
 </script>
