@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,8 @@ namespace ERP.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
+        BaseResult Result;
+
         public string RequestUsername
         {
             get

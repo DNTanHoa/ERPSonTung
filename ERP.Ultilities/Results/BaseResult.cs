@@ -8,16 +8,16 @@ namespace ERP.Ultilities.Results
         /// <summary>
         /// Success: 0, Error: -1
         /// </summary>
-        protected ResultType ResultType;
+        public ResultType ResultType { get; set; }
 
         /// <summary>
         /// None,Insert,Edit,Delete,Login
         /// </summary>
-        protected ActionType ActionType;
+        public ActionType ActionType { get; set; }
 
         /// <summary>
         /// Result message
         /// </summary>
-        protected string Message;
+        public string Message { get; set; }
     }
 }
