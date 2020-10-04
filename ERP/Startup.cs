@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using ERP.Model.Models;
 using ERP.Repository;
+using ERP.ServiceExtensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +20,8 @@ namespace ERP
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "CorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,7 +31,14 @@ namespace ERP
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(opt => {
+                opt.AddPolicy(MyAllowSpecificOrigins, builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
             services.AddControllers();
+            services.AddTokenAuthentication(Configuration);
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -62,7 +73,6 @@ namespace ERP
                 });
             });
 
-
             services.AddDbContext<SonTungContext>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
@@ -76,11 +86,14 @@ namespace ERP
                 app.UseDeveloperExceptionPage();
             }
 
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseSwagger(c =>
             {

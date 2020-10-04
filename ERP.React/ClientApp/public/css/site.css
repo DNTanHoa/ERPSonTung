@@ -1,0 +1,403 @@
+﻿a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+/*.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}*/
+
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+#backgroundVideo {
+    position: fixed;
+    width: 100%;
+}
+
+#loginContent {
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    color: #f1f1f1;
+    width: 100%;
+}
+
+.carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='blue' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+}
+
+.carousel-control-next-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='blue' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
+
+body {
+}
+
+.k-grid-header .k-header {
+    background-color: #00c0ef;
+    color: #ffffff;
+}
+
+    .k-grid-header .k-header a {
+        color: #ffffff;
+    }
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid green;
+    width: 50px;
+    height: 50px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+.nav-link:hover{
+    cursor:pointer;
+}
+
+.nav-item:hover {
+    cursor: pointer;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+input[type="checkbox"] {
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+}
+
+.border, .border td, .border th {
+    border: 1px solid #ffffff;
+    padding: 5px;
+}
+
+.border {
+    border-collapse: collapse;
+}
+
+    .border th {
+        text-align: center;
+    }
+
+    .border td {
+    }
+
+    .border .text {
+        text-align: left;
+    }
+
+.border01, .border01 td, .border01 th {
+    border: 1px solid #000000;
+    padding: 5px;
+}
+
+.border01 {
+    border-collapse: collapse;
+}
+
+    .border01 th {
+        text-align: center;
+    }
+
+    .border01 td {
+    }
+
+    .border01 .text {
+        text-align: left;
+    }
+
+/* #region Navbar styles */
+.navbar-header {
+    border-bottom: 1px solid rgba(255,255,255, 0.1);
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    font-weight: lighter;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.85em;
+}
+
+h1 a {
+    color: #fff;
+    text-decoration: none;
+}
+
+h2 {
+    font-weight: lighter;
+}
+
+.placeholder img {
+    display: inline-block;
+}
+
+p .k-button {
+    margin: 0 15px 0 0;
+}
+
+#configure {
+    display: none;
+}
+
+p .k-button {
+    margin: 0 15px 0 0;
+}
+
+.k-state-active .label {
+    font-size: 1em;
+}
+
+#responsive-panel {
+    padding: 0;
+    width: 100%;
+}
+
+    #responsive-panel .k-menu {
+        padding: .5rem;
+    }
+/* #endregion */
+
+
+
+#ListTrai {
+    height: 500px;
+}
+
+.QuickView {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top-color: #000000;
+    border-top-style: solid;
+    border-top-width: 1px;
+    color: #000000;
+}
+
+    .QuickView:hover {
+        color: #000000;
+        cursor: pointer;
+    }
+
+    .QuickView a {
+        color: #000000;
+        font-size: 16px;
+    }
+
+        .QuickView a:hover {
+            color: #00a7d0;
+        }
+
+
+
+@media (max-width: 1300px) {
+    .QuickView .small-box {
+        min-height: 350px;
+    }
+}
+
+@media (min-width: 1300px) {
+    .QuickView .small-box {
+        min-height: 250px;
+    }
+}
+
+@media (max-width: 767px) {
+    #responsive-panel {
+        transition: all linear .2s;
+    }
+
+    #configure {
+        display: block;
+        float: right;
+    }
+
+    .k-rpanel {
+        padding: 0 1rem;
+    }
+
+    .k-rpanel-expanded {
+        padding: .5rem 1rem;
+    }
+
+    .navbar-header {
+        width: 100%;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .k-menu .k-item,
+    .k-menu .k-link {
+        width: 100%;
+    }
+
+    .k-widget.k-menu-horizontal > .k-item {
+        border: none;
+    }
+
+    .k-menu .k-link {
+        box-sizing: border-box;
+    }
+}
+
+.btn {
+
+}
+
+.k-grid {
+    font-size: 14px;
+    height: 550px;
+    max-height:600px;
+}
+
+
+
+@media (max-height: 700px) {
+    .k-grid {
+        font-size: 12px;
+        height: 400px;
+    }
+
+    #ListTrai {
+        height: 400px;
+    }
+}
+
+.k-grid td {
+    line-height: 20px;
+}
+
+.k-grid input, .k-grid select, .k-grid option {
+    font-size: 16px;
+}
+
+.k-grid .k-input, .k-grid .k-button {
+    font-size: 16px;
+}
+
+.k-grid .text-box {
+    width: 100%;
+    border-color: rgba(33,37,41,.15);
+    border-width: 1px;
+    border-radius: 3px;
+    padding: 6px;
+}
+
+.k-grid-header .k-header {
+    background-color: darkblue;
+    color: #ffffff;
+}
+
+.k-grid-header .k-header a {
+    color: #ffffff;
+}
+
+
+.k-autocomplete, .k-combobox, .k-dateinput, .k-datepicker, .k-datetimepicker, .k-dropdown, .k-dropdowntree, .k-maskedtextbox, .k-multiselect, .k-numerictextbox, .k-timepicker {
+    font-size: 16px;
+}
+
+
+.k-grid-edit > i {
+    color:black;
+}
+
+.k-button-icontext .k-icon, .k-button-icontext .k-image, .k-button-icontext .k-sprite {
+     margin:0 !important; 
+}
+
+

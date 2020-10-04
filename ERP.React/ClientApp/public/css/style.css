@@ -1,0 +1,155 @@
+.content {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 99;
+	background-color: rgba(0,0,0,0.4);
+}
+
+.full-screen {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.background {
+	position: relative;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 0;
+}
+
+/*Function Style*/
+.function-container {
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	align-items: center;
+}
+.logo {
+	border-radius: 50%;
+	height: 150px;
+	width: 150px;
+	background-image: url('images/logo.jpg'); 
+	background-repeat: no-repeat;
+	background-size: cover; 
+	background-position: center; 
+	-webkit-box-shadow: -2px -8px 132px 28px rgba(27,12,235,1);
+	-moz-box-shadow: -2px -8px 132px 28px rgba(27,12,235,1);
+	box-shadow: -2px -8px 132px 28px rgba(27,12,235,1);
+}
+.function-item{
+	margin-top:20px;
+}
+
+/*Navigation Menu*/
+
+.selector {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140px;
+  height: 140px;
+  margin-top: -70px;
+  margin-left: -70px;
+}
+
+.selector,
+.selector button {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+}
+
+.selector button {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  border-radius: 50%;
+  border: 0;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all .1s;
+  background-image: url('../images/logoVU.png'); 
+  background-repeat: no-repeat;
+  background-size: cover; 
+  background-position: center; 
+  -webkit-box-shadow: -2px -8px 132px 28px rgba(27,12,235,1);
+  -moz-box-shadow: -2px -8px 132px 28px rgba(27,12,235,1);
+  box-shadow: -2px -8px 132px 28px rgba(27,12,235,1);
+}
+
+.selector button:hover {  }
+
+.selector button:focus { outline: none; }
+
+.selector ul {
+  position: absolute;
+  list-style: none;
+  padding: 0px;
+  margin: 0;
+  top: -20px;
+  right: -20px;
+  bottom: -20px;
+  left: -20px;
+}
+
+.selector li {
+  position: absolute;
+  width: 0;
+  height: 100%;
+  margin: 0 50%;
+  -webkit-transform: rotate(-360deg);
+  transition: all 0.8s ease-in-out;
+}
+
+.selector li input { display: none; }
+
+.selector li input + p {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 0px;
+  height: 0px;
+  line-height: 1px;
+  margin-left: 0;
+  background: url('../images/crm.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 1px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: none;
+  transition: all 0.8s ease-in-out, color 0.1s, background 0.1s;
+}
+
+.selector li input + p:hover { background: #f0f0f0; }
+
+.selector li input:checked + p {
+  background: #5cb85c;
+  color: white;
+}
+
+.selector li input:checked + p:hover { background: #449d44; }
+
+.selector.open li input + p {
+  width: 160px;
+  height: 160px;
+  line-height: 80px;
+  margin-left: -40px;
+  -webkit-box-shadow: -2px -8px 132px 28px rgba(27,12,235,1);
+  -moz-box-shadow: -2px -8px 132px 28px rgba(27,12,235,1);
+  box-shadow: -2px -8px 132px 28px rgba(27,12,235,1);
+  font-size: 14px;
+  padding: 0px;
+  margin: 30px;
+  margin-top: 0px;
+}

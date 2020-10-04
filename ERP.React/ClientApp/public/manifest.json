@@ -1,9 +1,9 @@
 {
-  "short_name": "ERP.React",
-  "name": "ERP.React",
+  "short_name": "HRM",
+  "name": "Sơn Tùng HRM",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "songtung.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }
