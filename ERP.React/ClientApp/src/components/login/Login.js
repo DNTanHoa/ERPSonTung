@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import axios from "axios";
 import style from './login.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {Checkbox, Radio} from 'react-icheck';
+import { Checkbox, Radio} from 'react-icheck';
 import 'icheck/skins/all.css';
+import { Layout } from '../Layout';
 import config from '../../appsettings.json';
+import { isForOfStatement } from 'typescript';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 
 export class Login extends Component {
@@ -15,7 +18,8 @@ export class Login extends Component {
             username: "",
             password: "",
             rememberPassword: true,
-            loginErrors: ""
+            errorMessage: "",
+            redirect: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,7 +45,14 @@ export class Login extends Component {
                 }
             )
             .then(res => {
-                console.log(res);
+                var result = res.data.result;
+                if(result.resultType === 0) {
+                    var token = res.data.data.token;
+                    localStorage.setItem('token',token);
+                    this.setState({redirect: true});
+                } else {
+                    this.setState({["errorMessage"] : result.message});
+                }
             })
             .catch(err => {
                 console.log("Login has error", err);
@@ -57,6 +68,16 @@ export class Login extends Component {
     }
     
     render() {
+        if(this.state.redirect) {
+            return (
+                <Router>
+                    <Route path='/Home'>
+                        <Layout></Layout>
+                    </Route>
+                </Router>
+            )
+        }
+
         return (
             <div className="hold-transition login-page loginPage">
                 <div className="d-flex justify-content-center align-items-center login-page" style= {{minHeight: "100%"}} id="loginContent">
@@ -70,7 +91,7 @@ export class Login extends Component {
                                     <img src="../images/sontung.png" style={{width:'20%'}} />
                                 </div>
                                 <div className="mt-2">
-                                    <div className="text-danger text-center" id="loginResult"></div>
+                                    <div className="text-danger text-center" id="loginResult">{this.state.errorMessage}</div>
                                     <form id="loginForm" onSubmit={this.handleSubmit}>
                                         <div className="input-group mb-2">
                                             <div className="input-group-append w-100">
@@ -79,8 +100,7 @@ export class Login extends Component {
                                                     className="form-control"
                                                     placeholder="Tài khoản"
                                                     value={this.state.username}
-                                                    onChange={this.handleChange}
-                                                    required/>
+                                                    onChange={this.handleChange}/>
                                                 <div className="input-group-text">
                                                     <FontAwesomeIcon icon="user" size="xs" />
                                                 </div>
@@ -93,8 +113,7 @@ export class Login extends Component {
                                                         placeholder="Mật khẩu"
                                                         type="password"
                                                         value={this.state.password}
-                                                        onChange={this.handleChange}
-                                                        required/>
+                                                        onChange={this.handleChange}/>
                                                 <div className="input-group-text">
                                                     <FontAwesomeIcon icon="key" size="xs" />
                                                 </div>

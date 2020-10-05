@@ -14,7 +14,7 @@ namespace ERP.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
-        BaseResult Result;
+        public BaseResult Result;
 
         public string RequestUsername
         {

@@ -25,7 +25,7 @@ namespace ERP.Controllers
     [ApiController]
     [EnableCors("CorsPolicy")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly IUserRepository userRepository;
 
@@ -39,7 +39,6 @@ namespace ERP.Controllers
         public ActionResult<BaseResponeModel> Login(LoginUserRequestModel model)
         {
             var LoginResponeModel = new LoginResponeModel();
-            BaseResult Result;
 
             if(ModelState.IsValid)
             {
