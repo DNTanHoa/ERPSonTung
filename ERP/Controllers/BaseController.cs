@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ERP.ResponeModel;
 using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +16,13 @@ namespace ERP.Controllers
     public class BaseController : ControllerBase
     {
         public BaseResult Result;
+
+        public Object Data;
+
+        public BaseResponeModel GetResponeModel()
+        {
+            return new BaseResponeModel(Data, Result);
+        }
 
         public string RequestUsername
         {

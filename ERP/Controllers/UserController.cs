@@ -59,14 +59,19 @@ namespace ERP.Controllers
                 Result = new ErrorResult(ActionType.Login, message);
             }
 
-            return new BaseResponeModel(LoginResponeModel, Result);
+            //set data
+            Data = LoginResponeModel;
+
+            return GetResponeModel();
         }
 
         [HttpGet]
         public ActionResult<BaseResponeModel> Get()
         {
-            var Data = userRepository.Get().ToList();
-            return new BaseResponeModel(Data, new SuccessResultFactory().Factory(ActionType.Select));
+            Data = userRepository.Get().ToList();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetResponeModel();
         }
     }
 }

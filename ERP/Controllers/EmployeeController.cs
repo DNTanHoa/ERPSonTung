@@ -34,31 +34,34 @@ namespace ERP.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<EmployeeDataTransfer>> GetDataTransferAll()
+        public ActionResult<BaseResponeModel> GetDataTransferAll()
         {
-            return employeeRepository.GetDataTransfer().ToList();
+            Data = employeeRepository.GetDataTransfer().ToList();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetResponeModel();
         }
 
         [HttpDelete]
         public ActionResult<BaseResponeModel> DeleteByCode(string Code)
         {
-            BaseResponeModel respone;
             int result = employeeRepository.Delete(Code);
+
             if(result > 0)
             {
-                respone = new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Delete));
+                Result = new SuccessResultFactory().Factory(ActionType.Delete);
             }
             else
             {
-                respone = new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Delete));
+                Result = new ErrorResultFactory().Factory(ActionType.Delete);
             }
-            return respone;
+
+            return GetResponeModel();
         }
 
         [HttpPost]
         public ActionResult<BaseResponeModel> SaveChange(EmployeeSaveChangeRequestModel model)
         {
-            BaseResponeModel respone;
             int result;
 
             var databaseObject = model.MapTo<Employee>();
@@ -69,11 +72,11 @@ namespace ERP.Controllers
 
                 if (result > 0)
                 {
-                    respone = new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Insert));
+                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
                 }
                 else
                 {
-                    respone = new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Insert));
+                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
                 }
             }
             else
@@ -82,15 +85,15 @@ namespace ERP.Controllers
 
                 if (result > 0)
                 {
-                    respone = new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Edit));
+                    Result = new SuccessResultFactory().Factory(ActionType.Edit);
                 }
                 else
                 {
-                    respone = new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Edit));
+                    Result = new ErrorResultFactory().Factory(ActionType.Edit);
                 }
             }
             
-            return respone;
+            return GetResponeModel();
         }
     }
 }

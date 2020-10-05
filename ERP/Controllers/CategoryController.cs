@@ -19,7 +19,7 @@ namespace ERP.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class CategoryController : ControllerBase
+    public class CategoryController : BaseController
     {
         private readonly ICategoryRepository categoryRepository;
 
@@ -31,15 +31,19 @@ namespace ERP.Controllers
         [HttpGet]
         public ActionResult<BaseResponeModel> GetByEntity(CategoryGetRequestModel model)
         {
-            var Data =  categoryRepository.GetByEntity(model.Entity).ToList();
-            return new BaseResponeModel(Data, new SuccessResultFactory().Factory(ActionType.Select));
+            Data =  categoryRepository.GetByEntity(model.Entity).ToList();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetResponeModel();
         }
 
         [HttpGet]
         public ActionResult<BaseResponeModel> GetAll(CategoryGetRequestModel model)
         {
-            var Data =  categoryRepository.Get().ToList();
-            return new BaseResponeModel(Data, new SuccessResultFactory().Factory(ActionType.Select));
+            Data =  categoryRepository.Get().ToList();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetResponeModel();
         }
 
         [HttpDelete]
@@ -49,12 +53,14 @@ namespace ERP.Controllers
 
             if (result > 0)
             {
-                return new BaseResponeModel(new SuccessResultFactory().Factory(ActionType.Delete));
+                Result = new SuccessResultFactory().Factory(ActionType.Delete);
             }
             else
             {
-                return new BaseResponeModel(new ErrorResultFactory().Factory(ActionType.Delete));
-            }    
+                Result = new ErrorResultFactory().Factory(ActionType.Delete);
+            }
+
+            return GetResponeModel();
         }
     }
 }
