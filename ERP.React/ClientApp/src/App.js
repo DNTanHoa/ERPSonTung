@@ -7,6 +7,7 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope, faKey, faUser } from '@fortawesome/free-solid-svg-icons';
+import '@progress/kendo-theme-bootstrap/dist/all.css';
 import './custom.css';
 
 library.add(faEnvelope, faKey, faUser);

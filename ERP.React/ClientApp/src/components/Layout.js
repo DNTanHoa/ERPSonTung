@@ -5,6 +5,7 @@ import { NavMenu } from './NavMenu';
 import { Header } from './header/header';
 import { SideBar } from './sidebar/sidebar';
 import { Footer } from './footer/footer';
+import { User } from './user/user';
 
 export class Layout extends Component {
   static displayName = Layout.name;
@@ -15,8 +16,7 @@ export class Layout extends Component {
         <Header></Header>
         <SideBar></SideBar>
         <div className="content-wrapper">
-          <div className="container-fluid" id="AppContent">
-          </div>
+            <User></User>
         </div>
         <Footer></Footer>
       </div>

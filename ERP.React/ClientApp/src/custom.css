@@ -3,12 +3,136 @@ a {
   color: #0366d6;
 }
 
-code {
-  color: #E01A76;
+#configure {
+  display: none;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+p .k-button {
+  margin: 0 15px 0 0;
+}
+
+.k-state-active .label {
+  font-size: 1em;
+}
+
+#responsive-panel {
+  padding: 0;
+  width: 100%;
+}
+
+  #responsive-panel .k-menu {
+      padding: .5rem;
+  }
+
+.k-grid {
+  font-size: 16px;
+  height: 550px;
+  max-height:600px;
+}
+
+.card-header {
+  background-color: #ffffff;
+}
+
+.card-title {
+  margin: 0px;
+}
+
+@media (max-width: 767px) {
+  #responsive-panel {
+      transition: all linear .2s;
+  }
+
+  #configure {
+      display: block;
+      float: right;
+  }
+
+  .k-rpanel {
+      padding: 0 1rem;
+  }
+
+  .k-rpanel-expanded {
+      padding: .5rem 1rem;
+  }
+
+  .navbar-header {
+      width: 100%;
+  }
+
+  .navbar-brand {
+      font-size: 1.5rem;
+  }
+
+  h2 {
+      font-size: 2rem;
+  }
+
+  .k-menu .k-item,
+  .k-menu .k-link {
+      width: 100%;
+  }
+
+  .k-widget.k-menu-horizontal > .k-item {
+      border: none;
+  }
+
+  .k-menu .k-link {
+      box-sizing: border-box;
+  }
+}
+
+
+@media (max-height: 700px) {
+  .k-grid {
+      font-size: 12px;
+      height: 400px;
+  }
+
+  #ListTrai {
+      height: 400px;
+  }
+}
+
+.k-grid td {
+  line-height: 20px;
+}
+
+.k-grid input, .k-grid select, .k-grid option {
+  font-size: 16px;
+}
+
+.k-grid .k-input, .k-grid .k-button {
+  font-size: 16px;
+}
+
+.k-grid .text-box {
+  width: 100%;
+  border-color: rgba(33,37,41,.15);
+  border-width: 1px;
+  border-radius: 3px;
+  padding: 6px;
+}
+
+.k-grid-header .k-header {
+  background-color: darkblue;
+  color: #ffffff;
+}
+
+.k-grid-header .k-header a {
+  color: #ffffff;
+}
+
+
+.k-autocomplete, .k-combobox, .k-dateinput, .k-datepicker, .k-datetimepicker, .k-dropdown, .k-dropdowntree, .k-maskedtextbox, .k-multiselect, .k-numerictextbox, .k-timepicker {
+  font-size: 16px;
+}
+
+
+.k-grid-edit > i {
+  color:black;
+}
+
+.k-button-icontext .k-icon, .k-button-icontext .k-image, .k-button-icontext .k-sprite {
+   margin:0 !important; 
 }

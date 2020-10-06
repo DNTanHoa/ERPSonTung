@@ -19,6 +19,7 @@ namespace ERP.Controllers
 
         public Object Data;
 
+        [HttpGet]
         public CommonResponeModel GetCommonRespone()
         {
             return new CommonResponeModel(Data, Result);
