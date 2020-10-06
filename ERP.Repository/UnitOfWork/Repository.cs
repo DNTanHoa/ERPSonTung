@@ -57,11 +57,25 @@ namespace ERP.Repository
             return context.SaveChanges();
         }
 
+        public int Insert(T entity, out T result)
+        {
+            int insertRs = Insert(entity);
+            result = entity;
+            return insertRs;
+        }
+
         public virtual int Update(T entity)
         {
             dbSet.Attach(entity);
             context.Entry(entity).State = EntityState.Modified;
             return context.SaveChanges();
+        }
+
+        public int Update(T entity, out T result)
+        {
+            int updateRs = Update(entity);
+            result = entity;
+            return updateRs;
         }
 
         public virtual int Delete(object id)

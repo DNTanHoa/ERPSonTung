@@ -10,7 +10,11 @@ namespace ERP.Repository
     {
         public int Insert(T entity);
 
+        public int Insert(T entity, out T result);
+
         public int Update(T entity);
+
+        public int Update(T entity, out T result);
 
         public int Delete(object id);
 

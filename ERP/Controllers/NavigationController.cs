@@ -55,7 +55,6 @@ namespace ERP.MVC.Controllers
         [HttpPost]
         public ActionResult<BaseResponeModel> Create(Navigation model)
         {
-            int result;
             string code = entityCenterRepository.GetCodeByEntity(nameof(Navigation));
 
             if(string.IsNullOrEmpty(code))
@@ -63,7 +62,7 @@ namespace ERP.MVC.Controllers
                 model.Code = code;
                 model.InitBeforeSave(RequestUsername, InitType.Create);
                 model.InitDefault();
-                result = navigationRepository.Insert(model);
+                int result = navigationRepository.Insert(model);
 
                 if (result > 0)
                 {
