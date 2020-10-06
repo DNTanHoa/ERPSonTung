@@ -26,12 +26,12 @@ namespace ERP.MVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult<BaseResponeModel> GetTimeRangeDataTransfer(DateTime? FromDate, DateTime? ToDate)
+        public ActionResult<CommonResponeModel> GetTimeRangeDataTransfer(DateTime? FromDate, DateTime? ToDate)
         {
             Data = employeeCheckInOutRepository.GetTimeRangeDataTransfer(FromDate, ToDate);
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
     }
 }

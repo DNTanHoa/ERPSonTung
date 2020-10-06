@@ -19,9 +19,9 @@ namespace ERP.Controllers
 
         public Object Data;
 
-        public BaseResponeModel GetResponeModel()
+        public CommonResponeModel GetCommonRespone()
         {
-            return new BaseResponeModel(Data, Result);
+            return new CommonResponeModel(Data, Result);
         }
 
         public string RequestUsername

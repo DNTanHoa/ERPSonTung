@@ -1,12 +1,9 @@
 ﻿using ERP.Model.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.ResponeModel
 {
-    public class LoginResponeModel
+    public class LoginResponeModel : BaseResponeModel
     {
         public DateTime? TokenExpireDate { get; set; }
 

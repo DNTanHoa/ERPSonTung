@@ -36,7 +36,7 @@ namespace ERP.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult<BaseResponeModel> Login(LoginUserRequestModel model)
+        public ActionResult<CommonResponeModel> Login(LoginUserRequestModel model)
         {
             var LoginResponeModel = new LoginResponeModel();
 
@@ -62,16 +62,16 @@ namespace ERP.Controllers
             //set data
             Data = LoginResponeModel;
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
 
         [HttpGet]
-        public ActionResult<BaseResponeModel> Get()
+        public ActionResult<CommonResponeModel> Get()
         {
             Data = userRepository.Get().ToList();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
     }
 }

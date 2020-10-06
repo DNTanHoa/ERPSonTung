@@ -35,25 +35,25 @@ namespace ERP.MVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult<BaseResponeModel> Get()
+        public ActionResult<CommonResponeModel> Get()
         {
             Data = navigationRepository.Get();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
 
         [HttpGet]
-        public ActionResult<BaseResponeModel> GetDataTransfers()
+        public ActionResult<CommonResponeModel> GetDataTransfers()
         {
             Data = navigationRepository.GetDataTransfers();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
 
         [HttpPost]
-        public ActionResult<BaseResponeModel> Create(Navigation model)
+        public ActionResult<CommonResponeModel> Create(Navigation model)
         {
             string code = entityCenterRepository.GetCodeByEntity(nameof(Navigation));
 
@@ -78,11 +78,11 @@ namespace ERP.MVC.Controllers
                 Result = new ErrorResultFactory().Factory(ActionType.Insert);
             }
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
 
         [HttpPut]
-        public ActionResult<BaseResponeModel> Update(Navigation model)
+        public ActionResult<CommonResponeModel> Update(Navigation model)
         {
             model.InitBeforeSave(RequestUsername, InitType.Update);
             model.InitDefault();
@@ -97,11 +97,11 @@ namespace ERP.MVC.Controllers
                 Result = new ErrorResultFactory().Factory(ActionType.Edit);
             }
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
 
         [HttpDelete]
-        public ActionResult<BaseResponeModel> Delete(long Id)
+        public ActionResult<CommonResponeModel> Delete(long Id)
         {
             int result = navigationRepository.Delete(Id);
 
@@ -114,7 +114,7 @@ namespace ERP.MVC.Controllers
                 Result = new ErrorResultFactory().Factory(ActionType.Delete);
             }
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
     }
 }

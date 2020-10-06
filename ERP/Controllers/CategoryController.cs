@@ -29,25 +29,25 @@ namespace ERP.Controllers
         }
 
         [HttpGet]
-        public ActionResult<BaseResponeModel> GetByEntity(CategoryGetRequestModel model)
+        public ActionResult<CommonResponeModel> GetByEntity(CategoryGetRequestModel model)
         {
             Data =  categoryRepository.GetByEntity(model.Entity).ToList();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
 
         [HttpGet]
-        public ActionResult<BaseResponeModel> GetAll(CategoryGetRequestModel model)
+        public ActionResult<CommonResponeModel> GetAll(CategoryGetRequestModel model)
         {
             Data =  categoryRepository.Get().ToList();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
 
         [HttpDelete]
-        public ActionResult<BaseResponeModel> DeleteByCode(string Code)
+        public ActionResult<CommonResponeModel> DeleteByCode(string Code)
         {
             int result =  categoryRepository.Delete(Code);
 
@@ -60,7 +60,7 @@ namespace ERP.Controllers
                 Result = new ErrorResultFactory().Factory(ActionType.Delete);
             }
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
     }
 }

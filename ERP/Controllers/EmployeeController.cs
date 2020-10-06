@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using ERP.Model.DataTransferObjects;
+using ERP.Model.Extensions;
 using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.Employee;
@@ -27,23 +28,75 @@ namespace ERP.Controllers
     public class EmployeeController : BaseController
     {
         private readonly IEmployeeRepository employeeRepository;
+        private readonly IEntityCenterRepository entityCenterRepository;
 
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository,
+                                  IEntityCenterRepository entityCenterRepository)
         {
             this.employeeRepository = employeeRepository;
+            this.entityCenterRepository = entityCenterRepository;
         }
 
         [HttpGet]
-        public ActionResult<BaseResponeModel> GetDataTransferAll()
+        public ActionResult<CommonResponeModel> Detail(long Id)
         {
-            Data = employeeRepository.GetDataTransfer().ToList();
+            var employee = employeeRepository.GetById(Id) ?? new Employee();
+            Data = employee.MapTo<EmployeeDetailResponeModel>();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
 
+        [HttpGet]
+        public ActionResult<CommonResponeModel> Contact(long Id)
+        {
+            var employee = employeeRepository.GetById(Id) ?? new Employee();
+            Data = employee.MapTo<EmployeeContactDetailResponeModel>();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetCommonRespone();
+        }
+
+        [HttpGet]
+        public ActionResult<CommonResponeModel> Identity(long Id)
+        {
+            var employee = employeeRepository.GetById(Id) ?? new Model.Models.Employee();
+            Data = employee.MapTo<EmployeeIdentityDetailResponeModel>();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetCommonRespone();
+        }
+
+        [HttpGet]
+        public ActionResult<CommonResponeModel> GetDataTransfer()
+        {
+            Data = employeeRepository.GetDataTransfer();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetCommonRespone();
+        }
+
+        [HttpGet]
+        public ActionResult<CommonResponeModel> GetDataTransferHasFilter(EmployeeFilterRequestModel filterModel)
+        {
+            Data = employeeRepository.GetDataTransferHasFilter(filterModel.DepartmentCode, filterModel.GroupCode, filterModel.LaborGroupCode, filterModel.StatusCode, filterModel.StartFromDate, filterModel.StartToDate);
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetCommonRespone();
+        }
+
+        [HttpGet]
+        public ActionResult<CommonResponeModel> GetModelTemplates()
+        {
+            Data = employeeRepository.GetModelTemplates();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetCommonRespone();
+        }
+
+
         [HttpDelete]
-        public ActionResult<BaseResponeModel> DeleteByCode(string Code)
+        public ActionResult<CommonResponeModel> DeleteByCode(string Code)
         {
             int result = employeeRepository.Delete(Code);
 
@@ -56,44 +109,93 @@ namespace ERP.Controllers
                 Result = new ErrorResultFactory().Factory(ActionType.Delete);
             }
 
-            return GetResponeModel();
+            return GetCommonRespone();
         }
 
         [HttpPost]
-        public ActionResult<BaseResponeModel> SaveChange(EmployeeSaveChangeRequestModel model)
+        public ActionResult<CommonResponeModel> SaveChange(EmployeeSaveChangeRequestModel model)
         {
+            var databaseObject = new Employee();
             int result;
 
-            var databaseObject = model.MapTo<Employee>();
-
-            if(string.IsNullOrEmpty(model.Code))
+            if (model.Id == 0)
             {
-                result = employeeRepository.Insert(databaseObject);
+                databaseObject = model.MapTo<Employee>();
 
-                if (result > 0)
+                if (string.IsNullOrEmpty(databaseObject.Code))
                 {
-                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
+                    var code = entityCenterRepository.GetCodeByEntity(nameof(Employee));
+
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                        return GetCommonRespone();
+                    }
+
+                    databaseObject.Code = code;
                 }
-                else
+
+                if (employeeRepository.IsExistCode(databaseObject.Code))
                 {
-                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    return GetCommonRespone();
                 }
+
+                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+                databaseObject.InitDefault();
+                result = employeeRepository.Insert(databaseObject);
             }
             else
             {
+                databaseObject = employeeRepository.GetById(model.Id);
+                databaseObject.MapFrom(model);
+                databaseObject.InitBeforeSave(RequestUsername, InitType.Update);
+                databaseObject.InitDefault();
                 result = employeeRepository.Update(databaseObject);
-
-                if (result > 0)
-                {
-                    Result = new SuccessResultFactory().Factory(ActionType.Edit);
-                }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Edit);
-                }
             }
-            
-            return GetResponeModel();
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Insert, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.SaveChangeFalse);
+            }
+
+            return GetCommonRespone();
+        }
+
+        [HttpPost]
+        public ActionResult<CommonResponeModel> SaveChangeContact(EmployeeContactDetailRequestModel model)
+        {
+            var databaseObject = new Employee();
+            int result;
+
+            if (model.Id == 0)
+            {
+                Result = new ErrorResult(ActionType.Insert, "Mã nhân viên không tồn tại");
+                return GetCommonRespone();
+            }
+            else
+            {
+                databaseObject = employeeRepository.GetById(model.Id);
+                databaseObject.MapFrom(model);
+                databaseObject.InitBeforeSave(RequestUsername, InitType.Update);
+                databaseObject.InitDefault();
+                result = employeeRepository.Update(databaseObject);
+            }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
+            }
+
+            return GetCommonRespone();
         }
     }
 }

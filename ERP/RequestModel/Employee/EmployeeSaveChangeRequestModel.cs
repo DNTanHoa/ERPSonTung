@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ERP.Model.Models;
+using System;
 
 namespace ERP.RequestModel.Employee
 {
-    public class EmployeeSaveChangeRequestModel
+    public class EmployeeSaveChangeRequestModel : BaseModel
     {
-        public long Id { get; set; }
-        public string Note { get; set; }
         public string Code { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
