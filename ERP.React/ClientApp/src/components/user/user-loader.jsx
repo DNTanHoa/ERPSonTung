@@ -14,7 +14,6 @@ export class UsersLoader extends React.Component {
     
     init = { 
         method: 'GET',
-        credentials: 'include',
         mode: 'cors',
         headers: new Headers({
             Authorization: this.token,
@@ -30,13 +29,23 @@ export class UsersLoader extends React.Component {
         }
         this.pending = toODataString(this.props.dataState);
         
-        axios.get(this.baseUrl, {
-            baseUrl: config.appSettings.ServerUrl,
-            headers: {
-                'Authorization': this.token,
-
-            }
-        })
+        fetch(this.baseUrl, this.init)
+            .then(response =>
+                response.json()
+            )
+            .then(json => {
+                console.log(json);
+                this.lastSuccess = this.pending;
+                this.pending = '';
+                if (toODataString(this.props.dataState) === this.lastSuccess) {
+                    this.props.onDataRecieved.call(undefined, {
+                        data: json.data,
+                        total: json['@odata.count']
+                    });
+                } else {
+                    this.requestDataIfNeeded();
+                }
+            });
     }
 
     render() {

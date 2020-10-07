@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as ReactDOM from 'react-dom';
-import { Grid, GridColumn as Column } from '@progress/kendo-react-grid';
+import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
 import { UsersLoader } from './user-loader'
 import { process } from '@progress/kendo-data-query';
 
@@ -8,11 +8,14 @@ import { process } from '@progress/kendo-data-query';
 export class User extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            products: { data: [], total: 0 },
+            users: [],
             dataState: { take: 10, skip: 0 }
         };
     }
+
+    editField = "inEdit";
 
     dataStateChange = (e) => {
         this.setState({
@@ -21,12 +24,19 @@ export class User extends Component {
         });
     }
 
-    dataRecieved = (products) => {
+    dataRecieved = (users) => {
         this.setState({
             ...this.state,
-            products: products
+            users: users
         });
     }
+
+    addNew = () => {
+        const newItem = { inEdit: true, Discontinued: false };
+        this.setState({
+            users: [newItem, ...this.state.users]
+        });
+    };
 
     render () {
         return (
@@ -35,13 +45,13 @@ export class User extends Component {
                     <div className="container-fluid">
                         <div className="row mb-2">
                             <div className="col-sm-6">
-                                <ol className="breadcrumb float-sm-left">
+                                <h1 className="float-sm-left">Quản lý thành viên</h1>
+                            </div>
+                            <div className="col-sm-6">
+                                <ol className="breadcrumb float-sm-right">
                                     <li className="breadcrumb-item"><a href="#">Quản lý hệ thống</a></li>
                                     <li className="breadcrumb-item active">Danh sách thành viên</li>
                                 </ol>
-                            </div>
-                            <div className="col-sm-6">
-                                <h1 className="float-sm-right">Danh sách thành viên</h1>
                             </div>
                         </div>
                     </div>
@@ -58,13 +68,22 @@ export class User extends Component {
                                           sortable={true}
                                           pageable={true}
                                           {...this.state.dataState}
-                                          {...this.state.products}
+                                          {...this.state.users}
+                                          editField={this.editField}
                                           onDataStateChange={this.dataStateChange}>
-                                        <Column field="Username" title="Tài khoản" width="150" />
-                                        <Column field="Password" title="Mật khẩu" width="150" />
-                                        <Column field="GuidCode" title="Khóa" width="250"/>
-                                        <Column field="Employee" title="Nhân viên" width="300"/>
-                                        <Column field="Note" title="Ghi chú" />
+                                              <GridToolbar>
+                                                    <button title="Add new"
+                                                            className="btn btn-success"
+                                                            title="Thêm thành viên"
+                                                            onClick={this.addNew}>
+                                                        <i className="fas fa-plus-circle"></i>
+                                                    </button>
+                                                </GridToolbar>
+                                        <Column field="username" title="Tài khoản" width="150" />
+                                        <Column field="password" title="Mật khẩu" width="150" />
+                                        <Column field="guidCode" title="Khóa" width="450"/>
+                                        <Column field="employeeCode" title="Nhân viên" width="300"/>
+                                        <Column field="note" title="Ghi chú" />
                                     </Grid>
                                     <UsersLoader
                                         dataState={this.state.dataState}
