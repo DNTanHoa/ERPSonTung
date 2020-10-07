@@ -24,27 +24,14 @@ export class UsersLoader extends React.Component {
     pending = '';
 
     requestDataIfNeeded = () => {
-        if (this.pending || toODataString(this.props.dataState) === this.lastSuccess) {
-            return;
-        }
-        this.pending = toODataString(this.props.dataState);
-        
         fetch(this.baseUrl, this.init)
             .then(response =>
                 response.json()
             )
             .then(json => {
-                console.log(json);
-                this.lastSuccess = this.pending;
-                this.pending = '';
-                if (toODataString(this.props.dataState) === this.lastSuccess) {
-                    this.props.onDataRecieved.call(undefined, {
-                        data: json.data,
-                        total: json['@odata.count']
-                    });
-                } else {
-                    this.requestDataIfNeeded();
-                }
+                this.props.onDataRecieved.call(undefined, {
+                    data: json.data,
+                });
             });
     }
 

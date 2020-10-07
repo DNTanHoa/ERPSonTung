@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import * as ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
-import { UsersLoader } from './user-loader'
+import { UsersLoader } from './user-loader';
+import { UserCommand } from './user-command';
 import { process } from '@progress/kendo-data-query';
 
 
@@ -10,12 +11,35 @@ export class User extends Component {
         super(props);
 
         this.state = {
-            users: [],
-            dataState: { take: 10, skip: 0 }
-        };
+            data: [],
+            editUserName : null,
+        }
     }
 
-    editField = "inEdit";
+    CommandCell = props => (
+        <UserCommand
+            {...props}
+            edit={this.enterEdit}
+            remove={this.remove}
+            add={this.add}
+            discard={this.discard}
+            update={this.update}
+            cancel={this.cancel}
+            editField={this.editField}
+        />
+    );
+
+    remove = dataItem => {
+
+    };
+
+    add = dataItem => {
+        dataItem.inEdit = true;
+    };
+
+    update = dataItem => {
+        dataItem.inEdit = false;
+    };
 
     dataStateChange = (e) => {
         this.setState({
@@ -24,18 +48,39 @@ export class User extends Component {
         });
     }
 
-    dataRecieved = (users) => {
+    dataRecieved = (data) => {
         this.setState({
-            ...this.state,
-            users: users
+            data: data,
         });
     }
 
     addNew = () => {
-        const newItem = { inEdit: true, Discontinued: false };
+        const { users } = this.state.data;
+        const newItem = { };
         this.setState({
-            users: [newItem, ...this.state.users]
+            data: [newItem, ...users],
+            editUserName : '',
         });
+    };
+
+    closeEdit = (event) => {
+        if (event.target === event.currentTarget) {
+            this.setState({ editID: null });
+        }
+    };
+
+    rowClick = (event) => {
+        this.setState({
+            editID: event.dataItem.ProductID
+        });
+    };
+
+    itemChange = (event) => {
+        const inEditID = event.dataItem.userName;
+        const data = this.state.data.map(item =>
+            item.ProductID === inEditID ? {...item, [event.field]: event.value} : item
+        );
+        this.setState({ data });
     };
 
     render () {
@@ -66,10 +111,10 @@ export class User extends Component {
                                 <div className="card-body">
                                     <Grid style={{ height: '550px' }}
                                           sortable={true}
-                                          pageable={true}
-                                          {...this.state.dataState}
-                                          {...this.state.users}
-                                          editField={this.editField}
+                                          data={this.state.data}
+                                          onRowClick={this.rowClick}
+                                          editField="inEdit"
+                                          onItemChange={this.itemChange}
                                           onDataStateChange={this.dataStateChange}>
                                               <GridToolbar>
                                                     <button title="Add new"
@@ -79,11 +124,12 @@ export class User extends Component {
                                                         <i className="fas fa-plus-circle"></i>
                                                     </button>
                                                 </GridToolbar>
-                                        <Column field="username" title="Tài khoản" width="150" />
-                                        <Column field="password" title="Mật khẩu" width="150" />
-                                        <Column field="guidCode" title="Khóa" width="450"/>
+                                        <Column field="username" title="Tài khoản" width="150" editor="text" />
+                                        <Column field="password" title="Mật khẩu" width="150" editor="text" editable={false}/>
+                                        <Column field="guidCode" title="Khóa" width="450" editor="text" editable={false}/>
                                         <Column field="employeeCode" title="Nhân viên" width="300"/>
-                                        <Column field="note" title="Ghi chú" />
+                                        <Column field="note" title="Ghi chú"/>
+                                        <Column cell={this.CommandCell} />
                                     </Grid>
                                     <UsersLoader
                                         dataState={this.state.dataState}
