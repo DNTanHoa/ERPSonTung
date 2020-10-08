@@ -38,7 +38,7 @@ namespace ERP.Controllers
         }
 
         [HttpGet]
-        public ActionResult<CommonResponeModel> GetAll(CategoryGetRequestModel model)
+        public ActionResult<CommonResponeModel> GetAll()
         {
             Data =  categoryRepository.Get().ToList();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
