@@ -14,7 +14,6 @@ export class UsersLoader extends React.Component {
     
     init = { 
         method: 'GET',
-        credentials: 'include',
         mode: 'cors',
         headers: new Headers({
             Authorization: this.token,
@@ -25,23 +24,15 @@ export class UsersLoader extends React.Component {
     pending = '';
 
     requestDataIfNeeded = () => {
-        if (this.pending || toODataString(this.props.dataState) === this.lastSuccess) {
-            return;
-        }
-        this.pending = toODataString(this.props.dataState);
-        
-        axios.get(this.baseUrl, {
-            baseUrl: config.appSettings.ServerUrl,
-            headers: {
-                'Authorization': this.token,
-            }
-        })
-        .then(res => {
-            console.log(res);
-        })
-        .catch(err => {
-            console.log("Login has error", err);
-        });
+        fetch(this.baseUrl, this.init)
+            .then(response =>
+                response.json()
+            )
+            .then(json => {
+                this.props.onDataRecieved.call(undefined, {
+                    data: json.data,
+                });
+            });
     }
 
     render() {
