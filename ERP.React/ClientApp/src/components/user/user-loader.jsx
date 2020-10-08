@@ -34,9 +34,14 @@ export class UsersLoader extends React.Component {
             baseUrl: config.appSettings.ServerUrl,
             headers: {
                 'Authorization': this.token,
-
             }
         })
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log("Login has error", err);
+        });
     }
 
     render() {
