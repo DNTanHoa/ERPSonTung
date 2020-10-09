@@ -42,7 +42,6 @@ namespace ERP.Controllers
         {
             Data =  categoryRepository.Get().ToList();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
-
             return GetCommonRespone();
         }
 
