@@ -35,6 +35,8 @@ namespace ERP.Model.Models
         public string JobCode { get; set; }
         public string LaborGroupCode { get; set; }
         public string BankNumber { get; set; }
+        public int Age { get; set; }
+        public int ExperienceYear { get; set; }
         public string TemporaryProvinceCode { get; set; }
         public string TemporaryDistrictCode { get; set; }
         public string TemporaryWardCode { get; set; }
