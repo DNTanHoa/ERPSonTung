@@ -25,6 +25,10 @@ namespace ERP.Model.DataTransferObjects
 
         public string Bank { get; set; }
 
+        public int Age { get; set; }
+
+        public int ExperienceYear { get; set; }
+
         public string Job { get; set; }
 
         public string LaborGroup { get; set; }

@@ -10,13 +10,21 @@ namespace ERP.Repository
     {
         public int Insert(T entity);
 
+        public int Insert(List<T> entityList);
+
         public int Insert(T entity, out T result);
 
         public int Update(T entity);
 
+        public int Update(List<T> entityList);
+
         public int Update(T entity, out T result);
 
         public int Delete(object id);
+
+        public int Delete(T entity);
+
+        public int Delete(List<T> entityList);
 
         public int SoftDelete(object id);
 

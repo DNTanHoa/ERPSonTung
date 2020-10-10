@@ -57,7 +57,13 @@ namespace ERP.Repository
             return context.SaveChanges();
         }
 
-        public int Insert(T entity, out T result)
+        public virtual int Insert(List<T> entityList)
+        {
+            dbSet.AddRange(entityList);
+            return context.SaveChanges();
+        }
+
+        public virtual int Insert(T entity, out T result)
         {
             int insertRs = Insert(entity);
             result = entity;
@@ -71,7 +77,17 @@ namespace ERP.Repository
             return context.SaveChanges();
         }
 
-        public int Update(T entity, out T result)
+        public virtual int Update(List<T> entityList)
+        {
+            dbSet.AttachRange(entityList);
+            entityList.ForEach(entity =>
+            {
+                context.Entry(entity).State = EntityState.Modified;
+            });
+            return context.SaveChanges();
+        }
+
+        public virtual int Update(T entity, out T result)
         {
             int updateRs = Update(entity);
             result = entity;
@@ -91,6 +107,19 @@ namespace ERP.Repository
                 dbSet.Attach(entity);
             }
             dbSet.Remove(entity);
+            return context.SaveChanges();
+        }
+
+        public int Delete(List<T> entityList)
+        {
+            entityList.ForEach(entity =>
+            {
+                if (context.Entry(entity).State == EntityState.Detached)
+                {
+                    dbSet.Attach(entity);
+                }
+            });
+            dbSet.RemoveRange(entityList);
             return context.SaveChanges();
         }
 
