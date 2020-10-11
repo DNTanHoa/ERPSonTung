@@ -6,6 +6,8 @@ import { Header } from './header/header';
 import { SideBar } from './sidebar/sidebar';
 import { Footer } from './footer/footer';
 import { User } from './user/user';
+import { Category } from './category/category';
+import { Employee } from './employee/employee';
 
 export class Layout extends Component {
   static displayName = Layout.name;
@@ -16,7 +18,7 @@ export class Layout extends Component {
         <Header></Header>
         <SideBar></SideBar>
         <div className="content-wrapper">
-            <User></User>
+            <Employee></Employee>
         </div>
         <Footer></Footer>
       </div>
