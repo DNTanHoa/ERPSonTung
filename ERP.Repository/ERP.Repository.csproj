@@ -17,7 +17,6 @@
     <Folder Include="TrainingCourse\" />
     <Folder Include="ShiftEmployee\" />
     <Folder Include="Shift\" />
-    <Folder Include="Role\" />
     <Folder Include="RecruitmentPlan\" />
     <Folder Include="Post\" />
   </ItemGroup>
