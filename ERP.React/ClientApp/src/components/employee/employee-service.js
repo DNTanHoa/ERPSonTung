@@ -14,7 +14,6 @@ export class EmployeeService extends React.Component {
         pending: false,
         hasLoad: false
     }
-
     
     getItems = () => {
         console.log('get.....');
