@@ -13,5 +13,7 @@ namespace ERP.Model.Models
         public string ParentCode { get; set; }
         public string Code { get; set; }
         public long? SortOrder { get; set; }
+        public string ComponentPath { get; set; }
+        public string ComponentName { get; set; }
     }
 }
