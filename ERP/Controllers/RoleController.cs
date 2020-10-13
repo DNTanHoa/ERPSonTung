@@ -44,17 +44,17 @@ namespace ERP.Controllers
                 int result = roleRepository.Insert(databaseObject);
                 if (result > 0)
                 {
-                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
+                    Result = new SuccessResult(ActionType.Insert, AppGlobal.CreateSucess);
                 }
                 else
                 {
-                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.CreateError);
                 }
             }
             else
             {
                 string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResultFactory().Factory(ActionType.Insert);
+                Result = new ErrorResult(ActionType.Insert, message);
             }
             
             return GetCommonRespone();
@@ -70,11 +70,11 @@ namespace ERP.Controllers
                 int result = roleRepository.Update(databaseObject);
                 if (result > 0)
                 {
-                    Result = new SuccessResultFactory().Factory(ActionType.Edit);
+                    Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
                 }
                 else
                 {
-                    Result = new ErrorResultFactory().Factory(ActionType.Edit);
+                    Result = new ErrorResult(ActionType.Edit, AppGlobal.EditError);
                 }
             }
             else
@@ -93,11 +93,11 @@ namespace ERP.Controllers
             
             if (result > 0)
             {
-                Result = new SuccessResultFactory().Factory(ActionType.Delete);
+                Result = new SuccessResult(ActionType.Delete, AppGlobal.DeleteSuccess);
             }
             else
             {
-                Result = new ErrorResultFactory().Factory(ActionType.Delete);
+                Result = new ErrorResult(ActionType.Delete, AppGlobal.DeleteError);
             }
 
             return GetCommonRespone();
@@ -122,11 +122,11 @@ namespace ERP.Controllers
 
                 if(result > 0)
                 {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
+                    Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
                 }   
                 else
                 {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.Error);
+                    Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
                 }
             }
             else
