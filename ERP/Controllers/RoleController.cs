@@ -139,13 +139,13 @@ namespace ERP.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<RoleDataTransfer>> GetUserNavigationRole(string username)
+        public ActionResult<CommonResponeModel> GetUserNavigationRole(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
                 username = RequestUsername;
             }
-            return 
+            return GetCommonRespone(); 
         }
 
     }

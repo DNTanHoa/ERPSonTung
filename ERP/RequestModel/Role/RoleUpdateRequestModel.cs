@@ -1,5 +1,4 @@
-﻿using DataAnnotationsExtensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +8,6 @@ namespace ERP.RequestModel.Role
 {
     public class RoleUpdateRequestModel
     {
-        [Min(1, ErrorMessage = "Giá trị update không hợp lệ, khóa chính phải khác 0")]
         public long Id { get; set; }
 
         [Required(ErrorMessage = "Tài khoản phân quyền không được để trống")]
