@@ -37,7 +37,7 @@ namespace ERP
                     builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
             });
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddTokenAuthentication(Configuration);
             services.Configure<ApiBehaviorOptions>(options =>
             {
