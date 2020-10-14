@@ -145,8 +145,9 @@ namespace ERP.Controllers
             {
                 username = RequestUsername;
             }
-            return GetCommonRespone(); 
+            Result = Result = new SuccessResultFactory().Factory(ActionType.Select);
+            Data = roleRepository.GetAllowedDataTransfersByUserName(username);
+            return GetCommonRespone();
         }
-
     }
 }

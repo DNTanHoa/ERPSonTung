@@ -19,6 +19,7 @@ namespace ERP.Ultilities.Providers
             foreach(var claim in claims)
             {
                 var tokenClaim = new Claim(claim.Key, claim.Value);
+                tokenClaims.Add(tokenClaim);
             }    
             var tokenDescriptor = new SecurityTokenDescriptor
             {

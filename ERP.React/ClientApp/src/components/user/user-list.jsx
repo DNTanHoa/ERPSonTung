@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
 import { UsersLoader } from './user-loader';
-import { UserCommand } from './user-command';
+import { CommandCell } from '../command/common-command';
 import { process } from '@progress/kendo-data-query';
 
 
@@ -17,7 +17,7 @@ export class User extends Component {
     }
 
     CommandCell = props => (
-        <UserCommand
+        <CommandCell
             {...props}
             edit={this.enterEdit}
             remove={this.remove}

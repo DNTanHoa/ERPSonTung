@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import style from './login.css';
+import style from './login-page.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Checkbox, Radio} from 'react-icheck';
 import 'icheck/skins/all.css';
-import { Layout } from '../Layout';
 import config from '../../appsettings.json';
 import { isForOfStatement } from 'typescript';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect, useHistory, useLocation } from "react-router-dom";
 
 export class Login extends Component {
     constructor(props) {
@@ -67,14 +66,9 @@ export class Login extends Component {
     }
     
     render() {
+
         if(this.state.redirect) {
-            return (
-                <Router>
-                    <Route path='/Home'>
-                        <Layout></Layout>
-                    </Route>
-                </Router>
-            )
+            this.props.history.push('/hrm');
         }
 
         return (
