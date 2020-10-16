@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ERP.Repository
 {
-    public class RoleRepository : Repository<Role>, IRoleRepository
+    public class RoleRepository : Repository<UserRole>, IRoleRepository
     {
         public RoleRepository(SonTungContext context) : base(context)
         {
@@ -16,7 +16,7 @@ namespace ERP.Repository
 
         public List<RoleDataTransfer> GetAllowedDataTransfersByUserName(string Username)
         {
-            var query = from role in context.Role
+            var query = from role in context.UserRole
                         join navigation in context.Navigation on role.NavigationCode equals navigation.Code into groupNavigation
                         from navigations in groupNavigation.DefaultIfEmpty()
                         join user in context.User on role.Username equals user.Username into groupUser
@@ -33,7 +33,7 @@ namespace ERP.Repository
 
         public bool IsUserAllowCreateEntity(string Entity, string Username)
         {
-            var role = context.Role.Where(item => item.Entity == Entity
+            var role = context.UserRole.Where(item => item.Entity == Entity
                                                   && item.Username == Username).FirstOrDefault();
             if (role != null)
             {
@@ -45,7 +45,7 @@ namespace ERP.Repository
 
         public bool IsUserAllowDeleteEntity(string Entity, string Username)
         {
-            var role = context.Role.Where(item => item.Entity == Entity
+            var role = context.UserRole.Where(item => item.Entity == Entity
                                                   && item.Username == Username).FirstOrDefault();
             if (role != null)
             {
@@ -57,7 +57,7 @@ namespace ERP.Repository
 
         public bool IsUserAllowEditEntity(string Entity, string Username)
         {
-            var role = context.Role.Where(item => item.Entity == Entity
+            var role = context.UserRole.Where(item => item.Entity == Entity
                                                   && item.Username == Username).FirstOrDefault();
             if (role != null)
             {
@@ -69,7 +69,7 @@ namespace ERP.Repository
 
         public bool IsUserAllowForNavigation(string NavigationCode, string Username)
         {
-            var role = context.Role.Where(item => item.NavigationCode == NavigationCode
+            var role = context.UserRole.Where(item => item.NavigationCode == NavigationCode
                                                   && item.Username == Username).FirstOrDefault();
             if(role != null)
             {

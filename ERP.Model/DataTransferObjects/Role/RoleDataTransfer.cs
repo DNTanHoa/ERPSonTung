@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ERP.Model.DataTransferObjects
 {
-    public class RoleDataTransfer : Role
+    public class RoleDataTransfer : UserRole
     {
         public User User { get; set; }
 

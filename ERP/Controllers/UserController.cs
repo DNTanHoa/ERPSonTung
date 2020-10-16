@@ -40,20 +40,24 @@ namespace ERP.Controllers
         {
             var LoginResponeModel = new LoginResponeModel();
 
+            //validate success
             if(ModelState.IsValid)
             {
+                //login success
                 if (userRepository.IsValidUser(model.Username, model.Password))
                 {
                     Result = new SuccessResultFactory().Factory(ActionType.Login);
+
                     LoginResponeModel.TokenExpireDate = DateTime.Now.AddDays(1);
                     LoginResponeModel.Token = TokenProvider.GenerateTokenString(model.ToDictionaryStringString());
+                    LoginResponeModel.User = userRepository.GetDataTransferByUsername(model.Username);
                 }
-                else
+                else //login fail
                 {
                     Result = new ErrorResultFactory().Factory(ActionType.Login);
                 }
             }
-            else
+            else //validate fail
             {
                 string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
                 Result = new ErrorResult(ActionType.Login, message);

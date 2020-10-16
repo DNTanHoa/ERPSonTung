@@ -31,7 +31,9 @@ namespace ERP.Model.Models
         public virtual DbSet<Navigation> Navigation { get; set; }
         public virtual DbSet<Post> Post { get; set; }
         public virtual DbSet<RecruitmentPlan> RecruitmentPlan { get; set; }
-        public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<UserRole> UserRole { get; set; }
+        public virtual DbSet<RoleGroup> RoleGroup { get; set; }
+        public virtual DbSet<RoleGroupDetail> RoleGroupDetail { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<ShiftEmployee> ShiftEmployee { get; set; }
         public virtual DbSet<TrainingCourse> TrainingCourse { get; set; }
@@ -477,7 +479,7 @@ namespace ERP.Model.Models
                 entity.Property(e => e.UpdateUser).HasMaxLength(4000);
             });
 
-            modelBuilder.Entity<Role>(entity =>
+            modelBuilder.Entity<UserRole>(entity =>
             {
                 entity.Property(e => e.CreateDate).HasColumnType("smalldatetime");
 
