@@ -25,13 +25,13 @@ namespace ERP.Controllers
     [ApiController]
     [EnableCors("CorsPolicy")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class RoleController : BaseController
+    public class RoleGroupController : BaseController
     {
-        private readonly IRoleRepository roleRepository;
+        private readonly IRoleGroupRepository roleGroupRepository;
 
-        public RoleController(IRoleRepository roleRepository)
+        public RoleGroupController(IRoleGroupRepository roleGroupRepository)
         {
-            this.roleRepository = roleRepository;
+            this.roleGroupRepository = roleGroupRepository;
         }
 
         [HttpPost]
@@ -39,9 +39,9 @@ namespace ERP.Controllers
         {
             if(ModelState.IsValid)
             {
-                var databaseObject = model.MapTo<UserRole>();
+                var databaseObject = model.MapTo<RoleGroup>();
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = roleRepository.Insert(databaseObject);
+                int result = roleGroupRepository.Insert(databaseObject);
                 if (result > 0)
                 {
                     Result = new SuccessResult(ActionType.Insert, AppGlobal.CreateSucess);
@@ -65,9 +65,9 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var databaseObject = model.MapTo<UserRole>();
+                var databaseObject = model.MapTo<RoleGroup>();
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = roleRepository.Update(databaseObject);
+                int result = roleGroupRepository.Update(databaseObject);
                 if (result > 0)
                 {
                     Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
@@ -89,7 +89,7 @@ namespace ERP.Controllers
         [HttpDelete]
         public ActionResult<CommonResponeModel> Delete(long Id)
         {
-            int result = roleRepository.Delete(Id);
+            int result = roleGroupRepository.Delete(Id);
             
             if (result > 0)
             {
@@ -108,16 +108,16 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var databaseObject = model.MapTo<UserRole>();
+                var databaseObject = model.MapTo<RoleGroup>();
                 int result = 0;
                 
                 if(model.Id > 0)
                 {
-                    result = roleRepository.Update(databaseObject);
+                    result = roleGroupRepository.Update(databaseObject);
                 }
                 else
                 {
-                    result = roleRepository.Insert(databaseObject);
+                    result = roleGroupRepository.Insert(databaseObject);
                 }
 
                 if(result > 0)
@@ -138,16 +138,16 @@ namespace ERP.Controllers
             return GetCommonRespone();
         }
 
-        [HttpGet]
-        public ActionResult<CommonResponeModel> GetUserNavigationRole(string username)
-        {
-            if (string.IsNullOrEmpty(username))
-            {
-                username = RequestUsername;
-            }
-            Result = Result = new SuccessResultFactory().Factory(ActionType.Select);
-            Data = roleRepository.GetAllowedDataTransfersByUserName(username);
-            return GetCommonRespone();
-        }
+        //[HttpGet]
+        //public ActionResult<CommonResponeModel> GetUserNavigationRole(string username)
+        //{
+        //    if (string.IsNullOrEmpty(username))
+        //    {
+        //        username = RequestUsername;
+        //    }
+        //    Result = Result = new SuccessResultFactory().Factory(ActionType.Select);
+        //    Data = roleGroupRepository.GetAllowedDataTransfersByUserName(username);
+        //    return GetCommonRespone();
+        //}
     }
 }

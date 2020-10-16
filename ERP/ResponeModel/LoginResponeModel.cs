@@ -1,4 +1,5 @@
-﻿using ERP.Model.Models;
+﻿using ERP.Model.DataTransferObjects;
+using ERP.Model.Models;
 using System;
 
 namespace ERP.ResponeModel
@@ -9,6 +10,7 @@ namespace ERP.ResponeModel
 
         public string Token { get; set; }
 
-        public User LoginUser { get; set; }
+        //public User LoginUser { get; set; }
+        public UserDataTransfer User { get; set; }
     }
 }

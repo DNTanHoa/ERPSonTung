@@ -25,13 +25,13 @@ namespace ERP.Controllers
     [ApiController]
     [EnableCors("CorsPolicy")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class RoleController : BaseController
+    public class RoleGroupDetailController : BaseController
     {
-        private readonly IRoleRepository roleRepository;
+        private readonly IRoleGroupDetailRepository roleGroupDetailRepository;
 
-        public RoleController(IRoleRepository roleRepository)
+        public RoleGroupDetailController(IRoleGroupDetailRepository roleGroupDetailRepository)
         {
-            this.roleRepository = roleRepository;
+            this.roleGroupDetailRepository = roleGroupDetailRepository;
         }
 
         [HttpPost]
@@ -39,9 +39,9 @@ namespace ERP.Controllers
         {
             if(ModelState.IsValid)
             {
-                var databaseObject = model.MapTo<UserRole>();
+                var databaseObject = model.MapTo<RoleGroupDetail>();
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = roleRepository.Insert(databaseObject);
+                int result = roleGroupDetailRepository.Insert(databaseObject);
                 if (result > 0)
                 {
                     Result = new SuccessResult(ActionType.Insert, AppGlobal.CreateSucess);
@@ -65,9 +65,9 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var databaseObject = model.MapTo<UserRole>();
+                var databaseObject = model.MapTo<RoleGroupDetail>();
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = roleRepository.Update(databaseObject);
+                int result = roleGroupDetailRepository.Update(databaseObject);
                 if (result > 0)
                 {
                     Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
@@ -89,7 +89,7 @@ namespace ERP.Controllers
         [HttpDelete]
         public ActionResult<CommonResponeModel> Delete(long Id)
         {
-            int result = roleRepository.Delete(Id);
+            int result = roleGroupDetailRepository.Delete(Id);
             
             if (result > 0)
             {
@@ -108,16 +108,16 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var databaseObject = model.MapTo<UserRole>();
+                var databaseObject = model.MapTo<RoleGroupDetail>();
                 int result = 0;
                 
                 if(model.Id > 0)
                 {
-                    result = roleRepository.Update(databaseObject);
+                    result = roleGroupDetailRepository.Update(databaseObject);
                 }
                 else
                 {
-                    result = roleRepository.Insert(databaseObject);
+                    result = roleGroupDetailRepository.Insert(databaseObject);
                 }
 
                 if(result > 0)
@@ -138,16 +138,16 @@ namespace ERP.Controllers
             return GetCommonRespone();
         }
 
-        [HttpGet]
-        public ActionResult<CommonResponeModel> GetUserNavigationRole(string username)
-        {
-            if (string.IsNullOrEmpty(username))
-            {
-                username = RequestUsername;
-            }
-            Result = Result = new SuccessResultFactory().Factory(ActionType.Select);
-            Data = roleRepository.GetAllowedDataTransfersByUserName(username);
-            return GetCommonRespone();
-        }
+        //[HttpGet]
+        //public ActionResult<CommonResponeModel> GetUserNavigationRole(string username)
+        //{
+        //    if (string.IsNullOrEmpty(username))
+        //    {
+        //        username = RequestUsername;
+        //    }
+        //    Result = Result = new SuccessResultFactory().Factory(ActionType.Select);
+        //    Data = roleGroupDetailRepository.GetAllowedDataTransfersByUserName(username);
+        //    return GetCommonRespone();
+        //}
     }
 }

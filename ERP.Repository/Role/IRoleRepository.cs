@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ERP.Repository
 {
-    public interface IRoleRepository : IRepository<Role>
+    public interface IRoleRepository : IRepository<UserRole>
     {
         public bool IsUserAllowForNavigation(string NavigationCode, string Username);
 
