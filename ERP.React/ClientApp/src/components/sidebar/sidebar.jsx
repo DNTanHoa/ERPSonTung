@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { SidebarInfor } from '../user/sidebar-info'
+import SideBarNavigation from './sidebar-navigation';
 
 export class SideBar extends Component {
 
@@ -9,38 +11,29 @@ export class SideBar extends Component {
                     <span className="brand-text font-weight-light text-center text-white">QUẢN LÝ NHÂN SỰ</span>
                 </a>
                 <div className="sidebar">
-                    <div className="user-panel mt-3 pb-3 mb-3 d-flex" id="SidebarInfor">
-                    </div>
+                    <SidebarInfor></SidebarInfor>
                     <nav className="mt-2">
                         <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                             <li className="nav-item has-treeview menu-open">
-                            <a className="nav-link active">
-                                <i className="nav-icon fas fa-tachometer-alt" />
-                                <p>
-                                    Dashboard
-                                <i className="right fas fa-angle-left" />
-                                </p>
-                            </a>
-                            <ul className="nav nav-treeview">
-                                <li className="nav-item">
                                 <a className="nav-link active">
-                                    <i className="far fa-circle nav-icon" />
-                                    <p>Dashboard v1</p>
+                                    <i className="nav-icon fas fa-tachometer-alt" />
+                                    <p>
+                                        Bảng giám sát
+                                        <i className="right fas fa-angle-left" />
+                                    </p>
                                 </a>
-                                </li>
-                                <li className="nav-item">
-                                <a className="nav-link">
-                                    <i className="far fa-circle nav-icon" />
-                                    <p>Dashboard v2</p>
-                                </a>
-                                </li>
-                                <li className="nav-item">
-                                <a className="nav-link">
-                                    <i className="far fa-circle nav-icon" />
-                                    <p>Dashboard v3</p>
-                                </a>
-                                </li>
-                            </ul>
+                                <ul className="nav nav-treeview">
+                                    <SideBarNavigation displayName="Điểm danh ngày" 
+                                        href = "employee"
+                                        iconName="far fa-circle nav-icon"></SideBarNavigation>
+                                    <SideBarNavigation displayName="Chấm công ngày"
+                                        href = "user"
+                                        isActive = "active"
+                                        iconName="far fa-circle nav-icon"></SideBarNavigation>
+                                    <SideBarNavigation displayName="Tăng ca ngày"
+                                        href = "category"
+                                        iconName="far fa-circle nav-icon"></SideBarNavigation>
+                                </ul>
                             </li>
                         </ul>
                     </nav>

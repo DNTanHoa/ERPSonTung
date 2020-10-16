@@ -47,6 +47,7 @@ export class Login extends Component {
                 if(result.resultType === 0) {
                     var token = res.data.data.token;
                     localStorage.setItem('token',token);
+                    localStorage.setItem('userName', this.state.username)
                     this.setState({redirect: true});
                 } else {
                     this.setState({["errorMessage"] : result.message});
@@ -68,7 +69,7 @@ export class Login extends Component {
     render() {
 
         if(this.state.redirect) {
-            this.props.history.push('/hrm');
+            this.props.history.push('/hrm/employee');
         }
 
         return (

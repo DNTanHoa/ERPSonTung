@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {HeaderInfor } from '../user/header-infor';
 
 export class Header extends Component {
 
@@ -22,7 +23,7 @@ export class Header extends Component {
                     </li>
                 </ul>
                 <ul className="navbar-nav ml-auto">
-                    <li className="nav-item dropdown user-menu" id="HeaderInfor"></li>
+                    <HeaderInfor></HeaderInfor>
                 </ul>
             </nav>
         );

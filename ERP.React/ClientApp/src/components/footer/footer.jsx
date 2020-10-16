@@ -9,7 +9,7 @@ export class Footer extends Component {
                 <footer className="main-footer">
                     <div className="row">
                     <strong className="col-sm-6">Bản quyền © 2020 <a className="text-primary" href="http://sontungjeans.com/">Công ty TNHH Sơn Tùng.</a></strong>
-                    <strong className="col-sm-6 text-sm-left text-md-right hiden-xs">Một sản phẩm của nhóm SOHU</strong>
+                    <strong className="col-sm-6 text-sm-left text-md-right hiden-xs">Thiết kế Dương Nguyễn Tấn Hòa</strong>
                     </div>
                 </footer>
             </div>
