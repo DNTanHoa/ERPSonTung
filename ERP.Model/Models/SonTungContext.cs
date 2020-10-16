@@ -247,13 +247,13 @@ namespace ERP.Model.Models
 
                 entity.Property(e => e.EmployeeCode).HasMaxLength(50);
 
-                entity.Property(e => e.FromDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.FromTime).HasColumnType("smalldatetime");
 
                 entity.Property(e => e.Note).HasMaxLength(4000);
 
                 entity.Property(e => e.Reason).HasMaxLength(4000);
 
-                entity.Property(e => e.ToDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.ToTime).HasColumnType("smalldatetime");
 
                 entity.Property(e => e.UpdateDate).HasColumnType("smalldatetime");
 

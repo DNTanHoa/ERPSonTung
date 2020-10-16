@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace ERP.Model.Models
+namespace ERP.Model.DataTransferObjects.EmployeeDayOff
 {
-    public partial class EmployeeDayOff : BaseModel
+    public class EmployeDayOffDataTransfer
     {
-        public string EmployeeCode { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
         public DateTime? FromTime { get; set; }
         public DateTime? ToTime { get; set; }
         public string Reason { get; set; }

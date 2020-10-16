@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="EmployeeContract\" />
-    <Folder Include="EmployeeDayOff\" />
     <Folder Include="EmployeeDocument\" />
     <Folder Include="EmployeeHistory\" />
     <Folder Include="EmployeePaper\" />
@@ -22,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DevExpress.Xpo" Version="19.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
