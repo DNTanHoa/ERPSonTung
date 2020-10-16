@@ -39,7 +39,7 @@ namespace ERP.Controllers
         {
             if(ModelState.IsValid)
             {
-                var databaseObject = model.MapTo<Role>();
+                var databaseObject = model.MapTo<UserRole>();
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
                 int result = roleRepository.Insert(databaseObject);
                 if (result > 0)
@@ -65,7 +65,7 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var databaseObject = model.MapTo<Role>();
+                var databaseObject = model.MapTo<UserRole>();
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
                 int result = roleRepository.Update(databaseObject);
                 if (result > 0)
@@ -108,7 +108,7 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var databaseObject = model.MapTo<Role>();
+                var databaseObject = model.MapTo<UserRole>();
                 int result = 0;
                 
                 if(model.Id > 0)
