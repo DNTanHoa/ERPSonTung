@@ -7,6 +7,6 @@ namespace ERP.Repository
 {
     public interface IEmployeeDayOffRepository : IRepository<EmployeeDayOff>
     {
-        public List<EmployeDayOffDataTransfer> GetItems(string employeeCode, DateTime? fromDate, DateTime? toDate);
+        public List<EmployeDayOffDataTransfer> GetFilteredItems(string employeeCode, DateTime? fromDate, DateTime? toDate);
     }
 }

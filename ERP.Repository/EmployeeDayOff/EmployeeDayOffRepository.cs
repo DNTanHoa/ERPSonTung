@@ -13,7 +13,7 @@ namespace ERP.Repository
 
         }
 
-        public List<EmployeDayOffDataTransfer> GetItems(string employeeCode, DateTime? fromDate, DateTime? toDate)
+        public List<EmployeDayOffDataTransfer> GetFilteredItems(string employeeCode, DateTime? fromDate, DateTime? toDate)
         {
 
             if (fromDate == null)

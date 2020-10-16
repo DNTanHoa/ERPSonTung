@@ -8,7 +8,6 @@
   <ItemGroup>
     <Folder Include="RequestModel\EmployeeCheckInOut\" />
     <Folder Include="RequestModel\EmployeeContract\" />
-    <Folder Include="RequestModel\EmployeeDayOff\" />
     <Folder Include="RequestModel\EmployeeDocument\" />
     <Folder Include="RequestModel\EmployeeHistory\" />
     <Folder Include="RequestModel\EmployeePaper\" />
