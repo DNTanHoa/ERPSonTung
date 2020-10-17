@@ -11,7 +11,6 @@
     <Folder Include="EmployeePaper\" />
     <Folder Include="Holiday\" />
     <Folder Include="EmployeePayroll\" />
-    <Folder Include="EmployeeRelative\" />
     <Folder Include="TrainingCourseEmployee\" />
     <Folder Include="TrainingCourse\" />
     <Folder Include="ShiftEmployee\" />

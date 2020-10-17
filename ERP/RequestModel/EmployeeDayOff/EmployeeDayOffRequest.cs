@@ -7,6 +7,8 @@ namespace ERP.RequestModel.Employee
     public class EmployeeDayOffRequest : BaseModel
     {
         [Required(ErrorMessage = "Mã nhân viên - bắt buộc")]
+        [MinLength(4)]
+        [MaxLength(20)]
         public string EmployeeCode { get; set; }
 
         public DateTime FromTime { get; set; }

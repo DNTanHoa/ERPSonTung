@@ -375,6 +375,10 @@ namespace ERP.Model.Models
                 entity.Property(e => e.UpdateDate).HasColumnType("smalldatetime");
 
                 entity.Property(e => e.UpdateUser).HasMaxLength(4000);
+
+                entity.Property(e => e.OriginAddressCode).IsRequired().IsUnicode(false).HasMaxLength(50);
+
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(256);
             });
 
             modelBuilder.Entity<Holiday>(entity =>
