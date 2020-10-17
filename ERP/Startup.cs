@@ -79,6 +79,8 @@ namespace ERP
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IEntityCenterRepository, EntityCenterRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<IRoleGroupRepository, RoleGroupRepository>();
+            services.AddTransient<IRoleGroupDetailRepository, RoleGroupDetailRepository>();
 
             
             services.AddTransient<IEmployeeDayOffRepository, EmployeeDayOffRepository>();

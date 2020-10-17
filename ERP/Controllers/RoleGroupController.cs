@@ -47,11 +47,11 @@ namespace ERP.Controllers
                 int result = roleGroupRepository.Insert(databaseObject);
                 if (result > 0)
                 {
-                    Result = new SuccessResult(ActionType.Insert, AppGlobal.CreateSucess);
+                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
                 }
                 else
                 {
-                    Result = new ErrorResult(ActionType.Insert, AppGlobal.CreateError);
+                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
                 }
             }
             else
@@ -73,11 +73,11 @@ namespace ERP.Controllers
                 int result = roleGroupRepository.Update(databaseObject);
                 if (result > 0)
                 {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
+                    Result = new SuccessResultFactory().Factory(ActionType.Edit);
                 }
                 else
                 {
-                    Result = new ErrorResult(ActionType.Edit, AppGlobal.EditError);
+                    Result = new ErrorResultFactory().Factory(ActionType.Edit);
                 }
             }
             else
@@ -96,11 +96,11 @@ namespace ERP.Controllers
             
             if (result > 0)
             {
-                Result = new SuccessResult(ActionType.Delete, AppGlobal.DeleteSuccess);
+                Result = new SuccessResultFactory().Factory(ActionType.Delete);
             }
             else
             {
-                Result = new ErrorResult(ActionType.Delete, AppGlobal.DeleteError);
+                Result = new ErrorResultFactory().Factory(ActionType.Delete);
             }
 
             return GetCommonRespone();
