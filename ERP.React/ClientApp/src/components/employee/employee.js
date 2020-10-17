@@ -33,7 +33,6 @@ export class Employee extends React.Component {
     );
 
     dataRecieved = (employees) => {
-        console.log(employees);
         this.setState({
             data: employees
         })

@@ -1,8 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { SidebarInfor } from '../user/sidebar-info'
 import SideBarNavigation from './sidebar-navigation';
+import { getItems } from '../../apis/role/role-service';
 
 export class SideBar extends Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            role: []
+        }
+    }
+
+    componentDidMount = async () => {
+        let data = await getItems();
+        this.setState({role: data});
+        console.log(this.state);
+    }
 
     render() {
         return (

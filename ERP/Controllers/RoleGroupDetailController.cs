@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ERP.Controllers
 {
@@ -28,10 +29,13 @@ namespace ERP.Controllers
     public class RoleGroupDetailController : BaseController
     {
         private readonly IRoleGroupDetailRepository roleGroupDetailRepository;
+        private readonly ILogger logger;
 
-        public RoleGroupDetailController(IRoleGroupDetailRepository roleGroupDetailRepository)
+        public RoleGroupDetailController(IRoleGroupDetailRepository roleGroupDetailRepository,
+                                         ILogger logger)
         {
             this.roleGroupDetailRepository = roleGroupDetailRepository;
+            this.logger = logger;
         }
 
         [HttpPost]
