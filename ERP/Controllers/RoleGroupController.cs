@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ERP.Controllers
 {
@@ -28,14 +29,16 @@ namespace ERP.Controllers
     public class RoleGroupController : BaseController
     {
         private readonly IRoleGroupRepository roleGroupRepository;
+        private readonly ILogger<RoleGroupController> logger;
 
-        public RoleGroupController(IRoleGroupRepository roleGroupRepository)
+        public RoleGroupController(IRoleGroupRepository roleGroupRepository, ILogger<RoleGroupController> logger)
         {
             this.roleGroupRepository = roleGroupRepository;
+            this.logger = logger;
         }
 
         [HttpPost]
-        public ActionResult<CommonResponeModel> Create(RoleCreateRequestModel model)
+        public ActionResult<CommonResponeModel> Create(RoleGroupCreateRequestModel model)
         {
             if(ModelState.IsValid)
             {
@@ -44,11 +47,11 @@ namespace ERP.Controllers
                 int result = roleGroupRepository.Insert(databaseObject);
                 if (result > 0)
                 {
-                    Result = new SuccessResult(ActionType.Insert, AppGlobal.CreateSucess);
+                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
                 }
                 else
                 {
-                    Result = new ErrorResult(ActionType.Insert, AppGlobal.CreateError);
+                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
                 }
             }
             else
@@ -61,7 +64,7 @@ namespace ERP.Controllers
         }
 
         [HttpPut]
-        public ActionResult<CommonResponeModel> Update(RoleUpdateRequestModel model)
+        public ActionResult<CommonResponeModel> Update(RoleGroupUpdateRequestModel model)
         {
             if (ModelState.IsValid)
             {
@@ -70,11 +73,11 @@ namespace ERP.Controllers
                 int result = roleGroupRepository.Update(databaseObject);
                 if (result > 0)
                 {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
+                    Result = new SuccessResultFactory().Factory(ActionType.Edit);
                 }
                 else
                 {
-                    Result = new ErrorResult(ActionType.Edit, AppGlobal.EditError);
+                    Result = new ErrorResultFactory().Factory(ActionType.Edit);
                 }
             }
             else
@@ -93,18 +96,18 @@ namespace ERP.Controllers
             
             if (result > 0)
             {
-                Result = new SuccessResult(ActionType.Delete, AppGlobal.DeleteSuccess);
+                Result = new SuccessResultFactory().Factory(ActionType.Delete);
             }
             else
             {
-                Result = new ErrorResult(ActionType.Delete, AppGlobal.DeleteError);
+                Result = new ErrorResultFactory().Factory(ActionType.Delete);
             }
 
             return GetCommonRespone();
         }
 
         [HttpPost]
-        public ActionResult<CommonResponeModel> SaveChange(RoleSaveChangeRequestModel model)
+        public ActionResult<CommonResponeModel> SaveChange(RoleGroupSaveChangeRequestModel model)
         {
             if (ModelState.IsValid)
             {
@@ -135,6 +138,14 @@ namespace ERP.Controllers
                 Result = new ErrorResult(ActionType.Edit, message);
             }
 
+            return GetCommonRespone();
+        }
+
+        [HttpGet]
+        public ActionResult<CommonResponeModel> GetAll()
+        {
+            Data = roleGroupRepository.Get().ToList();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
             return GetCommonRespone();
         }
 

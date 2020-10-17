@@ -8,6 +8,6 @@ namespace ERP.Repository
 {
     public interface IRoleGroupDetailRepository : IRepository<RoleGroupDetail>
     {
-
+        public List<RoleGroupDetail> GetByRoleGroupCode(string RoleGroupCode);
     }
 }

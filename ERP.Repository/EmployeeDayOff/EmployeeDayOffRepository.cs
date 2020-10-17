@@ -1,8 +1,9 @@
 ﻿using ERP.Model.DataTransferObjects.EmployeeDayOff;
 using ERP.Model.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ERP.Repository
 {
@@ -10,12 +11,10 @@ namespace ERP.Repository
     {
         public EmployeeDayOffRepository(SonTungContext context) : base(context)
         {
-
         }
 
         public List<EmployeDayOffDataTransfer> GetFilteredItems(string employeeCode, DateTime? fromDate, DateTime? toDate)
         {
-
             if (fromDate == null)
                 fromDate = DateTime.Now;
 
@@ -28,18 +27,24 @@ namespace ERP.Repository
                          join e in this.context.Employee on d.EmployeeCode equals e.Code
                          where (string.IsNullOrEmpty(employeeCode) || d.EmployeeCode == employeeCode)
                          && (d.FromTime >= fromDate && d.ToTime <= toDate)
+                         && d.Deleted == false
                          select new EmployeDayOffDataTransfer
                          {
-                             Code=d.EmployeeCode,
-                             Name=e.FullName,
-                             FromTime=d.FromTime,
-                             ToTime=d.ToTime,
-                             ApproveStatus=a.Name,
-                             Reason=r.Name
+                             Code = d.EmployeeCode,
+                             Name = e.FullName,
+                             FromTime = d.FromTime,
+                             ToTime = d.ToTime,
+                             ApproveStatus = a.Name,
+                             Reason = r.Name
                          };
 
             return result.ToList();
+        }
 
+        public EmployeeDayOff GetItemById(long id)
+        {
+            var item = this.context.EmployeeDayOff.AsNoTracking().SingleOrDefault(n => n.Id == id);
+            return item;
         }
     }
 }

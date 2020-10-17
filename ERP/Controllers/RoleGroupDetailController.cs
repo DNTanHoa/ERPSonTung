@@ -29,17 +29,16 @@ namespace ERP.Controllers
     public class RoleGroupDetailController : BaseController
     {
         private readonly IRoleGroupDetailRepository roleGroupDetailRepository;
-        private readonly ILogger logger;
+        private readonly ILogger<RoleGroupDetailController> logger;
 
-        public RoleGroupDetailController(IRoleGroupDetailRepository roleGroupDetailRepository,
-                                         ILogger logger)
+        public RoleGroupDetailController(IRoleGroupDetailRepository roleGroupDetailRepository, ILogger<RoleGroupDetailController> logger)
         {
             this.roleGroupDetailRepository = roleGroupDetailRepository;
             this.logger = logger;
         }
 
         [HttpPost]
-        public ActionResult<CommonResponeModel> Create(RoleCreateRequestModel model)
+        public ActionResult<CommonResponeModel> Create(RoleGroupDetailCreateRequestModel model)
         {
             if(ModelState.IsValid)
             {
@@ -65,7 +64,7 @@ namespace ERP.Controllers
         }
 
         [HttpPut]
-        public ActionResult<CommonResponeModel> Update(RoleUpdateRequestModel model)
+        public ActionResult<CommonResponeModel> Update(RoleGroupDetailUpdateRequestModel model)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +107,7 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CommonResponeModel> SaveChange(RoleSaveChangeRequestModel model)
+        public ActionResult<CommonResponeModel> SaveChange(RoleGroupDetailSaveChangeRequestModel model)
         {
             if (ModelState.IsValid)
             {
@@ -139,6 +138,14 @@ namespace ERP.Controllers
                 Result = new ErrorResult(ActionType.Edit, message);
             }
 
+            return GetCommonRespone();
+        }
+
+        [HttpGet]
+        public ActionResult<CommonResponeModel> GetByRoleGroupCode(string RoleGroupCode)
+        {
+            Data = roleGroupDetailRepository.GetByRoleGroupCode(RoleGroupCode).ToList();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
             return GetCommonRespone();
         }
 

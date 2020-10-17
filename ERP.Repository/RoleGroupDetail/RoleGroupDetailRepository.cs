@@ -14,6 +14,9 @@ namespace ERP.Repository
             this.context = context;
         }
 
-        
+        public List<RoleGroupDetail> GetByRoleGroupCode(string RoleGroupCode)
+        {
+            return context.RoleGroupDetail.Where(item => item.RoleGroupCode.Equals(RoleGroupCode)).ToList();
+        }
     }
 }

@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace ERP.RequestModel.Role
 {
-    public class RoleSaveChangeRequestModel
+    public class RoleGroupDetailCreateRequestModel
     {
-        public long Id { get; set; }
-
-        [Required(ErrorMessage = "Tài khoản phân quyền không được để trống")]
-        public string Username { get; set; }
+        [Required(ErrorMessage = "Mã nhóm phân quyền không được để trống")]
+        public string RoleGroupCode { get; set; }
 
         [Required(ErrorMessage = "Mã phân quyền không được để trống")]
         public string NavigationCode { get; set; }
