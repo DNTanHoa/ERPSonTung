@@ -54,52 +54,100 @@ namespace ERP.Controllers
 
         }
 
+        /// <summary>
+        /// Add and update employee day off
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<CommonResponeModel> SaveChange(EmployeeDayOffRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                Result = new ErrorResult(ActionType.Insert, message);
+                return GetCommonRespone();
+            }
+            else
+            {
+                var result = 0;
 
-        //[HttpPost]
-        //public ActionResult<CommonResponeModel> SaveChange(EmployeeDayOffRequest request)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-        //        Result = new ErrorResult(ActionType.Insert, message);
-        //        return GetCommonRespone();
-        //    }
-        //    else
-        //    {
-        //        var result = 0;
+                var model = request.MapTo<EmployeeDayOff>();
 
-        //        var model = request.MapTo<EmployeeDayOff>();
+                if (model.Id == 0)
+                {
+                    result = this._employeeDayOffRepository.Insert(model);
+                }
+                else
+                {
+                    var currentObj = this._employeeDayOffRepository.GetItemById(model.Id);
 
-        //        if (model.Id == 0)
-        //        {
-        //            result = this._employeeDayOffRepository.Insert(model);
-        //            Result = new SuccessResult(ActionType.Insert, AppGlobal.SaveChangeSuccess);
-        //        }
-        //        else
-        //        {
-        //            var currentObj = this._employeeDayOffRepository.GetById(model.Id);
-
-
-        //            if (currentObj != null)
-        //            {
-        //                this._employeeDayOffRepository.Update(model);
-        //            }
-        //            else
-        //            {
-        //                Result = new ErrorResult(ActionType.Edit, AppGlobal.ExistCodeError);
-        //                return GetCommonRespone();
-        //            }
-        //        }
-
-
+                    if (currentObj != null)
+                    {
+                        result = this._employeeDayOffRepository.Update(model);
+                    }
+                    else
+                    {
+                        Result = new ErrorResult(ActionType.Edit, AppGlobal.ExistCodeError);
+                    }
 
 
+                }
 
-        //    }
+
+                if (result > 0)
+                {
+                    Result = new SuccessResult(ActionType.Insert, AppGlobal.SaveChangeSuccess);
+                }
+                else
+                {
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.SaveChangeFalse);
+                }
 
 
-        //}
+                return GetCommonRespone();
 
+            }
+
+
+        }
+
+        /// <summary>
+        /// deleted a object set deleted is true
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult<CommonResponeModel> Delete(long id)
+        {
+            var result = 0;
+
+            var currentObj = this._employeeDayOffRepository.GetById(id);
+
+            if (currentObj != null)
+            {
+                currentObj.Deleted = true;
+                result = this._employeeDayOffRepository.Update(currentObj);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Delete, AppGlobal.ExistCodeError);
+            }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Delete, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Delete, AppGlobal.SaveChangeFalse);
+            }
+
+
+            return GetCommonRespone();
+
+
+        }
 
         #endregion
 
