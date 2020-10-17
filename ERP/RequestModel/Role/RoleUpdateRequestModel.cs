@@ -12,10 +12,10 @@ namespace ERP.RequestModel.Role
 
         [Required(ErrorMessage = "Tài khoản phân quyền không được để trống")]
         public string Username { get; set; }
-        
+
+        [Required(ErrorMessage = "Mã phân quyền không được để trống")]
         public string NavigationCode { get; set; }
         
-        [Required(ErrorMessage = "Phân quyền không được để trống")]
         public bool? IsAllow { get; set; }
         
         public string Entity { get; set; }
