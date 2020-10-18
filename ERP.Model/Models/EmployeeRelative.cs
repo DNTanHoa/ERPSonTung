@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ERP.Model.Models
 {
@@ -11,5 +10,8 @@ namespace ERP.Model.Models
         public string OriginAddress { get; set; }
         public string Job { get; set; }
         public string Phone { get; set; }
+        public string OriginAddressCode { get; set; }
+        public string Name { get; set; }
+
     }
 }

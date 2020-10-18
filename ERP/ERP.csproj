@@ -12,7 +12,6 @@
     <Folder Include="RequestModel\EmployeeHistory\" />
     <Folder Include="RequestModel\EmployeePaper\" />
     <Folder Include="RequestModel\EmployeePayroll\" />
-    <Folder Include="RequestModel\EmployeeRelative\" />
     <Folder Include="RequestModel\Holiday\" />
     <Folder Include="RequestModel\Navigation\" />
     <Folder Include="RequestModel\TrainingCourseEmployee\" />
