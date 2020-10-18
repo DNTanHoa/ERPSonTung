@@ -2,20 +2,29 @@
 using ERP.Model.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace ERP.Repository
 {
     public class EmployeeRelativeRepository : Repository<EmployeeRelative>, IEmployeeRelativeRepository
     {
+
+        #region constructor
+
         public EmployeeRelativeRepository(SonTungContext context) : base(context)
         {
         }
+
+        #endregion
+
+        #region  public method
 
         public List<EmployeeRelativeDataTransfer> GetFilteredItems(string employeeCode)
         {
             var result = from d in this.context.EmployeeRelative
                          join r in this.context.Category on d.RelativeType equals r.Code
+                         join a in this.context.Category on d.OriginProvinceCode equals a.Code
                          where (string.IsNullOrEmpty(employeeCode) || d.EmployeeCode == employeeCode)
                          && d.Deleted == false
                          select new EmployeeRelativeDataTransfer
@@ -24,7 +33,7 @@ namespace ERP.Repository
                              RelationName = r.Name,
                              YearOfBirth = d.DateOfBirth.Value.Year.ToString(),
                              Job = d.Job,
-                             Address = d.OriginAddress + " - " + r.Name,
+                             Address = d.OriginAddress + " - " + a.Name,
                              Phone = d.Phone
                          };
 
@@ -36,5 +45,7 @@ namespace ERP.Repository
             var item = this.context.EmployeeRelative.AsNoTracking().SingleOrDefault(n => n.Id == id);
             return item;
         }
+
+        #endregion
     }
 }
