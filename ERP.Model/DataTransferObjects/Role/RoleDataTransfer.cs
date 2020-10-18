@@ -7,8 +7,6 @@ namespace ERP.Model.DataTransferObjects
 {
     public class RoleDataTransfer : UserRole
     {
-        public User User { get; set; }
-
         public Navigation Navigation { get; set; }
     }
 }

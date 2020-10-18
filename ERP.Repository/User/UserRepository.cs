@@ -1,4 +1,6 @@
-﻿using ERP.Model.DataTransferObjects;
+﻿using DevExpress.DirectX.Common.Direct2D;
+using DevExpress.Services.Internal;
+using ERP.Model.DataTransferObjects;
 using ERP.Model.Models;
 using ERP.Ultilities.Helpers;
 using System;
@@ -73,6 +75,11 @@ namespace ERP.Repository
                             }
                         };
             return query.ToList();
+        }
+
+        public User GetByUsername(string Username)
+        {
+            return context.User.Where(user => user.Username.Equals(Username)).FirstOrDefault();
         }
     }
 }

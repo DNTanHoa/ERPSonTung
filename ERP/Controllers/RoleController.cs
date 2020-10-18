@@ -149,7 +149,8 @@ namespace ERP.Controllers
                 username = RequestUsername;
             }
             Result = Result = new SuccessResultFactory().Factory(ActionType.Select);
-            Data = roleRepository.GetAllowedDataTransfersByUserName(username);
+            Data = roleRepository.GetAllowedDataTransfersByUserName(username).GenerateTree(item => item.Navigation.Code, 
+                                                            item => item.Navigation.ParentCode, string.Empty);
             return GetCommonRespone();
         }
     }

@@ -12,7 +12,6 @@ export class HeaderInfor extends React.Component {
 
     componentDidMount = () => {
         let hour = new Date().getHours();
-        
     }
 
     render() {

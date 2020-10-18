@@ -14,6 +14,8 @@ namespace ERP.Repository
 
         public UserDataTransfer GetDataTransferByUsername(string Username);
 
+        public User GetByUsername(string Username);
+
         public List<UserDataTransfer> GetDataTransfers();
     }
 }

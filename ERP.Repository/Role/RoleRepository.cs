@@ -25,7 +25,6 @@ namespace ERP.Repository
                         select new RoleDataTransfer
                         {
                             Navigation = navigations,
-                            User = users,
                             IsAllow = role.IsAllow,
                         };
             return query.ToList();

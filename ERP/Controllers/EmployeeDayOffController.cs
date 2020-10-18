@@ -90,8 +90,6 @@ namespace ERP.Controllers
                     {
                         Result = new ErrorResult(ActionType.Edit, AppGlobal.ExistCodeError);
                     }
-
-
                 }
 
 
@@ -103,13 +101,9 @@ namespace ERP.Controllers
                 {
                     Result = new ErrorResult(ActionType.Insert, AppGlobal.SaveChangeFalse);
                 }
-
-
                 return GetCommonRespone();
 
             }
-
-
         }
 
         /// <summary>
@@ -150,7 +144,6 @@ namespace ERP.Controllers
         }
 
         #endregion
-
 
     }
 }

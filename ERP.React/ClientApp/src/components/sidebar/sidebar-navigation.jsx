@@ -18,10 +18,20 @@ export default class SideBarNavigation extends React.Component {
                 <li className="nav-item has-treeview">
                     <Link to={this.props.href} className={this.menuLinkClassName}>
                         {this.icon}
-                        <p>{this.props.displayName}</p>
+                        <p className="px-1">{this.props.displayName}</p>
+                        <i className="right fas fa-angle-left" />
                     </Link>
                     <ul className="nav nav-treeview">
-                        
+                        {this.props.childs.map((child) => {
+                            return(
+                                <li className="nav-item">
+                                    <Link to={child.item.navigation.componentPath} className={this.menuLinkClassName}>
+                                        <i className={child.item.navigation.icon}></i>
+                                        <p className="px-1">{child.item.navigation.displayName}</p>
+                                    </Link>
+                                </li>
+                            )
+                        })}
                     </ul>
                 </li>
             )
@@ -30,7 +40,7 @@ export default class SideBarNavigation extends React.Component {
             <li className="nav-item">
                 <Link to={this.props.href} className={this.menuLinkClassName}>
                     {this.icon}
-                    <p>{this.props.displayName}</p>
+                    <p className="px-1">{this.props.displayName}</p>
                 </Link>
             </li>
         )

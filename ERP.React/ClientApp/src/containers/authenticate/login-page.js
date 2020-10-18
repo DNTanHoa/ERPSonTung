@@ -69,7 +69,7 @@ export class Login extends Component {
     render() {
 
         if(this.state.redirect) {
-            this.props.history.push('/hrm/employee');
+            this.props.history.push('/hrm/dashboard');
         }
 
         return (

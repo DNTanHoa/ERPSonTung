@@ -28,27 +28,22 @@ export class SideBar extends Component {
                     <SidebarInfor></SidebarInfor>
                     <nav className="mt-2">
                         <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                            <li className="nav-item has-treeview menu-open">
-                                <a className="nav-link active">
-                                    <i className="nav-icon fas fa-tachometer-alt" />
-                                    <p>
-                                        Bảng giám sát
-                                        <i className="right fas fa-angle-left" />
-                                    </p>
-                                </a>
-                                <ul className="nav nav-treeview">
-                                    <SideBarNavigation displayName="Điểm danh ngày" 
-                                        href = "employee"
-                                        iconName="far fa-circle nav-icon"></SideBarNavigation>
-                                    <SideBarNavigation displayName="Chấm công ngày"
-                                        href = "user"
-                                        isActive = "active"
-                                        iconName="far fa-circle nav-icon"></SideBarNavigation>
-                                    <SideBarNavigation displayName="Tăng ca ngày"
-                                        href = "category"
-                                        iconName="far fa-circle nav-icon"></SideBarNavigation>
-                                </ul>
-                            </li>
+                            {this.state.role.map((role) => {
+                                if(role.childrens.length > 0) {
+                                    return(
+                                        <SideBarNavigation displayName={role.item.navigation.displayName} 
+                                            href={role.item.navigation.componentPath}
+                                            hasChild={true}
+                                            childs={role.childrens}
+                                            iconName={role.item.navigation.icon}></SideBarNavigation>
+                                    )
+                                }
+                                return(
+                                    <SideBarNavigation displayName={role.item.navigation.displayName} 
+                                        href={role.item.navigation.componentPath}
+                                        iconName={role.item.navigation.icon}></SideBarNavigation>
+                                )
+                            })}
                         </ul>
                     </nav>
                 </div>

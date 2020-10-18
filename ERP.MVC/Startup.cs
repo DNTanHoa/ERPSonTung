@@ -37,7 +37,7 @@ namespace ERP.MVC
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<INavigationRepository, NavigationRepository>();
             services.AddTransient<IEntityCenterRepository, EntityCenterRepository>();
-            services.AddTransient<IEmployeeDayOffRepository, EmployeeCheckInOutRepository>();
+            services.AddTransient<IEmployeeCheckInOutRepository, EmployeeCheckInOutRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

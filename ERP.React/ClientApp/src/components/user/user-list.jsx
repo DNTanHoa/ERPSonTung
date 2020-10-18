@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import * as ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
-import { UsersLoader } from './user-loader';
 import { CommandCell } from '../command/common-command';
 import { process } from '@progress/kendo-data-query';
+import { UserProvider, UserConxtext } from '../../providers/context/user-context'
+import { getUsers, insertUser } from '../../apis/user/user-service';
+import { Loading } from '../loading';
 
 
 export class User extends Component {
@@ -13,7 +15,16 @@ export class User extends Component {
         this.state = {
             data: [],
             editUserName : null,
+            skip: 0,
+            take: 20,
+            loading: false
         }
+    }
+
+    componentDidMount = async () => {
+        this.setState({loading: true})
+        let users = await getUsers();
+        this.setState({data: users, loading: false});
     }
 
     CommandCell = props => (
@@ -29,59 +40,39 @@ export class User extends Component {
         />
     );
 
-    remove = dataItem => {
+    pageChange = (event) => {
+        this.setState({
+            skip: event.page.skip,
+            take: event.page.take
+        });
+    }
 
-    };
-
-    add = dataItem => {
+    add = (dataItem) => {
         dataItem.inEdit = true;
-    };
-
-    update = dataItem => {
-        dataItem.inEdit = false;
-    };
-
-    dataStateChange = (e) => {
+        const data = insertUser(dataItem);
         this.setState({
-            ...this.state,
-            dataState: e.data
-        });
-    }
-
-    dataRecieved = (data) => {
-        this.setState({
-            data: data,
-        });
-    }
-
-    addNew = () => {
-        const { users } = this.state.data;
-        const newItem = { };
-        this.setState({
-            data: [newItem, ...users],
-            editUserName : '',
+            data: this.state.data.concat(data)
         });
     };
 
-    closeEdit = (event) => {
-        if (event.target === event.currentTarget) {
-            this.setState({ editID: null });
-        }
-    };
-
-    rowClick = (event) => {
+    enterEdit = dataItem => {
         this.setState({
-            editID: event.dataItem.ProductID
+            data: this.state.data.map(item =>
+                item.username === dataItem.username ? { ...item, inEdit: true } : item
+            )
         });
     };
 
-    itemChange = (event) => {
-        const inEditID = event.dataItem.userName;
+    itemChange = event => {
         const data = this.state.data.map(item =>
-            item.ProductID === inEditID ? {...item, [event.field]: event.value} : item
+            item.username === event.dataItem.username
+                ? { ...item, [event.field]: event.value }
+                : item
         );
+
         this.setState({ data });
     };
+
 
     render () {
         return (
@@ -108,33 +99,37 @@ export class User extends Component {
                                 <div className="card-header">
                                     <h3 className="card-title">Danh sách thành viên</h3>
                                 </div>
-                                <div className="card-body">
-                                    <Grid style={{ height: '550px' }}
-                                          sortable={true}
-                                          data={this.state.data}
-                                          onRowClick={this.rowClick}
-                                          editField="inEdit"
-                                          onItemChange={this.itemChange}
-                                          onDataStateChange={this.dataStateChange}>
-                                              <GridToolbar>
-                                                    <button title="Add new"
-                                                            className="btn btn-success"
-                                                            title="Thêm thành viên"
-                                                            onClick={this.addNew}>
-                                                        <i className="fas fa-plus-circle"></i>
-                                                    </button>
-                                                </GridToolbar>
-                                        <Column field="username" title="Tài khoản" width="150" editor="text" />
-                                        <Column field="password" title="Mật khẩu" width="150" editor="text" editable={false}/>
-                                        <Column field="guidCode" title="Khóa" width="450" editor="text" editable={false}/>
-                                        <Column field="employeeCode" title="Nhân viên" width="300"/>
-                                        <Column field="note" title="Ghi chú"/>
-                                        <Column cell={this.CommandCell} />
-                                    </Grid>
-                                    <UsersLoader
-                                        dataState={this.state.dataState}
-                                        onDataRecieved={this.dataRecieved}></UsersLoader>
-                                </div>
+                                <Grid style={{ height: '600px' }}
+                                    data={this.state.data.slice(this.state.skip, this.state.take + this.state.skip)}
+                                    onItemChange={this.itemChange}
+                                    pageable={{
+                                        buttonCount: 5,
+                                        info: true,
+                                        type: 'numeric',
+                                        pageSizes: true,
+                                        previousNext: true
+                                    }}
+                                    total={this.state.data.length}
+                                    skip={this.state.skip}
+                                    resizable={true}
+                                    take={this.state.take}
+                                    onPageChange={this.pageChange}
+                                    editField="inEdit">
+                                    <GridToolbar>
+                                        <button title="Thêm người dùng"
+                                                className="btn btn-success"
+                                                onClick={this.add}>
+                                            <i className="fas fa-plus-circle"></i>
+                                        </button>
+                                    </GridToolbar>
+                                    <Column field="username" title="Tài khoản" width="250" editor="text" />
+                                    <Column field="password" title="Mật khẩu" width="300" editor="text"/>
+                                    <Column field="guidCode" title="Khóa" width="350" editor="text" editable={false}/>
+                                    <Column field="employeeCode" title="Nhân viên" width="300"/>
+                                    <Column field="note" title="Ghi chú"/>
+                                    <Column cell={this.CommandCell} />
+                                </Grid>
+                                {this.state.loading === true ? <Loading></Loading> : null} 
                             </div>
                         </div>
                     </div>

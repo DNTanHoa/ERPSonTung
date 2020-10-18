@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ERP.Model.Extensions;
 using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.User;
@@ -10,6 +11,7 @@ using ERP.Ultilities.Enum;
 using ERP.Ultilities.Extensions;
 using ERP.Ultilities.Factory.Implement;
 using ERP.Ultilities.Global;
+using ERP.Ultilities.Helpers;
 using ERP.Ultilities.Providers;
 using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication;
@@ -32,6 +34,95 @@ namespace ERP.Controllers
         public UserController(IUserRepository userRepository)
         {
             this.userRepository = userRepository;
+        }
+
+        [HttpPost]
+        public ActionResult<CommonResponeModel> Create(UserCreateRequestModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                if (userRepository.IsExistUsername(model.Username))
+                {
+                    string message = "Tên đăng nhập đã tồn tại";
+                    Result = new ErrorResult(ActionType.Login, message);
+                }
+                else
+                {
+                    var databaseObject = model.MapTo<User>();
+                    databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+                    databaseObject.InitDefault();
+                    databaseObject.SetPassword();
+                    int result = userRepository.Insert(databaseObject);
+
+                    if(result > 0)
+                    {
+                        Result = new SuccessResult(ActionType.Insert, AppGlobal.CreateSucess);
+                        Data = databaseObject;
+                    }
+                    else
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.CreateError);
+                        Data = databaseObject;
+
+                    }
+                }
+            }
+            else
+            {
+                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                Result = new ErrorResult(ActionType.Login, message);
+            }
+
+            return GetCommonRespone();
+        }
+
+        [HttpPut]
+        public ActionResult<CommonResponeModel> Update(UserUpdateRequestModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var user = userRepository.GetById(model.Id);
+                var databaseObject = model.MapTo<User>();
+
+                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+
+                if(user != null)
+                {
+                    if(SecurityHelper.Encrypt(model.Password, user.GuidCode) == user.GuidCode) //Not change password
+                    {
+                        databaseObject.Password = user.Password; //update to old password
+                    }
+                    else //change password
+                    {
+                        databaseObject.InitDefault();
+                        databaseObject.SetPassword();
+                    }
+
+                    int result = userRepository.Update(databaseObject);
+
+                    if (result > 0)
+                    {
+                        Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
+                        Data = databaseObject;
+                    }
+                    else
+                    {
+                        Result = new ErrorResult(ActionType.Edit, AppGlobal.EditError);
+                        Data = databaseObject;
+                    }
+                }
+                else
+                {
+                    string message = "Người dùng không tồn tại trong hệ thống";
+                    Result = new ErrorResult(ActionType.Login, message);
+                }
+            }
+            else
+            {
+                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                Result = new ErrorResult(ActionType.Login, message);
+            }
+            return GetCommonRespone();
         }
 
         [HttpPost]
