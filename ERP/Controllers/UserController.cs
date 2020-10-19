@@ -179,9 +179,9 @@ namespace ERP.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<CommonResponeModel> Delete(string Username)
+        public ActionResult<CommonResponeModel> Delete(UserDeleteRequestModel model)
         {
-            var user = userRepository.GetByUsername(Username);
+            var user = userRepository.GetByUsername(model.Username);
 
             if(user != null)
             {

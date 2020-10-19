@@ -4,7 +4,7 @@ import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-g
 import { CommandCell } from '../command/common-command';
 import { process } from '@progress/kendo-data-query';
 import { UserProvider, UserConxtext } from '../../providers/context/user-context'
-import { getUsers, insertUser, updateUser } from '../../apis/user/user-service';
+import { deleteUser, getUsers, insertUser, updateUser } from '../../apis/user/user-service';
 import { Loading } from '../loading';
 import { ToastContainer, toast } from 'react-toastify';    
 import 'react-toastify/dist/ReactToastify.css'; 
@@ -38,7 +38,7 @@ export class User extends Component {
         <UserCommandCell
             {...props}
             edit={this.enterEdit}
-            remove={this.remove}
+            remove={this.delete}
             add={this.add}
             detail={this.detail}
             discard={this.discard}
@@ -95,6 +95,28 @@ export class User extends Component {
             item.id === dataItem.id ? dataItem : item
         );
         this.setState({ data, loading: false });
+    }
+
+    delete = async (dataItem) => {
+        console.log(dataItem);
+
+        this.setState({loading : true});
+
+        let response = await deleteUser(dataItem);
+
+        if(response.result.resultType == 0) {
+            const data = this.state.data.map((item) =>{
+                if(item.id != dataItem.id) {
+                        return item;
+                    }
+                });
+
+            this.setState({ data, loading: false });
+            
+            toast.success(`Xóa thành viên ${dataItem.username} thành công`, 2000);
+        } else {
+            toast.error(response.result.message, 2000);
+        }
     }
 
     addNewLine = (dataItem) => {

@@ -92,19 +92,19 @@ export const updateUser = async (user) => {
     return result;
 }
 
-export const deleteUser = (user) => {
-    let url = config.appSettings.ServerUrl + 'user/delete/' + user.Username;
+export const deleteUser = async (user) => {
+    let url = config.appSettings.ServerUrl + 'user/delete';
 
     let init = getInit('DELETE');
+    init.body = JSON.stringify(user.username);
 
     let result = {};
 
-    fetch(url, init)
+    await fetch(url, init)
         .then(response => 
             response.json()
         )
         .then(json => {
-            config.log(json);
             result = json;
             return result;
         })
