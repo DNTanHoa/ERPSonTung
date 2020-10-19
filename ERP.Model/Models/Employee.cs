@@ -43,5 +43,6 @@ namespace ERP.Model.Models
         public string OriginDistrictCode { get; set; }
         public string OriginWardCode { get; set; }
         public string OriginAddtional { get; set; }
+        public string CheckInOutCode { get; set; }
     }
 }
