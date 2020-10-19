@@ -1,4 +1,5 @@
-﻿using ERP.Model.Models;
+﻿using ERP.Model.Extensions;
+using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.EmployeeRelative;
 using ERP.ResponeModel;
@@ -33,14 +34,14 @@ namespace ERP.Controllers
         #region public method
 
         /// <summary>
-        /// get filtered list employee day off
+        /// get filtered list employee relative
         /// </summary>
         /// <param name="employeeCode"></param>
         /// <param name="fromDate"></param>
         /// <param name="toDate"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<CommonResponeModel> Get(string employeeCode="ABC")
+        public ActionResult<CommonResponeModel> Get(string employeeCode)
         {
             var result = this._employeeRelativeRepository.GetFilteredItems(employeeCode);
 
@@ -50,8 +51,27 @@ namespace ERP.Controllers
             return GetCommonRespone();
         }
 
+
+
+        [HttpGet]
+        public ActionResult<CommonResponeModel> GetById(long id)
+        {
+            var currentObj = this._employeeRelativeRepository.GetById(id);
+
+            if (currentObj == null || currentObj.Deleted==true)
+            {
+                Result = new ErrorResult(ActionType.Select, "Lỗi 404");
+
+            }
+
+            Data = currentObj;
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetCommonRespone();
+        }
+
         /// <summary>
-        /// Add and update employee day off
+        /// Add and update employee relative
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -72,6 +92,7 @@ namespace ERP.Controllers
 
                 if (model.Id == 0)
                 {
+                    model.InitBeforeSave(RequestUsername, InitType.Create);
                     result = this._employeeRelativeRepository.Insert(model);
                 }
                 else
@@ -80,11 +101,12 @@ namespace ERP.Controllers
 
                     if (currentObj != null)
                     {
+                        model.InitBeforeSave(RequestUsername, InitType.Update);
                         result = this._employeeRelativeRepository.Update(model);
                     }
                     else
                     {
-                        Result = new ErrorResult(ActionType.Edit, AppGlobal.ExistCodeError);
+                        Result = new ErrorResult(ActionType.Select, "Lỗi 404");
                     }
                 }
 
@@ -113,14 +135,14 @@ namespace ERP.Controllers
 
             var currentObj = this._employeeRelativeRepository.GetById(id);
 
-            if (currentObj != null)
+            if (currentObj != null && currentObj.Deleted==false)
             {
                 currentObj.Deleted = true;
                 result = this._employeeRelativeRepository.Update(currentObj);
             }
             else
             {
-                Result = new ErrorResult(ActionType.Delete, AppGlobal.ExistCodeError);
+                Result = new ErrorResult(ActionType.Select, "Lỗi 404");
             }
 
             if (result > 0)

@@ -84,6 +84,7 @@ namespace ERP
 
             
             services.AddTransient<IEmployeeDayOffRepository, EmployeeDayOffRepository>();
+            services.AddTransient<IEmployeeRelativeRepository, EmployeeRelativeRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

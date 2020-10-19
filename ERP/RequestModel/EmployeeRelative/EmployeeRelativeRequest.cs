@@ -30,7 +30,7 @@ namespace ERP.RequestModel.EmployeeRelative
         [Required(ErrorMessage = "Tỉnh thành - bắt buộc")]
         [MinLength(2)]
         [MaxLength(20)]
-        public string OriginAddressCode { get; set; }
+        public string OriginProvinceCode { get; set; }
 
         [Required(ErrorMessage = "Họ và tên - bắt buộc")]
         public string Name { get; set; }

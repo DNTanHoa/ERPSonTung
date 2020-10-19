@@ -1,4 +1,5 @@
-﻿using ERP.Model.Models;
+﻿using ERP.Model.Extensions;
+using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.Employee;
 using ERP.ResponeModel;
@@ -76,6 +77,7 @@ namespace ERP.Controllers
 
                 if (model.Id == 0)
                 {
+                    model.InitBeforeSave(RequestUsername, InitType.Create);
                     result = this._employeeDayOffRepository.Insert(model);
                 }
                 else
@@ -84,11 +86,12 @@ namespace ERP.Controllers
 
                     if (currentObj != null)
                     {
+                        model.InitBeforeSave(RequestUsername, InitType.Update);
                         result = this._employeeDayOffRepository.Update(model);
                     }
                     else
                     {
-                        Result = new ErrorResult(ActionType.Edit, AppGlobal.ExistCodeError);
+                        Result = new ErrorResult(ActionType.Select, "Lỗi 404");
                     }
                 }
 
@@ -125,7 +128,7 @@ namespace ERP.Controllers
             }
             else
             {
-                Result = new ErrorResult(ActionType.Delete, AppGlobal.ExistCodeError);
+                Result = new ErrorResult(ActionType.Select, "Lỗi 404");
             }
 
             if (result > 0)
