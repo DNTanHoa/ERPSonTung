@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Net.WebSockets;
 
 namespace ERP.Repository
 {
@@ -52,6 +53,13 @@ namespace ERP.Repository
         public List<Category> GetByParentCode(string ParentCode)
         {
             return context.Category.Where(item => item.ParentCode.Equals(ParentCode)).ToList();
+        }
+
+        public bool IsExistEntityWithCode(string Entity, string Code, out Category category)
+        {
+            category = context.Category.Where(item => item.Entity.Equals(Entity) &&
+                                              item.Code.Equals(Code)).FirstOrDefault();
+            return category != null ? true : false;
         }
     }
 }
