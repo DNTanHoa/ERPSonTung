@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
+import { AutoComplete, ComboBox, DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import config from '../../appsettings.json';
 import { CategoryCommandCell } from "./category-command.jsx";
 import { insertItem, getItems, updateItem, deleteItem } from "./category-service.js";
@@ -13,7 +14,9 @@ export class Category extends React.Component {
         data: [],
         editID: null,
         skip: 0,
-        take: 10
+        take: 1000,
+        selectedEntity:"",
+        entities:[]
     }
 
     url = config.appSettings.ServerUrl + 'category/getall'
@@ -50,9 +53,6 @@ export class Category extends React.Component {
                 data: json.data
             });
         });
-        // this.setState({
-        //     data: getItems()
-        // });
     }
 
     dataRecieved = (data) => {
@@ -84,7 +84,19 @@ export class Category extends React.Component {
                         <div className="row">
                             <div className="card w-100" style={{overflowX:"auto"}}>
                                 <div className="card-header">
-                                    <h3 className="card-title">Danh sách đối tượng</h3>
+                                    <div className="row">
+                                        <div className="col-md-1 mt-md-1">
+                                            <b>Danh mục</b>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <ComboBox data={this.state.entities} style={{width: '100%'}}/>
+                                        </div>
+                                        <div class="col-md-1 mt-1 mt-md-0">
+                                            <button type="button" class="btn btn-success w-100">
+                                                <span class="fa fa-search"></span>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="card-body">
                                 <Grid style={{ height: "550px" }}

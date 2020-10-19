@@ -105,18 +105,12 @@ export class User extends Component {
         let response = await deleteUser(dataItem);
 
         if(response.result.resultType == 0) {
-            const data = this.state.data.map((item) =>{
-                if(item.id != dataItem.id) {
-                        return item;
-                    }
-                });
-
-            this.setState({ data, loading: false });
-            
             toast.success(`Xóa thành viên ${dataItem.username} thành công`, 2000);
         } else {
             toast.error(response.result.message, 2000);
         }
+
+        this.setState({loading: false });
     }
 
     addNewLine = (dataItem) => {

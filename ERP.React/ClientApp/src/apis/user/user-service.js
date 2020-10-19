@@ -96,7 +96,7 @@ export const deleteUser = async (user) => {
     let url = config.appSettings.ServerUrl + 'user/delete';
 
     let init = getInit('DELETE');
-    init.body = JSON.stringify(user.username);
+    init.body = JSON.stringify(user);
 
     let result = {};
 
