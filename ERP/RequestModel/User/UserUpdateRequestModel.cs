@@ -19,5 +19,7 @@ namespace ERP.RequestModel.User
         public bool? IsActive { get; set; }
 
         public string EmployeeCode { get; set; }
+
+        public string Note { get; set; }
     }
 }

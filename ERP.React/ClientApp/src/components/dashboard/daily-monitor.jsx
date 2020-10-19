@@ -40,21 +40,25 @@ export default class DailyMonitor extends React.Component {
                                 displayName='Nhân viên'
                                 boxValue={this.state.emloyeeCount}
                                 icon='fas fa-users'
+                                href=''
                                 displayText='Xem chi tiết'></InforCard>
                             <InforCard boxType='small-box bg bg-warning'
                                 displayName='Vắng có phép'
                                 boxValue={this.state.employeeLeaveWithPermission}
                                 icon='fas fa-users'
+                                href=''
                                 displayText='Xem chi tiết'></InforCard>
                             <InforCard boxType='small-box bg bg-danger'
                                 displayName='Vắng không phép'
                                 boxValue={this.state.employeeLeaveWithPermission}
                                 icon='fas fa-users'
+                                href=''
                                 displayText='Xem chi tiết'></InforCard>
                             <InforCard boxType='small-box bg bg-info'
                                 displayName='Tỷ lệ vắng'
                                 boxValue={this.state.percentLeave}
                                 icon='fas fa-chart-pie'
+                                href=''
                                 displayText='Xem chi tiết'></InforCard>
                         </div>
                     </div>

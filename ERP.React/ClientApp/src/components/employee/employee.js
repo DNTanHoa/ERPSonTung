@@ -87,7 +87,7 @@ export class Employee extends React.Component {
                                         <Column field="status" title="Trạng thái" width="150px" />
                                         <Column field="dateOfBirth" title="Ngày sinh" width="150px" format="{0: yyyy-MM-dd HH:mm:ss}"/>
                                         <Column field="age" title="Tuổi" width="80px"/>
-                                        <Column field="note" title="Ghi chú" />
+                                        <Column field="note" title="Ghi chú"/>
                                         <Column cell={this.CommandCell} width="200px" />
                                 </Grid>
                                 <EmployeeService onDataRecieved={this.dataRecieved}></EmployeeService>

@@ -30,9 +30,6 @@ export class Login extends Component {
             password, 
             rememberPassword
         } = this.state;
-
-        console.log(config.appSettings.ServerUrl);
-
         axios
             .post(
                 config.appSettings.ServerUrl + "user/login",
@@ -69,7 +66,9 @@ export class Login extends Component {
     render() {
 
         if(this.state.redirect) {
-            this.props.history.push('/hrm/dashboard');
+            return(
+                <Redirect to='/hrm'/>
+            )
         }
 
         return (

@@ -32,7 +32,7 @@ export const login = (loginRequest) => {
 
 
 export const getUsers = async () => {
-    let url = config.appSettings.ServerUrl + 'user/get'
+    let url = config.appSettings.ServerUrl + 'user/get';
 
     let init = getInit('GET');
 
@@ -50,30 +50,63 @@ export const getUsers = async () => {
     return data;
 }
 
-export const insertUser = (user) => {
-    let url = config.appSettings.ServerUrl + 'user/create'
+export const insertUser = async (user) => {
+    let url = config.appSettings.ServerUrl + 'user/create';
 
     let init = getInit('POST');
 
-    fetch(url, init)
+    init.body = JSON.stringify(user);
+
+    user.inEdit = false;
+
+    let result = {};
+
+    await fetch(url, init)
         .then(response =>
             response.json()
         )
         .then(json => {
-            return json.data;
+            result = json;
+            return result;
         });
+    return result;
 }
 
-export const updateUser = (user) => {
-    let url = config.appSettings.ServerUrl + 'user/update'
+export const updateUser = async (user) => {
+    let url = config.appSettings.ServerUrl + 'user/update';
 
     let init = getInit('PUT');
 
-    fetch(url, init)
+    init.body = JSON.stringify(user);
+
+    let result = {};
+
+    await fetch(url, init)
         .then(response =>
             response.json()
         )
         .then(json => {
-            return json.data;
+            result = json;
+            return json;
         })
+    return result;
+}
+
+export const deleteUser = (user) => {
+    let url = config.appSettings.ServerUrl + 'user/delete/' + user.Username;
+
+    let init = getInit('DELETE');
+
+    let result = {};
+
+    fetch(url, init)
+        .then(response => 
+            response.json()
+        )
+        .then(json => {
+            config.log(json);
+            result = json;
+            return result;
+        })
+    return result;
 }

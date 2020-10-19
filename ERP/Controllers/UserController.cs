@@ -82,34 +82,43 @@ namespace ERP.Controllers
             if(ModelState.IsValid)
             {
                 var user = userRepository.GetById(model.Id);
-                var databaseObject = model.MapTo<User>();
 
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-
-                if(user != null)
-                {
-                    if(SecurityHelper.Encrypt(model.Password, user.GuidCode) == user.GuidCode) //Not change password
+                if(user != null) 
+                { 
+                    if (userRepository.IsExistUsername(model.Username) && user.Username != model.Username)
                     {
-                        databaseObject.Password = user.Password; //update to old password
-                    }
-                    else //change password
-                    {
-                        databaseObject.InitDefault();
-                        databaseObject.SetPassword();
-                    }
-
-                    int result = userRepository.Update(databaseObject);
-
-                    if (result > 0)
-                    {
-                        Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
-                        Data = databaseObject;
+                        string message = "Tên đăng nhập đã tồn tại";
+                        Result = new ErrorResult(ActionType.Login, message);
+                        return GetCommonRespone();
                     }
                     else
                     {
-                        Result = new ErrorResult(ActionType.Edit, AppGlobal.EditError);
-                        Data = databaseObject;
+                        if (model.Password == user.Password) //Not change password
+                        {
+                            user.Password = user.Password; //update to old password
+                        }
+                        else //change password
+                        {
+                            user.MapFrom(model);
+                            user.InitBeforeSave(RequestUsername, InitType.Update);
+                            user.InitDefault();
+                            user.SetPassword();
+                        }
+
+                        int result = userRepository.Update(user);
+
+                        if (result > 0)
+                        {
+                            Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
+                            Data = user;
+                        }
+                        else
+                        {
+                            Result = new ErrorResult(ActionType.Edit, AppGlobal.EditError);
+                            Data = user;
+                        }
                     }
+                    
                 }
                 else
                 {
@@ -165,6 +174,39 @@ namespace ERP.Controllers
         {
             Data = userRepository.Get().ToList();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
+
+            return GetCommonRespone();
+        }
+
+        [HttpDelete]
+        public ActionResult<CommonResponeModel> Delete(string Username)
+        {
+            var user = userRepository.GetByUsername(Username);
+
+            if(user != null)
+            {
+                user.IsActive = false; //Set user to in active
+
+                user.InitBeforeSave(RequestUsername, InitType.Update);
+
+                int result = userRepository.Update(user);
+
+                if(result > 0)
+                {
+                    Result = new SuccessResult(ActionType.Delete, AppGlobal.DeleteSuccess);
+                    Data = user;
+                }   
+                else
+                {
+                    Result = new ErrorResult(ActionType.Delete, AppGlobal.DeleteError);
+                    Data = user;
+                }
+            }
+            else
+            {
+                string message = "Người dùng không tồn tại trong hệ thống";
+                Result = new ErrorResult(ActionType.Login, message);
+            }
 
             return GetCommonRespone();
         }

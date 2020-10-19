@@ -2,6 +2,7 @@ import React, { Component, PureComponent } from 'react';
 import { SidebarInfor } from '../user/sidebar-info'
 import SideBarNavigation from './sidebar-navigation';
 import { getItems } from '../../apis/role/role-service';
+import { loadTree } from '../../utils/sidebar-helper';
 
 export class SideBar extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ export class SideBar extends Component {
     componentDidMount = async () => {
         let data = await getItems();
         this.setState({role: data});
-        console.log(this.state);
+        loadTree();
     }
 
     render() {
@@ -32,7 +33,7 @@ export class SideBar extends Component {
                                 if(role.childrens.length > 0) {
                                     return(
                                         <SideBarNavigation displayName={role.item.navigation.displayName} 
-                                            href={role.item.navigation.componentPath}
+                                            href={role.item.navigation.componentPath != null ? role.item.navigation.componentPath : null}
                                             hasChild={true}
                                             childs={role.childrens}
                                             iconName={role.item.navigation.icon}></SideBarNavigation>
@@ -40,7 +41,7 @@ export class SideBar extends Component {
                                 }
                                 return(
                                     <SideBarNavigation displayName={role.item.navigation.displayName} 
-                                        href={role.item.navigation.componentPath}
+                                        href={role.item.navigation.componentPath != null ? role.item.navigation.componentPath : null}
                                         iconName={role.item.navigation.icon}></SideBarNavigation>
                                 )
                             })}

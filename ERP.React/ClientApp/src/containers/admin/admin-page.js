@@ -22,6 +22,7 @@ export class Layout extends Component {
                         <Route path='/hrm/category' component={Category}></Route>
                         <Route path='/hrm/user' component={User}></Route>
                         <Route path='/hrm/dashboard' component={DailyMonitor}></Route>
+                        <Route exact path='/hrm' component={DailyMonitor}></Route>
                     </Switch>
                 </div>
                 <Footer></Footer>
