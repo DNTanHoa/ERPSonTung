@@ -1,4 +1,5 @@
-﻿using ERP.Model.Extensions;
+﻿using ERP.Helpers;
+using ERP.Model.Extensions;
 using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.EmployeeRelative;
@@ -76,6 +77,7 @@ namespace ERP.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(EmployeeRelativeRequest request)
         {
             if (!ModelState.IsValid)

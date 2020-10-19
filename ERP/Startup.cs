@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ERP.Helpers;
 using ERP.Model.Models;
 using ERP.Repository;
 using ERP.ServiceExtensions;
+using ERP.Validators;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
 
 namespace ERP
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "CorsPolicy";
+        private readonly string MyAllowSpecificOrigins = "CorsPolicy";
 
         public Startup(IConfiguration configuration)
         {
@@ -31,18 +28,18 @@ namespace ERP
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(opt => {
+            services.AddCors(opt =>
+            {
                 opt.AddPolicy(MyAllowSpecificOrigins, builder =>
                 {
                     builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
             });
-            services.AddControllers().AddNewtonsoftJson();
+
+           
+
             services.AddTokenAuthentication(Configuration);
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HRM API", Version = "v1" });
@@ -82,9 +79,17 @@ namespace ERP
             services.AddTransient<IRoleGroupRepository, RoleGroupRepository>();
             services.AddTransient<IRoleGroupDetailRepository, RoleGroupDetailRepository>();
 
-            
             services.AddTransient<IEmployeeDayOffRepository, EmployeeDayOffRepository>();
             services.AddTransient<IEmployeeRelativeRepository, EmployeeRelativeRepository>();
+
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<EmployeeDayOffValidator>()).AddNewtonsoftJson();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -93,7 +98,6 @@ namespace ERP
             {
                 app.UseDeveloperExceptionPage();
             }
-
 
             app.UseHttpsRedirection();
 
