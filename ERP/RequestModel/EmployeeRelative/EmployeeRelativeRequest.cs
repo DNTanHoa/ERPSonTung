@@ -7,7 +7,7 @@ namespace ERP.RequestModel.EmployeeRelative
     public class EmployeeRelativeRequest:BaseModel
     {
         [Required(ErrorMessage = "Mã nhân viên - bắt buộc")]
-        [MinLength(4)]
+        [MinLength(2)]
         [MaxLength(20)]
         public string EmployeeCode { get; set; }
 
@@ -25,6 +25,8 @@ namespace ERP.RequestModel.EmployeeRelative
         public string Job { get; set; }
 
         [Required(ErrorMessage = "Công việc - bắt buộc")]
+        [MinLength(2)]
+        [MaxLength(20)]
         public string Phone { get; set; }
 
         [Required(ErrorMessage = "Tỉnh thành - bắt buộc")]
