@@ -53,6 +53,7 @@ export class EmployeeService extends React.Component {
 }
 
 export const insertItem = item => {
+    console.log(item);
     item.ProductID = generateId(data);
     item.inEdit = false;
     data.unshift(item);

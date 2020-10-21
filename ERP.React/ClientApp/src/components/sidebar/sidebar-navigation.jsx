@@ -6,22 +6,17 @@ import { Link } from 'react-router-dom';
 export default class SideBarNavigation extends React.Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            isActive: false,
-            menuLinkClassName: "nav-link",
-        }
-
     }
 
     icon = this.props.iconName ? <i className={this.props.iconName}></i> : null
     href = this.props.href ? this.props.href : null;
+    menuLinkClassName = this.props.isActive ? "nav-link active" : "nav-link"
 
     render = () =>  {
         if(this.props.hasChild) {
             return(
                 <li className="nav-item has-treeview">
-                    <a className={this.state.menuLinkClassName}>
+                    <a className={this.menuLinkClassName} key={this.props.code}>
                         {this.icon}
                         <p className="px-1">{this.props.displayName}</p>
                         <i className="right fas fa-angle-left" />
@@ -29,8 +24,8 @@ export default class SideBarNavigation extends React.Component {
                     <ul className="nav nav-treeview">
                         {this.props.childs.map((child) => {
                             return(
-                                <li className="nav-item">
-                                    <Link to={child.item.navigation.componentPath} className={this.state.menuLinkClassName}>
+                                <li className="nav-item" key={child.item.navigation.code}>
+                                    <Link to={child.item.navigation.componentPath} className={this.menuLinkClassName}>
                                         <i className={child.item.navigation.icon}></i>
                                         <p className="px-1">{child.item.navigation.displayName}</p>
                                     </Link>
@@ -42,7 +37,7 @@ export default class SideBarNavigation extends React.Component {
             )
         }
         return(
-            <li className="nav-item">
+            <li className="nav-item" key={this.props.code}>
                 <Link to={this.props.href} className={this.menuLinkClassName}>
                     {this.icon}
                     <p className="px-1">{this.props.displayName}</p>

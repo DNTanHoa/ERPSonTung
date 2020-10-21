@@ -78,7 +78,7 @@ namespace ERP
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IRoleGroupRepository, RoleGroupRepository>();
             services.AddTransient<IRoleGroupDetailRepository, RoleGroupDetailRepository>();
-
+            services.AddTransient<INavigationRepository, NavigationRepository>();
             services.AddTransient<IEmployeeDayOffRepository, EmployeeDayOffRepository>();
             services.AddTransient<IEmployeeRelativeRepository, EmployeeRelativeRepository>();
 

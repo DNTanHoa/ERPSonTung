@@ -5,6 +5,8 @@ import config from '../../appsettings.json';
 import { EmployeeCommandCell } from "./employee-command.jsx";
 import { EmployeeService, insertItem, deleteItem, getItems, updateItem } from './employee-service';
 
+import { CustomDatePicker } from '../editortemplates/date-picker';
+
 export class Employee extends React.Component {
 
     editField = "inEdit";
@@ -33,9 +35,15 @@ export class Employee extends React.Component {
     );
 
     dataRecieved = (employees) => {
-        this.setState({
-            data: employees
+        let data = employees.map((employee) => {
+            return {
+                ...employee, 
+                startDate: new Date(employee.startDate),
+                dateOfBirth: new Date(employee.dateOfBirth)
+            }
         })
+        console.log(data);
+        this.setState({ data });
     }
     
     render() {
@@ -83,9 +91,9 @@ export class Employee extends React.Component {
                                         </GridToolbar>
                                         <Column field="code" title="Mã quản lý" width="200px" editable={false} />
                                         <Column field="fullName" title="Nhân viên" width="250px" />
-                                        <Column field="startDate" title="Vào làm" width="150px" format="{0: yyyy-MM-dd HH:mm:ss}"/>
+                                        <Column field="startDate" title="Vào làm" width="150px" format="dd-MM-yyyy" cell={CustomDatePicker}/>
                                         <Column field="status" title="Trạng thái" width="150px" />
-                                        <Column field="dateOfBirth" title="Ngày sinh" width="150px" format="{0: yyyy-MM-dd HH:mm:ss}"/>
+                                        <Column field="dateOfBirth" title="Ngày sinh" width="150px" format="dd-MM-yyyy" cell={CustomDatePicker}/>
                                         <Column field="age" title="Tuổi" width="80px"/>
                                         <Column field="note" title="Ghi chú"/>
                                         <Column cell={this.CommandCell} width="200px" />

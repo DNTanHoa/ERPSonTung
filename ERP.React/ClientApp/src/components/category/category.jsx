@@ -4,10 +4,27 @@ import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-g
 import { AutoComplete, ComboBox, DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import config from '../../appsettings.json';
 import { CategoryCommandCell } from "./category-command.jsx";
-import { insertItem, getItems, updateItem, deleteItem } from "./category-service.js";
+import { getEntities } from "../../apis/entitycenter/entitycenter-service"
+import { Loading } from '../loading';
+import { ToastContainer, toast } from 'react-toastify';
+import { insertCategory, getCategories, updateItem, deleteItem, getCategoriesByEntity } from "../../apis/category/category-service";
+import { filterBy } from '@progress/kendo-data-query';
 
+
+let entities = [];
+
+let categories = [];
+
+const delay = 300;
 
 export class Category extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.search = this.search.bind(this);
+    }
+
     editField = "inEdit";
 
     state = {
@@ -16,6 +33,7 @@ export class Category extends React.Component {
         skip: 0,
         take: 1000,
         selectedEntity:"",
+        loading: false,
         entities:[]
     }
 
@@ -43,22 +61,32 @@ export class Category extends React.Component {
         />
     );
 
-    componentDidMount() {
-        fetch(this.url, this.init)
-        .then(response =>
-            response.json()
-        )
-        .then(json => {
-            this.setState({
-                data: json.data
-            });
-        });
+    componentDidMount = async () =>  {
+        this.setState({loading: true})
+        categories = await getCategories();
+        entities = await getEntities();
+        this.setState({data: categories, entities: entities ,loading: false});
     }
 
-    dataRecieved = (data) => {
-        this.setState({
-            data: data
-        });
+    search = async (e) => {
+        this.setState({loading: true});
+        let result = categories.filter(item => item.entity.includes(this.state.selectedEntity))
+        this.setState({data: result, loading: false});
+    }
+
+    filterEntitiesChange = (e) => {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+            this.setState({entities: this.filterEntities(e.filter)});
+        }, delay);
+    }
+
+    filterEntities(filter) {
+        return filterBy(entities, filter);
+    }
+
+    selectedEntityChange = (e) => {
+        this.setState({selectedEntity: e.value.entity});
     }
 
     render() {
@@ -73,7 +101,7 @@ export class Category extends React.Component {
                             <div className="col-sm-6">
                                 <ol className="breadcrumb float-sm-right">
                                     <li className="breadcrumb-item"><a href="#">Quản lý danh mục</a></li>
-                                    <li className="breadcrumb-item active">Danh sácch đối tượng</li>
+                                    <li className="breadcrumb-item active">Danh sách đối tượng</li>
                                 </ol>
                             </div>
                         </div>
@@ -89,10 +117,19 @@ export class Category extends React.Component {
                                             <b>Danh mục</b>
                                         </div>
                                         <div class="col-md-4">
-                                            <ComboBox data={this.state.entities} style={{width: '100%'}}/>
+                                            <DropDownList data={this.state.entities} 
+                                                textField="note"
+                                                dataItemKey="entity"
+                                                delay={1000}
+                                                defaultItem={{note :"-- Tất cả --", entity : ""}}
+                                                filterable={true}
+                                                value={this.state.value}
+                                                onChange={this.selectedEntityChange}
+                                                onFilterChange={this.filterEntitiesChange}
+                                                style={{width: '100%'}}/>
                                         </div>
                                         <div class="col-md-1 mt-1 mt-md-0">
-                                            <button type="button" class="btn btn-success w-100">
+                                            <button type="button" class="btn btn-success w-100" onClick={this.search}>
                                                 <span class="fa fa-search"></span>
                                             </button>
                                         </div>
@@ -103,15 +140,15 @@ export class Category extends React.Component {
                                         data={this.state.data.slice(this.state.skip, this.state.take + this.state.skip)}
                                         onItemChange={this.itemChange}
                                         pageable={true}
+                                        resizable={true}
                                         total={this.state.data.length}
                                         skip={this.state.skip}
                                         take={this.state.take}
                                         onPageChange={this.pageChange}
                                         editField={this.editField}>
                                         <GridToolbar>
-                                            <button title="Add new"
+                                            <button title="Thêm mới"
                                                     className="btn btn-success"
-                                                    title="Thêm thành viên"
                                                     onClick={this.addNew}>
                                                 <i className="fas fa-plus-circle"></i>
                                             </button>
@@ -124,6 +161,7 @@ export class Category extends React.Component {
                                         <Column field="note" title="Ghi chú" />
                                         <Column cell={this.CommandCell} width="200px" />
                                 </Grid>
+                                {this.state.loading === true ? <Loading></Loading> : null} 
                                 </div>
                             </div>
                         </div>
@@ -147,7 +185,7 @@ export class Category extends React.Component {
     add = dataItem => {
         dataItem.inEdit = true;
 
-        const data = insertItem(dataItem);
+        const data = insertCategory(dataItem);
         this.setState({
             data: data
         });
@@ -159,7 +197,6 @@ export class Category extends React.Component {
         this.setState({ data });
     };
 
-    // Local state operations
     discard = dataItem => {
         const data = [...this.state.data];
         data.splice(0, 1)
@@ -167,7 +204,7 @@ export class Category extends React.Component {
     };
 
     cancel = dataItem => {
-        const originalItem = getItems().find(
+        const originalItem = getCategories().find(
             p => p.id === dataItem.id
         );
         const data = this.state.data.map(item =>

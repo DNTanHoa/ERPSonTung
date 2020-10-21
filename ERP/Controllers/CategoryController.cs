@@ -28,7 +28,7 @@ namespace ERP.Controllers
             this.categoryRepository = categoryRepository;
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult<CommonResponeModel> GetByEntity(CategoryGetRequestModel model)
         {
             Data =  categoryRepository.GetByEntity(model.Entity).ToList();

@@ -1,8 +1,9 @@
 import config from '../../appsettings.json';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Loading} from '../loading';
-import { Init } from './api-caller.js'
+import axios from "axios";
+import {getInit} from '../api-caller';
+import React from 'react';
+import { Loading} from '../../components/loading';
+import { JsxEmit } from 'typescript';
 
 let data = [];
 
@@ -11,19 +12,18 @@ const generateId = data =>
 
 const props = {};
 
-export const insertItem = item => {
-    item.ProductID = generateId(data);
+export const insertCategory = item => {
     item.inEdit = false;
     data.unshift(item);
     return data;
 };
 
-export const getItems = () => {
+export const getCategories = async () => {
     let url = config.appSettings.ServerUrl + 'category/getall'
 
-    let init = Init('GET');
+    let init = getInit('GET');
 
-    var respone =  fetch(url, init)
+    await fetch(url, init)
         .then(response =>
             response.json()
         )
@@ -45,3 +45,24 @@ export const deleteItem = item => {
     data.splice(index, 1);
     return data;
 };
+
+
+export const getCategoriesByEntity = async (entity)  => {
+    let url = config.appSettings.ServerUrl + 'category/getbyentity';
+
+    let init = getInit('POST');
+
+    let body = { entity };
+
+    init.body = JSON.stringify(body);
+
+    await fetch(url, init)
+        .then(response =>
+            response.json()
+        )
+        .then(json => {
+            data = json.data;
+            return data;
+        });
+    return data;
+}

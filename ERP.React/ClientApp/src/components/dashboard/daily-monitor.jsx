@@ -23,7 +23,7 @@ export default class DailyMonitor extends React.Component {
                         <div className="row mb-2">
                             <div className="col-sm-6">
                                 <ol className="breadcrumb float-sm-left">
-                                    <li className="breadcrumb-item"><Link href="#">Theo dõi tổng quan</Link></li>
+                                    <li className="breadcrumb-item"><a href="#">Theo dõi tổng quan</a></li>
                                     <li className="breadcrumb-item active">Tình hình nhân sự</li>
                                 </ol>
                             </div>

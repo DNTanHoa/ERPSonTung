@@ -7,6 +7,8 @@ export class InforCard extends React.Component {
         super(props);
     }
 
+    href = this.props.href ? this.props.href : '';
+
     render() {
         return(
             <div className="col-6 col-lg-3">
@@ -18,7 +20,7 @@ export class InforCard extends React.Component {
                     <div className="icon">
                         <i className={this.props.icon} />
                     </div>
-                    <Link to={this.props.href} className="small-box-footer">{this.props.displayText} <i className="fas fa-arrow-circle-right" /></Link>
+                    <Link to={this.href} className="small-box-footer">{this.props.displayText} <i className="fas fa-arrow-circle-right" /></Link>
                 </div>
             </div>
         )
