@@ -16,12 +16,14 @@ namespace ERP.Ultilities.Global
             configurationSection = builder.Build().GetSection("Messages").GetSection("Common");
         }
 
-        public static string GetMessage(string Key)
+        public static string GetMessage(string Key, params object[] args)
         {
-            return configurationSection.GetSection(Key).Value;
+            return string.Format(configurationSection.GetSection(Key).Value, args);
         }
 
         //example get 404
         public static string _404 => GetMessage("404");
+
+        public static string Require(string fieldName) => GetMessage("Require", fieldName);
     }
 }
