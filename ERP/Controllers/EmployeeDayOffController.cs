@@ -93,7 +93,7 @@ namespace ERP.Controllers
                     }
                     else
                     {
-                        Result = new ErrorResult(ActionType.Select, "Lỗi 404");
+                        Result = new ErrorResult(ActionType.Select, CommonMessageGlobal._404);
                     }
                 }
 
