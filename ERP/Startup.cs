@@ -1,6 +1,7 @@
 ﻿using ERP.Helpers;
 using ERP.Model.Models;
 using ERP.Repository;
+using ERP.Repository.Statistic;
 using ERP.ServiceExtensions;
 using ERP.Validators;
 using FluentValidation.AspNetCore;
@@ -81,6 +82,7 @@ namespace ERP
             services.AddTransient<INavigationRepository, NavigationRepository>();
             services.AddTransient<IEmployeeDayOffRepository, EmployeeDayOffRepository>();
             services.AddTransient<IEmployeeRelativeRepository, EmployeeRelativeRepository>();
+            services.AddTransient<IStatisticRepository, StatisticRepository>();
 
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<EmployeeDayOffValidator>()).AddNewtonsoftJson();
 

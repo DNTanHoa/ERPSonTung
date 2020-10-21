@@ -18,7 +18,7 @@ namespace ERP.RequestModel.Employee
         [Required(ErrorMessage = "Lý do nghỉ - bắt buộc")]
         public string Reason { get; set; }
 
-        [Required(ErrorMessage = "trạng thái duyệt - bắt buộc")]
+        [Required(ErrorMessage = "Trạng thái duyệt - bắt buộc")]
         public string ApproveStatus { get; set; }
     }
 }
