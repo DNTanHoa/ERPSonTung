@@ -1,4 +1,5 @@
-﻿using ERP.Model.Extensions;
+﻿using ERP.Helpers;
+using ERP.Model.Extensions;
 using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.CheckInOutDevice;
@@ -33,9 +34,10 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(CheckInOutDeviceCreateRequestModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var databaseObject = model.MapTo<CheckInOutDevice>();
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
@@ -54,11 +56,12 @@ namespace ERP.Controllers
                 string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
                 Result = new ErrorResult(ActionType.Insert, message);
             }
-            
+
             return GetCommonRespone();
         }
 
         [HttpPut]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(CheckInOutDeviceUpdateRequestModel model)
         {
             if (ModelState.IsValid)
@@ -80,7 +83,7 @@ namespace ERP.Controllers
                 string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
                 Result = new ErrorResult(ActionType.Edit, message);
             }
-            
+
             return GetCommonRespone();
         }
 
@@ -88,7 +91,7 @@ namespace ERP.Controllers
         public ActionResult<CommonResponeModel> Delete(long Id)
         {
             int result = checkInOutDeviceRepository.Delete(Id);
-            
+
             if (result > 0)
             {
                 Result = new SuccessResultFactory().Factory(ActionType.Delete);
@@ -102,14 +105,15 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(CheckInOutDeviceSaveChangeRequestModel model)
         {
             if (ModelState.IsValid)
             {
                 var databaseObject = model.MapTo<CheckInOutDevice>();
                 int result = 0;
-                
-                if(model.Id > 0)
+
+                if (model.Id > 0)
                 {
                     result = checkInOutDeviceRepository.Update(databaseObject);
                 }
@@ -118,10 +122,10 @@ namespace ERP.Controllers
                     result = checkInOutDeviceRepository.Insert(databaseObject);
                 }
 
-                if(result > 0)
+                if (result > 0)
                 {
                     Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
-                }   
+                }
                 else
                 {
                     Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);

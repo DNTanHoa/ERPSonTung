@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ERP.RequestModel.CheckInOutDevice
 {
@@ -10,6 +6,7 @@ namespace ERP.RequestModel.CheckInOutDevice
     {
         [Required(ErrorMessage = "Mã thiết bị không được để trống")]
         public string Code { get; set; }
+
         public string TextName { get; set; }
         public string ConnectionTypeCode { get; set; }
         public string IPAddress { get; set; }

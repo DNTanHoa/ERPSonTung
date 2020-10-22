@@ -1,14 +1,10 @@
 ﻿using ERP.Model.Models;
 using ERP.Repository;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Validators
 {
-    public class EmoployeeValidator : AbstractValidator<Employee> 
+    public class EmoployeeValidator : AbstractValidator<Employee>
     {
         private readonly ICategoryRepository categoryRepository;
 
