@@ -4,7 +4,6 @@ namespace ERP.RequestModel.CheckInOutDevice
 {
     public class CheckInOutDeviceCreateRequestModel
     {
-        [Required(ErrorMessage = "Mã thiết bị không được để trống")]
         public string Code { get; set; }
 
         public string TextName { get; set; }

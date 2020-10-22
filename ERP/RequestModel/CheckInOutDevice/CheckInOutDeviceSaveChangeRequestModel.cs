@@ -10,7 +10,6 @@ namespace ERP.RequestModel.CheckInOutDevice
     {
         public long Id { get; set; }
 
-        [Required(ErrorMessage = "Mã thiết bị không được để trống")]
         public string Code { get; set; }
         public string TextName { get; set; }
         public string ConnectionTypeCode { get; set; }
