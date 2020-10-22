@@ -17,5 +17,9 @@ namespace ERP.Repository
         public IEnumerable<EmployeeDataTransfer> GetDataTransferHasFilter(string DepartmentCode, string GroupCode, string LaborGroupCode, string StatusCode, DateTime? StartFromDate, DateTime? StartToDate);
 
         public bool IsExistCode(string Code);
+
+        public IEnumerable<Employee> GetEmployeeHasBirthdayInTimeRange(DateTime FromDate, DateTime ToDate);
+
+        public IEnumerable<Employee> GetEmployeeHasContractExpireInTimeRange(DateTime FromDate, DateTime ToDate);
     }
 }

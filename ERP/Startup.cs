@@ -83,6 +83,7 @@ namespace ERP
             services.AddTransient<IEmployeeDayOffRepository, EmployeeDayOffRepository>();
             services.AddTransient<IEmployeeRelativeRepository, EmployeeRelativeRepository>();
             services.AddTransient<IStatisticRepository, StatisticRepository>();
+            services.AddTransient<IEmployeeContractRepository, EmployeeContractRepository>();
 
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<EmployeeDayOffValidator>()).AddNewtonsoftJson();
 

@@ -116,7 +116,7 @@ export class Category extends React.Component {
                                         <div className="col-md-1 mt-md-1">
                                             <b>Danh mục</b>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div className="col-md-4">
                                             <DropDownList data={this.state.entities} 
                                                 textField="note"
                                                 dataItemKey="entity"
@@ -153,13 +153,13 @@ export class Category extends React.Component {
                                                 <i className="fas fa-plus-circle"></i>
                                             </button>
                                         </GridToolbar>
-                                        <Column field="id" title="ID" width="80px" editable={false} />
+                                        <Column field="id" title="ID" width="80px" editable={false}/>
                                         <Column field="code" title="Mã quản lý" width="200px" />
                                         <Column field="entity" title="Đối tượng" width="200px" />
                                         <Column field="subCode" title="Mã phụ" width="200px" />
                                         <Column field="name" title="Tên hiển thị" width="200px" />
-                                        <Column field="note" title="Ghi chú" />
-                                        <Column cell={this.CommandCell} width="200px" />
+                                        <Column field="note" title="Ghi chú"/>
+                                        <Column cell={this.CommandCell} width="200px" locked={true}/>
                                 </Grid>
                                 {this.state.loading === true ? <Loading></Loading> : null} 
                                 </div>

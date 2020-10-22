@@ -8,6 +8,8 @@ import { BrowserRouter as Router, Route, Redirect, useHistory, useLocation, Swit
 import DailyMonitor from '../../components/dashboard/daily-monitor';
 import { User } from '../../components/user/user-list';
 import { Navigation } from '../../components/navigation/navigation-list';
+import { CategoryDistinct } from '../../components/category/category-distinct';
+import TimeKeeping from '../../components/report/time-keeping';
 
 export class Layout extends Component {
   static displayName = Layout.name;
@@ -25,6 +27,16 @@ export class Layout extends Component {
                   <Route path='/hrm/dashboard' component={DailyMonitor}></Route>
                   <Route path='/hrm/navigation' component={Navigation}></Route>
                   <Route exact path='/hrm' component={DailyMonitor}></Route>
+                  <Route exact path='/hrm/department' render={(props) => <CategoryDistinct {...props} categoryName='bộ phận' entity='Department'/>}></Route>
+                  <Route exact path='/hrm/group' render={(props) => <CategoryDistinct {...props} categoryName='tổ nhóm' entity='Group'/>}></Route>
+                  <Route exact path='/hrm/laborgroup' render={(props) => <CategoryDistinct {...props} categoryName='nhóm lao động' entity='LaborGroup'/>}></Route>
+                  <Route exact path='/hrm/job' render={(props) => <CategoryDistinct {...props} categoryName='vị trí công việc' entity='Job'/>}></Route>
+                  <Route exact path='/hrm/bank' render={(props) => <CategoryDistinct {...props} categoryName='ngân hàng' entity='Bank'/>}></Route>
+                  <Route exact path='/hrm/school' render={(props) => <CategoryDistinct {...props} categoryName='trường học' entity='School'/>}></Route>
+                  <Route exact path='/hrm/province' render={(props) => <CategoryDistinct {...props} categoryName='Tỉnh' entity='Province'/>}></Route>
+                  <Route exact path='/hrm/district' render={(props) => <CategoryDistinct {...props} categoryName='Huyện' entity='District'/>}></Route>
+                  <Route exact path='/hrm/ward' render={(props) => <CategoryDistinct {...props} categoryName='Xã' entity='Ward'/>}></Route>
+                  <Route exact path='/hrm/timekeeping' component={TimeKeeping}></Route>
               </Switch>
           </div>
           <Footer></Footer>

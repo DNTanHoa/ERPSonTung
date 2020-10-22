@@ -14,7 +14,7 @@ namespace ERP.Repository.Statistic
         public IEnumerable<DashboardOverviewDataTransfer> GetDataTransferDashboardOverview(DateTime fromDate, DateTime toDate)
         {
             SqlParameter[] parameters =
-           {
+            {
                 new SqlParameter("@fromDate",fromDate),
                 new SqlParameter("@toDate",toDate),
             };

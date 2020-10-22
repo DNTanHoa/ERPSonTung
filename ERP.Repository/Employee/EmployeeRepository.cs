@@ -42,6 +42,18 @@ namespace ERP.Repository
             return table.ToList<EmployeeDataTransfer>();
         }
 
+        public IEnumerable<Employee> GetEmployeeHasBirthdayInTimeRange(DateTime FromDate, DateTime ToDate)
+        {
+            ///TODO: Lấy thông tin nhân viên có ngày sinh theo khoảng thời gian
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Employee> GetEmployeeHasContractExpireInTimeRange(DateTime FromDate, DateTime ToDate)
+        {
+            ///TODO: Lấy thông tin nhân viên có hợp đồng sắp hết hạn trong khoảng thời gian
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<EmployeeModelTemplate> GetModelTemplates()
         {
             var query = from employee in context.Employee

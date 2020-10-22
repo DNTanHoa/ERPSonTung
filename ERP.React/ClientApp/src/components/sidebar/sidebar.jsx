@@ -23,7 +23,7 @@ export class SideBar extends Component {
     }
 
     handleNavigationClick = (role) => {
-        console.log(role);
+        //console.log(role);
     }
 
     render() {
