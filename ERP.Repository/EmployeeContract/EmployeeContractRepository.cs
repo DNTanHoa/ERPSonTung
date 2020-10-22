@@ -9,7 +9,8 @@ namespace ERP.Repository
     {
         public EmployeeContractRepository(SonTungContext context) : base(context)
         {
-
+            this.context = context;
         }
+
     }
 }
