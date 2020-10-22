@@ -8,12 +8,10 @@
     <Folder Include="EmployeeDocument\" />
     <Folder Include="EmployeeHistory\" />
     <Folder Include="EmployeePaper\" />
-    <Folder Include="Holiday\" />
     <Folder Include="EmployeePayroll\" />
     <Folder Include="TrainingCourseEmployee\" />
     <Folder Include="TrainingCourse\" />
     <Folder Include="ShiftEmployee\" />
-    <Folder Include="Shift\" />
     <Folder Include="RecruitmentPlan\" />
     <Folder Include="Post\" />
   </ItemGroup>

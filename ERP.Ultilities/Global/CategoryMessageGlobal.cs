@@ -17,9 +17,9 @@ namespace ERP.Ultilities.Global
             configurationSection = builder.Build().GetSection("Messages").GetSection("Category");
         }
 
-        public static string GetMessage(string Key)
+        public static string GetMessage(string Key, params object[] args)
         {
-            return configurationSection.GetSection(Key).Value;
+            return string.Format(configurationSection.GetSection(Key).Value, args);
         }
 
         //example get EmptyFirstName

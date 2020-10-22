@@ -1,6 +1,7 @@
 ﻿using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.Employee;
+using ERP.Ultilities.Global;
 using FluentValidation;
 
 namespace ERP.Validators
@@ -15,23 +16,21 @@ namespace ERP.Validators
 
             this._categoryRepository = categoryRepository;
 
-            RuleFor(x => x.EmployeeCode).NotEmpty().WithMessage("Mã nhân viên - Bắt buộc")
-                .MinimumLength(2).WithMessage("Mã nhân viên - ít nhất 2 ký tự")
-                .MaximumLength(20).WithMessage("Mã nhân viên - tối đa 20 ký tự");
+            RuleFor(x => x.EmployeeCode).NotEmpty().WithMessage(CommonMessageGlobal.Require("Mã nhân viên"))
+                .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Mã nhân viên", 2))
+                .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Mã nhân viên", 20));
 
-            RuleFor(x => x.Reason).NotEmpty().WithMessage("Lý do nghỉ - Bắt buộc")
-                .MinimumLength(2).WithMessage("Lý do nghỉ - ít nhất 2 ký tự")
-                .MaximumLength(20).WithMessage("Lý do nghỉ - tối đa 20 ký tự");
+            RuleFor(x => x.Reason).NotEmpty().WithMessage(CommonMessageGlobal.Require("Lý do nghỉ"))
+                .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Lý do nghỉ", 2)) 
+                .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Lý do nghỉ", 20));
 
-            RuleFor(x => x.Reason).Must(IsValidReasonCode).WithMessage("Lý do nghỉ không tồn tại trong danh mục");
-
-
-            RuleFor(x => x.ApproveStatus).NotEmpty().WithMessage("Trạng thái duyệt - Bắt buộc")
-                .MinimumLength(2).WithMessage("Trạng thái duyệt - ít nhất 2 ký tự")
-                .MaximumLength(20).WithMessage("Trạng thái duyệt - tối đa 20 ký tự");
+            RuleFor(x => x.Reason).Must(IsValidReasonCode).WithMessage(CommonMessageGlobal.NotExistInCategory("Lý do nghỉ"));
 
 
-            RuleFor(x => x.ApproveStatus).Must(IsValidApproveCode).WithMessage("Trạng thái duyệt không tồn tại trong danh mục");
+            RuleFor(x => x.ApproveStatus).NotEmpty().WithMessage(CommonMessageGlobal.Require("Trạng thái duyệt"))
+                .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Trạng thái duyệt", 2))
+                .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Trạng thái duyệt", 20))
+                .Must(IsValidApproveCode).WithMessage(CommonMessageGlobal.NotExistInCategory("Trạng thái duyệt"));
 
         }
 

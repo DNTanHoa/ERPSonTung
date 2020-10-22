@@ -1,18 +1,13 @@
-﻿using ERP.Model.Models;
+﻿using ERP.Helpers;
 using ERP.Repository;
 using ERP.RequestModel.Category;
 using ERP.ResponeModel;
 using ERP.Ultilities.Enum;
 using ERP.Ultilities.Factory.Implement;
-using ERP.Ultilities.Global;
-using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 
 namespace ERP.Controllers
 {
@@ -31,7 +26,7 @@ namespace ERP.Controllers
         [HttpPost]
         public ActionResult<CommonResponeModel> GetByEntity(CategoryGetRequestModel model)
         {
-            Data =  categoryRepository.GetByEntity(model.Entity).ToList();
+            Data = categoryRepository.GetByEntity(model.Entity).ToList();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
             return GetCommonRespone();
@@ -40,7 +35,7 @@ namespace ERP.Controllers
         [HttpGet]
         public ActionResult<CommonResponeModel> GetAll()
         {
-            Data =  categoryRepository.Get().ToList();
+            Data = categoryRepository.Get().ToList();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
             return GetCommonRespone();
         }
@@ -48,7 +43,7 @@ namespace ERP.Controllers
         [HttpDelete]
         public ActionResult<CommonResponeModel> DeleteByCode(string Code)
         {
-            int result =  categoryRepository.Delete(Code);
+            int result = categoryRepository.Delete(Code);
 
             if (result > 0)
             {

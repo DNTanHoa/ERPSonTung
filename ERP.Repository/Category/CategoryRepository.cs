@@ -3,20 +3,18 @@ using ERP.Model.Models;
 using ERP.Ultilities.Extensions;
 using ERP.Ultilities.Global;
 using ERP.Ultilities.Helpers;
-using System.Data.SqlClient;
-using Microsoft.Extensions.Caching.Memory;
-using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Net.WebSockets;
 
 namespace ERP.Repository
 {
     public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
-        public CategoryRepository(SonTungContext context) : base(context) { }
+        public CategoryRepository(SonTungContext context) : base(context)
+        {
+        }
 
         public IEnumerable<Category> GetByEntity(string Entity)
         {
@@ -55,10 +53,20 @@ namespace ERP.Repository
             return context.Category.Where(item => item.ParentCode.Equals(ParentCode)).ToList();
         }
 
-        public bool IsExistEntityWithCode(string Entity, string Code, out Category category)
+        public bool IsExistEntityWithCode(string entity, string code, out Category category)
         {
-            category = context.Category.Where(item => item.Entity.Equals(Entity) &&
-                                              item.Code.Equals(Code)).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(entity))
+            {
+                category=new Category();
+            }
+            else
+            {
+                category = context.Category.Where(item => item.Entity.Equals(entity) &&
+                                              item.Code.Equals(code)).FirstOrDefault();
+            }
+
+            
             return category != null ? true : false;
         }
     }

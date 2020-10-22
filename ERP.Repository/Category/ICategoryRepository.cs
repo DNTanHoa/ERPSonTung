@@ -20,6 +20,6 @@ namespace ERP.Repository
 
         public List<CategoryModelTemplate> GetModelTemplateByEntityAndParentCode(string Entity, string ParentCode);
 
-        public bool IsExistEntityWithCode(string Entity, string Code, out Category category);
+        public bool IsExistEntityWithCode(string entity, string code, out Category category);
     }
 }
