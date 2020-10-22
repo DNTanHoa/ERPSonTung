@@ -1,9 +1,6 @@
 ﻿using ERP.Repository;
 using ERP.RequestModel.EmployeeContract;
-using ERP.Ultilities.Global;
 using FluentValidation;
-using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace ERP.Validators
 {
@@ -14,7 +11,6 @@ namespace ERP.Validators
         public EmployeeContractCreateValidator(IEmployeeContractRepository employeeContractRepository)
         {
             this._employeeContractRepository = employeeContractRepository;
-
         }
     }
 
@@ -25,8 +21,6 @@ namespace ERP.Validators
         public EmployeeContractUpdateValidator(IEmployeeContractRepository employeeContractRepository)
         {
             this._employeeContractRepository = employeeContractRepository;
-
-
         }
     }
 
@@ -37,7 +31,6 @@ namespace ERP.Validators
         public EmployeeContractSaveChangeValidator(IEmployeeContractRepository employeeContractRepository)
         {
             this._employeeContractRepository = employeeContractRepository;
-
         }
     }
 }

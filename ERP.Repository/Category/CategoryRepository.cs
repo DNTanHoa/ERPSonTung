@@ -58,15 +58,25 @@ namespace ERP.Repository
 
             if (string.IsNullOrEmpty(entity))
             {
-                category=new Category();
+                category = new Category();
             }
             else
             {
-                category = context.Category.Where(item => item.Entity.Equals(entity) &&
+
+                if (string.IsNullOrWhiteSpace(code))
+                {
+                    category = new Category();
+                }
+                else
+                {
+                    category = context.Category.Where(item => item.Entity.Equals(entity) &&
                                               item.Code.Equals(code)).FirstOrDefault();
+                }
+
+
             }
 
-            
+
             return category != null ? true : false;
         }
     }
