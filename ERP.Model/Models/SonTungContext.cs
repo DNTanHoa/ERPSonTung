@@ -41,6 +41,8 @@ namespace ERP.Model.Models
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<EntityCenter> EntityCenter { get; set; }
         public virtual DbSet<CheckInOutDevice> CheckInOutDevice { get; set; }
+        public virtual DbSet<Candidate> Candidate { get; set; }
+        public virtual DbSet<CandidatePaper> CandidatePaper { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
