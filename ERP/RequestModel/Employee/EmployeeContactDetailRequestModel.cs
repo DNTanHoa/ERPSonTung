@@ -11,6 +11,9 @@ namespace ERP.RequestModel.Employee
         [Required(ErrorMessage = "không được để trống")]
         public string FullName { get; set; }
 
+        /// <summary>
+        /// Temporary là tạm trú
+        /// </summary>
         [Required(ErrorMessage = "không được để trống")]
         public string TemporaryProvinceCode { get; set; }
 
@@ -20,10 +23,11 @@ namespace ERP.RequestModel.Employee
 
         public string TemporaryAddtional { get; set; }
 
-        [Required(ErrorMessage = "không được để trống")]
         public string TemporaryAddress { get; set; }
 
-        [Required(ErrorMessage = "không được để trống")]
+        /// <summary>
+        /// Origin là thường trú
+        /// </summary>
         public string OriginProvinceCode { get; set; }
 
         public string OriginDistrictCode { get; set; }
@@ -32,7 +36,6 @@ namespace ERP.RequestModel.Employee
 
         public string OriginAddtional { get; set; }
 
-        [Required(ErrorMessage = "không được để trống")]
         public string OriginAddress { get; set; }
 
         [DataType(DataType.PhoneNumber)]
