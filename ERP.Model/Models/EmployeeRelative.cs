@@ -11,6 +11,9 @@ namespace ERP.Model.Models
         public string Job { get; set; }
         public string Phone { get; set; }
         public string OriginProvinceCode { get; set; }
+
+        public bool IsDependentPerson { get; set; }
+
         public string Name { get; set; }
 
     }

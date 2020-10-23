@@ -1,10 +1,9 @@
 ﻿using ERP.Model.Models;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace ERP.RequestModel.EmployeeRelative
 {
-    public class EmployeeRelativeRequest:BaseModel
+    public class EmployeeRelativeRequest : BaseModel
     {
         public string EmployeeCode { get; set; }
 
@@ -19,6 +18,8 @@ namespace ERP.RequestModel.EmployeeRelative
         public string Phone { get; set; }
 
         public string OriginProvinceCode { get; set; }
+
+        public bool IsDependentPerson { get; set; }
 
         public string Name { get; set; }
     }

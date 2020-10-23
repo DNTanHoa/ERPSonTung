@@ -22,9 +22,8 @@ namespace ERP.Validators
 
             RuleFor(x => x.Reason).NotEmpty().WithMessage(CommonMessageGlobal.Require("Lý do nghỉ"))
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Lý do nghỉ", 2)) 
-                .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Lý do nghỉ", 20));
-
-            RuleFor(x => x.Reason).Must(IsValidReasonCode).WithMessage(CommonMessageGlobal.NotExistInCategory("Lý do nghỉ"));
+                .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Lý do nghỉ", 20))
+                .Must(IsValidReasonCode).WithMessage(CommonMessageGlobal.NotExistInCategory("Lý do nghỉ"));
 
 
             RuleFor(x => x.ApproveStatus).NotEmpty().WithMessage(CommonMessageGlobal.Require("Trạng thái duyệt"))

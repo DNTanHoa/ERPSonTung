@@ -30,5 +30,10 @@ namespace ERP.Ultilities.Global
         public static string NotExistInCategory(string fieldName) => GetMessage("NotExistInCategory", fieldName);
 
         public static string Invalid(string fieldName) => GetMessage("Invalid", fieldName);
+        public static string GreaterThanOrEqual(string fieldName, int number) => GetMessage("GreaterThanOrEqual", fieldName, number);
+        public static string GreaterThan(string fieldName, int number) => GetMessage("GreaterThan", fieldName, number);
+        public static string LessThanOrEqual(string fieldName, int number) => GetMessage("LessThanOrEqual", fieldName, number);
+        public static string LessThan(string fieldName, int number) => GetMessage("LessThan", fieldName, number);
+
     }
 }
