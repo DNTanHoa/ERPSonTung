@@ -1,4 +1,5 @@
-﻿using ERP.Model.Extensions;
+﻿using ERP.Helpers;
+using ERP.Model.Extensions;
 using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.Holiday;
@@ -33,6 +34,7 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(HolidayCreateRequestModel model)
         {
             if(ModelState.IsValid)
@@ -59,6 +61,7 @@ namespace ERP.Controllers
         }
 
         [HttpPut]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(HolidayUpdateRequestModel model)
         {
             if (ModelState.IsValid)
@@ -102,6 +105,7 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(HolidaySaveChangeRequestModel model)
         {
             if (ModelState.IsValid)

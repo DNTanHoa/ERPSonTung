@@ -1,11 +1,9 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace ERP.RequestModel.Holiday
 {
     public class HolidayCreateRequestModel
     {
-        [Required(ErrorMessage = "Mã ngày lễ không được để trống")]
         public string Code { get; set; }
 
         public string Name { get; set; }

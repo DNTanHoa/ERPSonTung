@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
+using ERP.Helpers;
 using ERP.Model.DataTransferObjects;
 using ERP.Model.Extensions;
 using ERP.Model.Models;
@@ -113,6 +114,7 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(EmployeeSaveChangeRequestModel model)
         {
             var databaseObject = new Employee();
@@ -167,6 +169,7 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChangeContact(EmployeeContactDetailRequestModel model)
         {
             var databaseObject = new Employee();

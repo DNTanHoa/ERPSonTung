@@ -15,17 +15,17 @@ namespace ERP.RequestModel.Role
 
         [Required(ErrorMessage = "Mã phân quyền không được để trống")]
         public string NavigationCode { get; set; }
-        
-        public bool? IsAllow { get; set; }
-        
+
+        public bool IsAllow { get; set; }
+
         public string Entity { get; set; }
-        
-        public bool? CanCreate { get; set; }
-        
-        public bool? CanUpdate { get; set; }
-        
-        public bool? CanRead { get; set; }
-        
-        public bool? CanDelete { get; set; }
+
+        public bool CanCreate { get; set; }
+
+        public bool CanUpdate { get; set; }
+
+        public bool CanRead { get; set; }
+
+        public bool CanDelete { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace ERP.Validators
 
         private bool IsValidNumberCode(string code)
         {
-            var obj= this._employeeContractRepository.GetByCode(code);
+            var obj = this._employeeContractRepository.GetByCode(code);
 
             return obj == null ? false : true;
 
@@ -90,9 +90,20 @@ namespace ERP.Validators
 
         private bool IsValidNumberCode(string code)
         {
-            var obj = this._employeeContractRepository.GetByCode(code);
 
-            return obj == null ? false : true;
+
+            if (!string.IsNullOrEmpty(code))
+            {
+
+                var obj = this._employeeContractRepository.GetByCode(code);
+
+                return obj == null ? false : true;
+
+            }
+            else
+            {
+                return true;
+            }
 
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ERP.Helpers;
 using ERP.Model.DataTransferObjects;
 using ERP.Model.Extensions;
 using ERP.Model.Models;
@@ -38,6 +39,7 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(ShiftCreateRequestModel model)
         {
             if(ModelState.IsValid)
@@ -64,6 +66,7 @@ namespace ERP.Controllers
         }
 
         [HttpPut]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(ShiftUpdateRequestModel model)
         {
             if (ModelState.IsValid)
@@ -107,6 +110,7 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(ShiftSaveChangeRequestModel model)
         {
             if (ModelState.IsValid)

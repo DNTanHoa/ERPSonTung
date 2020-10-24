@@ -7,7 +7,6 @@ namespace ERP.RequestModel.Holiday
     {
         public long Id { get; set; }
 
-        [Required(ErrorMessage = "Mã ngày lễ không được để trống")]
         public string Code { get; set; }
 
         public string Name { get; set; }

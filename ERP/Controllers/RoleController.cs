@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ERP.Model.DataTransferObjects;
+﻿using ERP.Helpers;
 using ERP.Model.Extensions;
 using ERP.Model.Models;
 using ERP.Repository;
@@ -16,9 +12,9 @@ using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace ERP.Controllers
 {
@@ -38,54 +34,40 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(RoleCreateRequestModel model)
         {
-            if(ModelState.IsValid)
+            var databaseObject = model.MapTo<UserRole>();
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = roleRepository.Insert(databaseObject);
+            if (result > 0)
             {
-                var databaseObject = model.MapTo<UserRole>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = roleRepository.Insert(databaseObject);
-                if (result > 0)
-                {
-                    Result = new SuccessResult(ActionType.Insert, AppGlobal.CreateSucess);
-                }
-                else
-                {
-                    Result = new ErrorResult(ActionType.Insert, AppGlobal.CreateError);
-                }
+                Result = new SuccessResult(ActionType.Insert, AppGlobal.CreateSucess);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Insert, message);
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.CreateError);
             }
-            
+
             return GetCommonRespone();
         }
 
         [HttpPut]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(RoleUpdateRequestModel model)
         {
-            if (ModelState.IsValid)
+            var databaseObject = model.MapTo<UserRole>();
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = roleRepository.Update(databaseObject);
+            if (result > 0)
             {
-                var databaseObject = model.MapTo<UserRole>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = roleRepository.Update(databaseObject);
-                if (result > 0)
-                {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
-                }
-                else
-                {
-                    Result = new ErrorResult(ActionType.Edit, AppGlobal.EditError);
-                }
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.EditSuccess);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.EditError);
             }
-            
+
             return GetCommonRespone();
         }
 
@@ -93,7 +75,7 @@ namespace ERP.Controllers
         public ActionResult<CommonResponeModel> Delete(long Id)
         {
             int result = roleRepository.Delete(Id);
-            
+
             if (result > 0)
             {
                 Result = new SuccessResult(ActionType.Delete, AppGlobal.DeleteSuccess);
@@ -107,14 +89,15 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(RoleSaveChangeRequestModel model)
         {
             if (ModelState.IsValid)
             {
                 var databaseObject = model.MapTo<UserRole>();
                 int result = 0;
-                
-                if(model.Id > 0)
+
+                if (model.Id > 0)
                 {
                     result = roleRepository.Update(databaseObject);
                 }
@@ -123,10 +106,10 @@ namespace ERP.Controllers
                     result = roleRepository.Insert(databaseObject);
                 }
 
-                if(result > 0)
+                if (result > 0)
                 {
                     Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
-                }   
+                }
                 else
                 {
                     Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
@@ -149,7 +132,7 @@ namespace ERP.Controllers
                 username = RequestUsername;
             }
             Result = Result = new SuccessResultFactory().Factory(ActionType.Select);
-            Data = roleRepository.GetAllowedDataTransfersByUserName(username).GenerateTree(item => item.Navigation.Code, 
+            Data = roleRepository.GetAllowedDataTransfersByUserName(username).GenerateTree(item => item.Navigation.Code,
                                                             item => item.Navigation.ParentCode, string.Empty);
             return GetCommonRespone();
         }

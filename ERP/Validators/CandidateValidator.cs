@@ -1,7 +1,4 @@
-﻿using ERP.Model.Models;
-using ERP.Repository;
-using ERP.RequestModel;
-using ERP.Ultilities.Global;
+﻿using ERP.RequestModel;
 using FluentValidation;
 
 namespace ERP.Validators
@@ -10,7 +7,6 @@ namespace ERP.Validators
     {
         public CandidateCreateValidator()
         {
-            
         }
     }
 
@@ -18,7 +14,6 @@ namespace ERP.Validators
     {
         public CandidateUpdateValidator()
         {
-
         }
     }
 
@@ -26,7 +21,6 @@ namespace ERP.Validators
     {
         public CandidateSaveChangeValidator()
         {
-
         }
     }
 }

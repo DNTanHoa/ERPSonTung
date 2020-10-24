@@ -14,6 +14,9 @@ namespace ERP.Validators
         {
             this._categoryRepository = categoryRepository;
 
+            RuleFor(x => x.Id).NotEmpty().WithMessage(CommonMessageGlobal.Require("Id"))
+                .GreaterThanOrEqualTo(0).WithMessage(CommonMessageGlobal.GreaterThanOrEqual("Id"))
+
             RuleFor(x => x.Entity).NotEmpty().WithMessage(CommonMessageGlobal.Require("Mã Entity"))
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Entity", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Entity", 20));

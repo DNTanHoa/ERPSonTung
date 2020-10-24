@@ -24,10 +24,15 @@ namespace ERP.Validators
         }
     }
 
-    public class HolidaySaveChangeRequestValidator : AbstractValidator<HolidayCreateRequestModel>
+    public class HolidaySaveChangeRequestValidator : AbstractValidator<HolidayUpdateRequestModel>
     {
         public HolidaySaveChangeRequestValidator()
         {
+
+            RuleFor(x => x.Id).NotEmpty().WithMessage(CommonMessageGlobal.Require("Id"))
+                .GreaterThanOrEqualTo(0).WithMessage(CommonMessageGlobal.GreaterThanOrEqual("Id", 0));
+
+
             RuleFor(x => x.Code).NotEmpty().WithMessage(CommonMessageGlobal.Require("Mã"))
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Mã", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Mã", 20));
@@ -49,7 +54,7 @@ namespace ERP.Validators
         public HolidayUpdateRequestValidator()
         {
 
-            RuleFor(x => x.SalaryIncreasePercent).NotEmpty().WithMessage(CommonMessageGlobal.Require("Id"))
+            RuleFor(x => x.Id).NotEmpty().WithMessage(CommonMessageGlobal.Require("Id"))
                 .GreaterThan(0).WithMessage(CommonMessageGlobal.GreaterThanOrEqual("Id", 0));
 
             RuleFor(x => x.Code).NotEmpty().WithMessage(CommonMessageGlobal.Require("Mã"))

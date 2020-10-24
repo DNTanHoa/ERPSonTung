@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using ERP.Controllers;
+﻿using ERP.Controllers;
+using ERP.Helpers;
 using ERP.Model.Extensions;
 using ERP.Model.Models;
 using ERP.Repository;
 using ERP.ResponeModel;
 using ERP.Ultilities.Enum;
-using ERP.Ultilities.Extensions;
 using ERP.Ultilities.Factory.Implement;
-using ERP.Ultilities.Global;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
 
 namespace ERP.MVC.Controllers
 {
@@ -53,11 +46,12 @@ namespace ERP.MVC.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(Navigation model)
         {
             string code = entityCenterRepository.GetCodeByEntity(nameof(Navigation));
 
-            if(string.IsNullOrEmpty(code))
+            if (string.IsNullOrEmpty(code))
             {
                 model.Code = code;
                 model.InitBeforeSave(RequestUsername, InitType.Create);
@@ -82,6 +76,7 @@ namespace ERP.MVC.Controllers
         }
 
         [HttpPut]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(Navigation model)
         {
             model.InitBeforeSave(RequestUsername, InitType.Update);

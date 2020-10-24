@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ERP.Helpers;
 using ERP.Model.Extensions;
 using ERP.Model.Models;
 using ERP.Repository;
@@ -11,15 +8,14 @@ using ERP.Ultilities.Enum;
 using ERP.Ultilities.Extensions;
 using ERP.Ultilities.Factory.Implement;
 using ERP.Ultilities.Global;
-using ERP.Ultilities.Helpers;
 using ERP.Ultilities.Providers;
 using ERP.Ultilities.Results;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace ERP.Controllers
 {
@@ -37,9 +33,10 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(UserCreateRequestModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (userRepository.IsExistUsername(model.Username))
                 {
@@ -54,7 +51,7 @@ namespace ERP.Controllers
                     databaseObject.SetPassword();
                     int result = userRepository.Insert(databaseObject);
 
-                    if(result > 0)
+                    if (result > 0)
                     {
                         Result = new SuccessResult(ActionType.Insert, AppGlobal.CreateSucess);
                         Data = databaseObject;
@@ -63,7 +60,6 @@ namespace ERP.Controllers
                     {
                         Result = new ErrorResult(ActionType.Insert, AppGlobal.CreateError);
                         Data = databaseObject;
-
                     }
                 }
             }
@@ -77,14 +73,15 @@ namespace ERP.Controllers
         }
 
         [HttpPut]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(UserUpdateRequestModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = userRepository.GetById(model.Id);
 
-                if(user != null) 
-                { 
+                if (user != null)
+                {
                     if (userRepository.IsExistUsername(model.Username) && user.Username != model.Username)
                     {
                         string message = "Tên đăng nhập đã tồn tại";
@@ -118,7 +115,6 @@ namespace ERP.Controllers
                             Data = user;
                         }
                     }
-                    
                 }
                 else
                 {
@@ -136,31 +132,23 @@ namespace ERP.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Login(LoginUserRequestModel model)
         {
             var LoginResponeModel = new LoginResponeModel();
 
-            //validate success
-            if(ModelState.IsValid)
+            //login success
+            if (userRepository.IsValidUser(model.Username, model.Password))
             {
-                //login success
-                if (userRepository.IsValidUser(model.Username, model.Password))
-                {
-                    Result = new SuccessResultFactory().Factory(ActionType.Login);
+                Result = new SuccessResultFactory().Factory(ActionType.Login);
 
-                    LoginResponeModel.TokenExpireDate = DateTime.Now.AddDays(1);
-                    LoginResponeModel.Token = TokenProvider.GenerateTokenString(model.ToDictionaryStringString());
-                    LoginResponeModel.User = userRepository.GetDataTransferByUsername(model.Username);
-                }
-                else //login fail
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Login);
-                }
+                LoginResponeModel.TokenExpireDate = DateTime.Now.AddDays(1);
+                LoginResponeModel.Token = TokenProvider.GenerateTokenString(model.ToDictionaryStringString());
+                LoginResponeModel.User = userRepository.GetDataTransferByUsername(model.Username);
             }
-            else //validate fail
+            else //login fail
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Login, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Login);
             }
 
             //set data
@@ -183,7 +171,7 @@ namespace ERP.Controllers
         {
             var user = userRepository.GetByUsername(model.Username);
 
-            if(user != null)
+            if (user != null)
             {
                 user.IsActive = false; //Set user to in active
 
@@ -191,11 +179,11 @@ namespace ERP.Controllers
 
                 int result = userRepository.Update(user);
 
-                if(result > 0)
+                if (result > 0)
                 {
                     Result = new SuccessResult(ActionType.Delete, AppGlobal.DeleteSuccess);
                     Data = user;
-                }   
+                }
                 else
                 {
                     Result = new ErrorResult(ActionType.Delete, AppGlobal.DeleteError);
