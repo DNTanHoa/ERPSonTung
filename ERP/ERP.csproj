@@ -12,10 +12,6 @@
     <Folder Include="RequestModel\EmployeePaper\" />
     <Folder Include="RequestModel\EmployeePayroll\" />
     <Folder Include="RequestModel\Navigation\" />
-    <Folder Include="RequestModel\TrainingCourseEmployee\" />
-    <Folder Include="RequestModel\TrainingCourse\" />
-    <Folder Include="RequestModel\ShiftEmployee\" />
-    <Folder Include="RequestModel\RecruitmentPlan\" />
     <Folder Include="RequestModel\Post\" />
   </ItemGroup>
 

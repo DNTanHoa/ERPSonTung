@@ -9,10 +9,6 @@
     <Folder Include="EmployeeHistory\" />
     <Folder Include="EmployeePaper\" />
     <Folder Include="EmployeePayroll\" />
-    <Folder Include="TrainingCourseEmployee\" />
-    <Folder Include="TrainingCourse\" />
-    <Folder Include="ShiftEmployee\" />
-    <Folder Include="RecruitmentPlan\" />
     <Folder Include="Post\" />
   </ItemGroup>
 

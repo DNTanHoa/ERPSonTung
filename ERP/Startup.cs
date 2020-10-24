@@ -90,6 +90,10 @@ namespace ERP
             services.AddTransient<IHolidayRepository, HolidayRepository>();
             services.AddTransient<ICheckInOutDeviceRepository, CheckInOutDeviceRepository>();
             services.AddTransient<IContractTypeRepository, ContractTypeRepository>();
+            services.AddTransient<IRecruitmentPlanRepository, RecruitmentPlanRepository>();
+            services.AddTransient<IShiftEmployeeRepository, ShiftEmployeeRepository>();
+            services.AddTransient<ITrainingCourseRepository, TrainingCourseRepository>();
+            services.AddTransient<ITrainingCourseEmployeeRepository, TrainingCourseEmployeeRepository>();
 
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<EmployeeDayOffValidator>()).AddNewtonsoftJson();
 
