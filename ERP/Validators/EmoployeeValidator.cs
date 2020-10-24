@@ -87,11 +87,9 @@ namespace ERP.Validators
 
     public class EmployeeContactDetailRequestValidator : AbstractValidator<EmployeeContactDetailRequestModel>
     {
-        private readonly ICategoryRepository _categoryRepository;
 
-        public EmployeeContactDetailRequestValidator(ICategoryRepository categoryRepository)
+        public EmployeeContactDetailRequestValidator()
         {
-            this._categoryRepository = categoryRepository;
 
             RuleFor(x => x.Code).NotEmpty().WithMessage(CommonMessageGlobal.Require("Mã nhân viên"))
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Mã nhân viên", 2))
