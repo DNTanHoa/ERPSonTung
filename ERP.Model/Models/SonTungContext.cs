@@ -43,6 +43,7 @@ namespace ERP.Model.Models
         public virtual DbSet<CheckInOutDevice> CheckInOutDevice { get; set; }
         public virtual DbSet<Candidate> Candidate { get; set; }
         public virtual DbSet<CandidatePaper> CandidatePaper { get; set; }
+        public virtual DbSet<ContractType> ContractType { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
