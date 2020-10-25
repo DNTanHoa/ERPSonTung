@@ -34,5 +34,6 @@ namespace ERP.RequestModel.Employee
         public string JobCode { get; set; }
         public string LaborGroupCode { get; set; }
         public string BankNumber { get; set; }
+        public string TaxNumber { get; set; }
     }
 }

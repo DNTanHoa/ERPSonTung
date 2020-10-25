@@ -31,5 +31,6 @@ namespace ERP.ResponeModel
 
         public string JobCode { get; set; }
 
+        public string TaxNumber { get; set; }
     }
 }
