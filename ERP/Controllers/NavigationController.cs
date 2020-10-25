@@ -6,6 +6,8 @@ using ERP.Repository;
 using ERP.ResponeModel;
 using ERP.Ultilities.Enum;
 using ERP.Ultilities.Factory.Implement;
+using ERP.Ultilities.Global;
+using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -49,23 +51,34 @@ namespace ERP.MVC.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(Navigation model)
         {
-            string code = entityCenterRepository.GetCodeByEntity(nameof(Navigation));
-
-            if (string.IsNullOrEmpty(code))
+            //empty code
+            if (string.IsNullOrEmpty(model.Code))
             {
-                model.Code = code;
-                model.InitBeforeSave(RequestUsername, InitType.Create);
-                model.InitDefault();
-                int result = navigationRepository.Insert(model);
+                var code = entityCenterRepository.GetCodeByEntity(nameof(Navigation));
 
-                if (result > 0)
+                if (string.IsNullOrEmpty(code))
                 {
-                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                    return GetCommonRespone();
                 }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
-                }
+
+                model.Code = code;
+            }
+
+            //check exist in db
+            if (navigationRepository.IsExistCode(model.Code))
+            {
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                return GetCommonRespone();
+            }
+
+            model.InitBeforeSave(RequestUsername, InitType.Create);
+            model.InitDefault();
+            int result = navigationRepository.Insert(model);
+
+            if (result > 0)
+            {
+                Result = new SuccessResultFactory().Factory(ActionType.Insert);
             }
             else
             {

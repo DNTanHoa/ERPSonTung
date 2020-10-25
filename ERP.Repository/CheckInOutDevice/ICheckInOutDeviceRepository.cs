@@ -8,6 +8,6 @@ namespace ERP.Repository
 {
     public interface ICheckInOutDeviceRepository : IRepository<CheckInOutDevice>
     {
-
+        public bool IsExistCode(string Code);
     }
 }

@@ -25,11 +25,15 @@ namespace ERP.Controllers
     public class CandidatePaperController : BaseController
     {
         private readonly ICandidatePaperRepository candidatePaperRepository;
+        private readonly IEntityCenterRepository entityCenterRepository;
         private readonly ILogger<CandidatePaper> logger;
 
-        public CandidatePaperController(ICandidatePaperRepository candidatePaperRepository, ILogger<CandidatePaper> logger)
+        public CandidatePaperController(ICandidatePaperRepository candidatePaperRepository,
+                                        IEntityCenterRepository entityCenterRepository,
+                                        ILogger<CandidatePaper> logger)
         {
             this.candidatePaperRepository = candidatePaperRepository;
+            this.entityCenterRepository = entityCenterRepository;
             this.logger = logger;
         }
 
@@ -40,8 +44,32 @@ namespace ERP.Controllers
             if(ModelState.IsValid)
             {
                 var databaseObject = model.MapTo<CandidatePaper>();
+
+                //empty code
+                if (string.IsNullOrEmpty(databaseObject.Code))
+                {
+                    var code = entityCenterRepository.GetCodeByEntity(nameof(CandidatePaper));
+
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                        return GetCommonRespone();
+                    }
+
+                    databaseObject.Code = code;
+                }
+
+                //check exist in db
+                if (candidatePaperRepository.IsExistCode(databaseObject.Code))
+                {
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    return GetCommonRespone();
+                }
+
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
                 int result = candidatePaperRepository.Insert(databaseObject);
+
+                //result
                 if (result > 0)
                 {
                     Result = new SuccessResultFactory().Factory(ActionType.Insert);
@@ -119,6 +147,27 @@ namespace ERP.Controllers
                 }
                 else
                 {
+                    //empty code
+                    if (string.IsNullOrEmpty(databaseObject.Code))
+                    {
+                        var code = entityCenterRepository.GetCodeByEntity(nameof(CandidatePaper));
+
+                        if (string.IsNullOrEmpty(code))
+                        {
+                            Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                            return GetCommonRespone();
+                        }
+
+                        databaseObject.Code = code;
+                    }
+
+                    //check exist in db
+                    if (candidatePaperRepository.IsExistCode(databaseObject.Code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                        return GetCommonRespone();
+                    }
+
                     result = candidatePaperRepository.Insert(databaseObject);
                 }
 

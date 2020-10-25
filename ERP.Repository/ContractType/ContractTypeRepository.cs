@@ -14,6 +14,10 @@ namespace ERP.Repository
             this.context = context;
         }
 
-        
+        public bool IsExistCode(string Code)
+        {
+            var contractType = context.ContractType.Where(item => item.Code.Equals(Code)).FirstOrDefault();
+            return contractType != null ? true : false;
+        }
     }
 }

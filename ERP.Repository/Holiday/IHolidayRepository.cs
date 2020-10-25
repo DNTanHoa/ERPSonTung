@@ -8,6 +8,6 @@ namespace ERP.Repository
 {
     public interface IHolidayRepository : IRepository<Holiday>
     {
-
+        public bool IsExistCode(string Code);
     }
 }

@@ -8,6 +8,6 @@ namespace ERP.Repository
 {
     public interface IContractTypeRepository : IRepository<ContractType>
     {
-
+        public bool IsExistCode(string Code);
     }
 }

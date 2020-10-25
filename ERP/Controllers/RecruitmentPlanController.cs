@@ -25,11 +25,15 @@ namespace ERP.Controllers
     public class RecruitmentPlanController : BaseController
     {
         private readonly IRecruitmentPlanRepository recruitmentPlanRepository;
+        private readonly IEntityCenterRepository entityCenterRepository;
         private readonly ILogger<RecruitmentPlan> logger;
 
-        public RecruitmentPlanController(IRecruitmentPlanRepository recruitmentPlanRepository, ILogger<RecruitmentPlan> logger)
+        public RecruitmentPlanController(IRecruitmentPlanRepository recruitmentPlanRepository, 
+                                        IEntityCenterRepository entityCenterRepository,
+                                        ILogger<RecruitmentPlan> logger)
         {
             this.recruitmentPlanRepository = recruitmentPlanRepository;
+            this.entityCenterRepository = entityCenterRepository;
             this.logger = logger;
         }
 
@@ -40,6 +44,28 @@ namespace ERP.Controllers
             if(ModelState.IsValid)
             {
                 var databaseObject = model.MapTo<RecruitmentPlan>();
+
+                //empty code
+                if (string.IsNullOrEmpty(databaseObject.Code))
+                {
+                    var code = entityCenterRepository.GetCodeByEntity(nameof(RecruitmentPlan));
+
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                        return GetCommonRespone();
+                    }
+
+                    databaseObject.Code = code;
+                }
+
+                //check exist in db
+                if (recruitmentPlanRepository.IsExistCode(databaseObject.Code))
+                {
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    return GetCommonRespone();
+                }
+
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
                 int result = recruitmentPlanRepository.Insert(databaseObject);
                 if (result > 0)
@@ -119,6 +145,27 @@ namespace ERP.Controllers
                 }
                 else
                 {
+                    //empty code
+                    if (string.IsNullOrEmpty(databaseObject.Code))
+                    {
+                        var code = entityCenterRepository.GetCodeByEntity(nameof(RecruitmentPlan));
+
+                        if (string.IsNullOrEmpty(code))
+                        {
+                            Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                            return GetCommonRespone();
+                        }
+
+                        databaseObject.Code = code;
+                    }
+
+                    //check exist in db
+                    if (recruitmentPlanRepository.IsExistCode(databaseObject.Code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                        return GetCommonRespone();
+                    }
+
                     result = recruitmentPlanRepository.Insert(databaseObject);
                 }
 

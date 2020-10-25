@@ -8,6 +8,6 @@ namespace ERP.Repository
 {
     public interface IShiftRepository : IRepository<Shift>
     {
-
+        public bool IsExistCode(string Code);
     }
 }

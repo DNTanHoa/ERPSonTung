@@ -14,6 +14,10 @@ namespace ERP.Repository
             this.context = context;
         }
 
-        
+        public bool IsExistCode(string Code)
+        {
+            var trainingCourse = context.TrainingCourse.Where(item => item.Code.Equals(Code)).FirstOrDefault();
+            return trainingCourse != null ? true : false;
+        }
     }
 }

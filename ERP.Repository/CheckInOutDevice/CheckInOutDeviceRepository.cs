@@ -14,6 +14,10 @@ namespace ERP.Repository
             this.context = context;
         }
 
-        
+        public bool IsExistCode(string Code)
+        {
+            var checkInOutDevice = context.CheckInOutDevice.Where(item => item.Code.Equals(Code)).FirstOrDefault();
+            return checkInOutDevice != null ? true : false;
+        }
     }
 }

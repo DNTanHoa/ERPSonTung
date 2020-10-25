@@ -25,11 +25,15 @@ namespace ERP.Controllers
     public class HolidayController : BaseController
     {
         private readonly IHolidayRepository holidayRepository;
+        private readonly IEntityCenterRepository entityCenterRepository;
         private readonly ILogger<Holiday> logger;
 
-        public HolidayController(IHolidayRepository holidayRepository, ILogger<Holiday> logger)
+        public HolidayController(IHolidayRepository holidayRepository, 
+                                IEntityCenterRepository entityCenterRepository,
+                                ILogger<Holiday> logger)
         {
             this.holidayRepository = holidayRepository;
+            this.entityCenterRepository = entityCenterRepository;
             this.logger = logger;
         }
 
@@ -40,6 +44,28 @@ namespace ERP.Controllers
             if(ModelState.IsValid)
             {
                 var databaseObject = model.MapTo<Holiday>();
+
+                //empty code
+                if (string.IsNullOrEmpty(databaseObject.Code))
+                {
+                    var code = entityCenterRepository.GetCodeByEntity(nameof(Holiday));
+
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                        return GetCommonRespone();
+                    }
+
+                    databaseObject.Code = code;
+                }
+
+                //check exist in db
+                if (holidayRepository.IsExistCode(databaseObject.Code))
+                {
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    return GetCommonRespone();
+                }
+
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
                 int result = holidayRepository.Insert(databaseObject);
                 if (result > 0)
@@ -119,6 +145,27 @@ namespace ERP.Controllers
                 }
                 else
                 {
+                    //empty code
+                    if (string.IsNullOrEmpty(databaseObject.Code))
+                    {
+                        var code = entityCenterRepository.GetCodeByEntity(nameof(Holiday));
+
+                        if (string.IsNullOrEmpty(code))
+                        {
+                            Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                            return GetCommonRespone();
+                        }
+
+                        databaseObject.Code = code;
+                    }
+
+                    //check exist in db
+                    if (holidayRepository.IsExistCode(databaseObject.Code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                        return GetCommonRespone();
+                    }
+
                     result = holidayRepository.Insert(databaseObject);
                 }
 
