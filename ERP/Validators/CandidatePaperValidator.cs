@@ -74,8 +74,8 @@ namespace ERP.Validators
 
         private bool IsValidTypeCode(string code)
         {
-            var obj = this._categoryRepository.IsExistEntityWithCode("CandidatePaperType", code, out Category category);
-            return obj;
+            var result = this._categoryRepository.IsExistEntityWithCode("CandidatePaperType", code, out Category category);
+            return result;
         }
     }
 
@@ -111,8 +111,8 @@ namespace ERP.Validators
 
         private bool IsValidTypeCode(string code)
         {
-            var obj = this._categoryRepository.IsExistEntityWithCode("CandidatePaperType", code, out Category category);
-            return obj;
+            var result = this._categoryRepository.IsExistEntityWithCode("CandidatePaperType", code, out Category category);
+            return result;
         }
     }
 }

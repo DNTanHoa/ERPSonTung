@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ERP.RequestModel.CheckInOutDevice
+﻿namespace ERP.RequestModel.CheckInOutDevice
 {
     public class CheckInOutDeviceCreateRequestModel
     {

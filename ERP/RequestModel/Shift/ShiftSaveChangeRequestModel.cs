@@ -7,7 +7,6 @@ namespace ERP.RequestModel.Shift
     {
         public long Id { get; set; }
 
-        [Required(ErrorMessage = "Mã ca làm việc không được để trống")]
         public string Code { get; set; }
         public string Name { get; set; }
         public TimeSpan? WorkStartTime { get; set; }
