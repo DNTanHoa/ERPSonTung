@@ -92,33 +92,25 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(RoleSaveChangeRequestModel model)
         {
-            if (ModelState.IsValid)
+            var databaseObject = model.MapTo<UserRole>();
+            int result = 0;
+
+            if (model.Id > 0)
             {
-                var databaseObject = model.MapTo<UserRole>();
-                int result = 0;
-
-                if (model.Id > 0)
-                {
-                    result = roleRepository.Update(databaseObject);
-                }
-                else
-                {
-                    result = roleRepository.Insert(databaseObject);
-                }
-
-                if (result > 0)
-                {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
-                }
-                else
-                {
-                    Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
-                }
+                result = roleRepository.Update(databaseObject);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                result = roleRepository.Insert(databaseObject);
+            }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
             }
 
             return GetCommonRespone();

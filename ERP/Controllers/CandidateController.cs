@@ -39,47 +39,39 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(CandidateCreateRequestModel model)
         {
-            if(ModelState.IsValid)
+            var databaseObject = model.MapTo<Candidate>();
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+
+            if (string.IsNullOrEmpty(databaseObject.Code))
             {
-                var databaseObject = model.MapTo<Candidate>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+                var code = this._entityCenterRepository.GetCodeByEntity(nameof(Candidate));
 
-                if (string.IsNullOrEmpty(databaseObject.Code))
+                if (string.IsNullOrEmpty(code))
                 {
-                    var code = this._entityCenterRepository.GetCodeByEntity(nameof(Candidate));
-
-                    if (string.IsNullOrEmpty(code))
-                    {
-                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
-                        return GetCommonRespone();
-                    }
-
-                    databaseObject.Code = code;
-                }
-
-                if (this._candidateRepository.GetByCode(databaseObject.Code)!=null)
-                {
-                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
                     return GetCommonRespone();
                 }
 
-                int result = this._candidateRepository.Insert(databaseObject);
+                databaseObject.Code = code;
+            }
 
-                if (result > 0)
-                {
-                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
-                }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
-                }
+            if (this._candidateRepository.GetByCode(databaseObject.Code) != null)
+            {
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                return GetCommonRespone();
+            }
+
+            int result = this._candidateRepository.Insert(databaseObject);
+
+            if (result > 0)
+            {
+                Result = new SuccessResultFactory().Factory(ActionType.Insert);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Insert, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Insert);
             }
-            
+
             return GetCommonRespone();
         }
 
@@ -87,26 +79,18 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(CandidateUpdateRequestModel model)
         {
-            if (ModelState.IsValid)
+            var databaseObject = model.MapTo<Candidate>();
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = _candidateRepository.Update(databaseObject);
+            if (result > 0)
             {
-                var databaseObject = model.MapTo<Candidate>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = _candidateRepository.Update(databaseObject);
-                if (result > 0)
-                {
-                    Result = new SuccessResultFactory().Factory(ActionType.Edit);
-                }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Edit);
-                }
+                Result = new SuccessResultFactory().Factory(ActionType.Edit);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Edit);
             }
-            
+
             return GetCommonRespone();
         }
 
@@ -131,54 +115,46 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(CandidateSaveChangeRequestModel model)
         {
-            if (ModelState.IsValid)
+            var databaseObject = model.MapTo<Candidate>();
+            int result = 0;
+
+            if (model.Id > 0)
             {
-                var databaseObject = model.MapTo<Candidate>();
-                int result = 0;
-                
-                if(model.Id > 0)
-                {
-                    result = _candidateRepository.Update(databaseObject);
-                }
-                else
-                {
-                    databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-
-                    if (string.IsNullOrEmpty(databaseObject.Code))
-                    {
-                        var code = this._entityCenterRepository.GetCodeByEntity(nameof(Candidate));
-
-                        if (string.IsNullOrEmpty(code))
-                        {
-                            Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
-                            return GetCommonRespone();
-                        }
-
-                        databaseObject.Code = code;
-                    }
-
-                    if (this._candidateRepository.GetByCode(databaseObject.Code) != null)
-                    {
-                        Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
-                        return GetCommonRespone();
-                    }
-
-                    result = _candidateRepository.Insert(databaseObject);
-                }
-
-                if(result > 0)
-                {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
-                }   
-                else
-                {
-                    Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
-                }
+                result = _candidateRepository.Update(databaseObject);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+
+                if (string.IsNullOrEmpty(databaseObject.Code))
+                {
+                    var code = this._entityCenterRepository.GetCodeByEntity(nameof(Candidate));
+
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                        return GetCommonRespone();
+                    }
+
+                    databaseObject.Code = code;
+                }
+
+                if (this._candidateRepository.GetByCode(databaseObject.Code) != null)
+                {
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    return GetCommonRespone();
+                }
+
+                result = _candidateRepository.Insert(databaseObject);
+            }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
             }
 
             return GetCommonRespone();

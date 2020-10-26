@@ -41,46 +41,38 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(CheckInOutDeviceCreateRequestModel model)
         {
-            if (ModelState.IsValid)
+            var databaseObject = model.MapTo<CheckInOutDevice>();
+
+            //empty code
+            if (string.IsNullOrEmpty(databaseObject.Code))
             {
-                var databaseObject = model.MapTo<CheckInOutDevice>();
+                var code = entityCenterRepository.GetCodeByEntity(nameof(CheckInOutDevice));
 
-                //empty code
-                if (string.IsNullOrEmpty(databaseObject.Code))
+                if (string.IsNullOrEmpty(code))
                 {
-                    var code = entityCenterRepository.GetCodeByEntity(nameof(CheckInOutDevice));
-
-                    if (string.IsNullOrEmpty(code))
-                    {
-                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
-                        return GetCommonRespone();
-                    }
-
-                    databaseObject.Code = code;
-                }
-
-                //check exist in db
-                if (checkInOutDeviceRepository.IsExistCode(databaseObject.Code))
-                {
-                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
                     return GetCommonRespone();
                 }
 
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = checkInOutDeviceRepository.Insert(databaseObject);
-                if (result > 0)
-                {
-                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
-                }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
-                }
+                databaseObject.Code = code;
+            }
+
+            //check exist in db
+            if (checkInOutDeviceRepository.IsExistCode(databaseObject.Code))
+            {
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                return GetCommonRespone();
+            }
+
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = checkInOutDeviceRepository.Insert(databaseObject);
+            if (result > 0)
+            {
+                Result = new SuccessResultFactory().Factory(ActionType.Insert);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Insert, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Insert);
             }
 
             return GetCommonRespone();
@@ -90,24 +82,16 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(CheckInOutDeviceUpdateRequestModel model)
         {
-            if (ModelState.IsValid)
+            var databaseObject = model.MapTo<CheckInOutDevice>();
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = checkInOutDeviceRepository.Update(databaseObject);
+            if (result > 0)
             {
-                var databaseObject = model.MapTo<CheckInOutDevice>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = checkInOutDeviceRepository.Update(databaseObject);
-                if (result > 0)
-                {
-                    Result = new SuccessResultFactory().Factory(ActionType.Edit);
-                }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Edit);
-                }
+                Result = new SuccessResultFactory().Factory(ActionType.Edit);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Edit);
             }
 
             return GetCommonRespone();
@@ -134,56 +118,47 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(CheckInOutDeviceSaveChangeRequestModel model)
         {
-            if (ModelState.IsValid)
+            var databaseObject = model.MapTo<CheckInOutDevice>();
+            int result = 0;
+
+            if (model.Id > 0)
             {
-                var databaseObject = model.MapTo<CheckInOutDevice>();
-                int result = 0;
-
-                if (model.Id > 0)
-                {
-                    result = checkInOutDeviceRepository.Update(databaseObject);
-                }
-                else
-                {
-                    //empty code
-                    if (string.IsNullOrEmpty(databaseObject.Code))
-                    {
-                        var code = entityCenterRepository.GetCodeByEntity(nameof(CheckInOutDevice));
-
-                        if (string.IsNullOrEmpty(code))
-                        {
-                            Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
-                            return GetCommonRespone();
-                        }
-
-                        databaseObject.Code = code;
-                    }
-
-                    //check exist in db
-                    if (checkInOutDeviceRepository.IsExistCode(databaseObject.Code))
-                    {
-                        Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
-                        return GetCommonRespone();
-                    }
-
-                    result = checkInOutDeviceRepository.Insert(databaseObject);
-                }
-
-                if (result > 0)
-                {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
-                }
-                else
-                {
-                    Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
-                }
+                result = checkInOutDeviceRepository.Update(databaseObject);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                //empty code
+                if (string.IsNullOrEmpty(databaseObject.Code))
+                {
+                    var code = entityCenterRepository.GetCodeByEntity(nameof(CheckInOutDevice));
+
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                        return GetCommonRespone();
+                    }
+
+                    databaseObject.Code = code;
+                }
+
+                //check exist in db
+                if (checkInOutDeviceRepository.IsExistCode(databaseObject.Code))
+                {
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    return GetCommonRespone();
+                }
+
+                result = checkInOutDeviceRepository.Insert(databaseObject);
             }
 
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
+            }
             return GetCommonRespone();
         }
 

@@ -12,8 +12,9 @@ namespace ERP.Validators
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Mã ca làm việc", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Mã ca làm việc", 20));
 
-            RuleFor(x => x.Name).MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Tên ca làm việc", 2))
-                .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Tên ca làm việc", 256));
+            RuleFor(x => x.Name).NotEmpty().WithMessage(CommonMessageGlobal.Require("Tên ca làm việc"))
+                .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Tên ca làm việc", 2))
+                .MaximumLength(256).WithMessage(CommonMessageGlobal.Maximum("Tên ca làm việc", 256));
         }
     }
 
@@ -28,8 +29,9 @@ namespace ERP.Validators
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Mã ca làm việc", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Mã ca làm việc", 20));
 
-            RuleFor(x => x.Name).MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Tên ca làm việc", 2))
-                .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Tên ca làm việc", 256));
+            RuleFor(x => x.Name).NotEmpty().WithMessage(CommonMessageGlobal.Require("Tên ca làm việc"))
+                .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Tên ca làm việc", 2))
+                .MaximumLength(256).WithMessage(CommonMessageGlobal.Maximum("Tên ca làm việc", 256));
         }
     }
 
@@ -44,8 +46,9 @@ namespace ERP.Validators
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Mã ca làm việc", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Mã ca làm việc", 20));
 
-            RuleFor(x => x.Name).MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Tên ca làm việc", 2))
-                .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Tên ca làm việc", 256));
+            RuleFor(x => x.Name).NotEmpty().WithMessage(CommonMessageGlobal.Require("Tên ca làm việc"))
+                .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Tên ca làm việc", 2))
+                .MaximumLength(256).WithMessage(CommonMessageGlobal.Maximum("Tên ca làm việc", 256));
         }
     }
 }
