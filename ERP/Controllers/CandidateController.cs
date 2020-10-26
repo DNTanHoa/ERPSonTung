@@ -24,13 +24,15 @@ namespace ERP.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CandidateController : BaseController
     {
-        private readonly ICandidateRepository candidateRepository;
+        private readonly ICandidateRepository _candidateRepository;
+        private readonly IEntityCenterRepository _entityCenterRepository;
         private readonly ILogger<Candidate> logger;
 
-        public CandidateController(ICandidateRepository candidateRepository, ILogger<Candidate> logger)
+        public CandidateController(ICandidateRepository candidateRepository, ILogger<Candidate> logger, IEntityCenterRepository entityCenterRepository)
         {
-            this.candidateRepository = candidateRepository;
+            this._candidateRepository = candidateRepository;
             this.logger = logger;
+            this._entityCenterRepository = entityCenterRepository;
         }
 
         [HttpPost]
@@ -41,7 +43,28 @@ namespace ERP.Controllers
             {
                 var databaseObject = model.MapTo<Candidate>();
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = candidateRepository.Insert(databaseObject);
+
+                if (string.IsNullOrEmpty(databaseObject.Code))
+                {
+                    var code = this._entityCenterRepository.GetCodeByEntity(nameof(Candidate));
+
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                        return GetCommonRespone();
+                    }
+
+                    databaseObject.Code = code;
+                }
+
+                if (this._candidateRepository.GetByCode(databaseObject.Code)!=null)
+                {
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    return GetCommonRespone();
+                }
+
+                int result = this._candidateRepository.Insert(databaseObject);
+
                 if (result > 0)
                 {
                     Result = new SuccessResultFactory().Factory(ActionType.Insert);
@@ -68,7 +91,7 @@ namespace ERP.Controllers
             {
                 var databaseObject = model.MapTo<Candidate>();
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = candidateRepository.Update(databaseObject);
+                int result = _candidateRepository.Update(databaseObject);
                 if (result > 0)
                 {
                     Result = new SuccessResultFactory().Factory(ActionType.Edit);
@@ -90,7 +113,7 @@ namespace ERP.Controllers
         [HttpDelete]
         public ActionResult<CommonResponeModel> Delete(long Id)
         {
-            int result = candidateRepository.Delete(Id);
+            int result = _candidateRepository.Delete(Id);
             
             if (result > 0)
             {
@@ -115,11 +138,32 @@ namespace ERP.Controllers
                 
                 if(model.Id > 0)
                 {
-                    result = candidateRepository.Update(databaseObject);
+                    result = _candidateRepository.Update(databaseObject);
                 }
                 else
                 {
-                    result = candidateRepository.Insert(databaseObject);
+                    databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+
+                    if (string.IsNullOrEmpty(databaseObject.Code))
+                    {
+                        var code = this._entityCenterRepository.GetCodeByEntity(nameof(Candidate));
+
+                        if (string.IsNullOrEmpty(code))
+                        {
+                            Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                            return GetCommonRespone();
+                        }
+
+                        databaseObject.Code = code;
+                    }
+
+                    if (this._candidateRepository.GetByCode(databaseObject.Code) != null)
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                        return GetCommonRespone();
+                    }
+
+                    result = _candidateRepository.Insert(databaseObject);
                 }
 
                 if(result > 0)
@@ -143,7 +187,7 @@ namespace ERP.Controllers
         [HttpGet]
         public ActionResult<CommonResponeModel> GetAll()
         {
-            Data = candidateRepository.Get().ToList();
+            Data = this._candidateRepository.Get().ToList();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
             return GetCommonRespone();
         }

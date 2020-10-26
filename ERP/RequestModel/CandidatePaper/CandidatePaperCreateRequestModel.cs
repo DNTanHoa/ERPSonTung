@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ERP.RequestModel
+﻿namespace ERP.RequestModel
 {
     public class CandidatePaperCreateRequestModel
     {

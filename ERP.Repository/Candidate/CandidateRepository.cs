@@ -14,6 +14,11 @@ namespace ERP.Repository
             this.context = context;
         }
 
-        
+        public Candidate GetByCode(string code)
+        {
+            var currentObj = this.context.Candidate.SingleOrDefault(n=>n.Code.Equals(code));
+
+            return currentObj;
+        }
     }
 }
