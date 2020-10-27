@@ -14,6 +14,10 @@ namespace ERP.Repository
             this.context = context;
         }
 
-        
+        public bool IsExistCode(string Code)
+        {
+            var holiday = context.Holiday.Where(item => item.Code.Equals(Code)).FirstOrDefault();
+            return holiday != null ? true : false;
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace ERP.Repository
 {
     public interface IFileImportRepository : IRepository<FileImport>
     {
-
+        /// TODO: implement method
+        public bool IsExistCode(string Code);
     }
 }

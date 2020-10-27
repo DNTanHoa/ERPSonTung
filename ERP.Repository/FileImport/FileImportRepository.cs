@@ -11,5 +11,10 @@ namespace ERP.Repository
         {
 
         }
+
+        public bool IsExistCode(string Code)
+        {
+            throw new Exception();
+        }
     }
 }

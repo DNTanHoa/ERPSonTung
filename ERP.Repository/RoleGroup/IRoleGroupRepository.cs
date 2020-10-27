@@ -8,6 +8,6 @@ namespace ERP.Repository
 {
     public interface IRoleGroupRepository : IRepository<RoleGroup>
     {
-
+        public bool IsExistCode(string Code);
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ERP.Helpers;
-using ERP.Model.DataTransferObjects;
+﻿using ERP.Helpers;
 using ERP.Model.Extensions;
 using ERP.Model.Models;
 using ERP.Repository;
@@ -17,9 +12,9 @@ using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace ERP.Controllers
 {
@@ -30,11 +25,15 @@ namespace ERP.Controllers
     public class RoleGroupController : BaseController
     {
         private readonly IRoleGroupRepository roleGroupRepository;
+        private readonly IEntityCenterRepository entityCenterRepository;
         private readonly ILogger<RoleGroupController> logger;
 
-        public RoleGroupController(IRoleGroupRepository roleGroupRepository, ILogger<RoleGroupController> logger)
+        public RoleGroupController(IRoleGroupRepository roleGroupRepository,
+                                    IEntityCenterRepository entityCenterRepository,
+                                    ILogger<RoleGroupController> logger)
         {
             this.roleGroupRepository = roleGroupRepository;
+            this.entityCenterRepository = entityCenterRepository;
             this.logger = logger;
         }
 
@@ -42,26 +41,40 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(RoleGroupCreateRequestModel model)
         {
-            if(ModelState.IsValid)
+            var databaseObject = model.MapTo<RoleGroup>();
+
+            //empty code
+            if (string.IsNullOrEmpty(databaseObject.Code))
             {
-                var databaseObject = model.MapTo<RoleGroup>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = roleGroupRepository.Insert(databaseObject);
-                if (result > 0)
+                var code = entityCenterRepository.GetCodeByEntity(nameof(RoleGroup));
+
+                if (string.IsNullOrEmpty(code))
                 {
-                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                    return GetCommonRespone();
                 }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
-                }
+
+                databaseObject.Code = code;
+            }
+
+            //check exist in db
+            if (roleGroupRepository.IsExistCode(databaseObject.Code))
+            {
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                return GetCommonRespone();
+            }
+
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = roleGroupRepository.Insert(databaseObject);
+            if (result > 0)
+            {
+                Result = new SuccessResultFactory().Factory(ActionType.Insert);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Insert, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Insert);
             }
-            
+
             return GetCommonRespone();
         }
 
@@ -69,26 +82,18 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(RoleGroupUpdateRequestModel model)
         {
-            if (ModelState.IsValid)
+            var databaseObject = model.MapTo<RoleGroup>();
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = roleGroupRepository.Update(databaseObject);
+            if (result > 0)
             {
-                var databaseObject = model.MapTo<RoleGroup>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = roleGroupRepository.Update(databaseObject);
-                if (result > 0)
-                {
-                    Result = new SuccessResultFactory().Factory(ActionType.Edit);
-                }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Edit);
-                }
+                Result = new SuccessResultFactory().Factory(ActionType.Edit);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Edit);
             }
-            
+
             return GetCommonRespone();
         }
 
@@ -96,7 +101,7 @@ namespace ERP.Controllers
         public ActionResult<CommonResponeModel> Delete(long Id)
         {
             int result = roleGroupRepository.Delete(Id);
-            
+
             if (result > 0)
             {
                 Result = new SuccessResultFactory().Factory(ActionType.Delete);
@@ -113,33 +118,46 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(RoleGroupSaveChangeRequestModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var databaseObject = model.MapTo<RoleGroup>();
-                int result = 0;
-                
-                if(model.Id > 0)
-                {
-                    result = roleGroupRepository.Update(databaseObject);
-                }
-                else
-                {
-                    result = roleGroupRepository.Insert(databaseObject);
-                }
+            var databaseObject = model.MapTo<RoleGroup>();
+            int result = 0;
 
-                if(result > 0)
-                {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
-                }   
-                else
-                {
-                    Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
-                }
+            if (model.Id > 0)
+            {
+                result = roleGroupRepository.Update(databaseObject);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                //empty code
+                if (string.IsNullOrEmpty(databaseObject.Code))
+                {
+                    var code = entityCenterRepository.GetCodeByEntity(nameof(RoleGroup));
+
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                        return GetCommonRespone();
+                    }
+
+                    databaseObject.Code = code;
+                }
+
+                //check exist in db
+                if (roleGroupRepository.IsExistCode(databaseObject.Code))
+                {
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    return GetCommonRespone();
+                }
+
+                result = roleGroupRepository.Insert(databaseObject);
+            }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
             }
 
             return GetCommonRespone();

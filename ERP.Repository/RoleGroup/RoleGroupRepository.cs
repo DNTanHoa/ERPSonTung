@@ -14,6 +14,10 @@ namespace ERP.Repository
             this.context = context;
         }
 
-        
+        public bool IsExistCode(string Code)
+        {
+            var roleGroup = context.RoleGroup.Where(item => item.Code.Equals(Code)).FirstOrDefault();
+            return roleGroup != null ? true : false;
+        }
     }
 }

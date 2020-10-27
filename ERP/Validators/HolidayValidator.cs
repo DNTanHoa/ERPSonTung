@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace ERP.Validators
 {
-    public class HolidayCreateRequestValidator : AbstractValidator<HolidayCreateRequestModel>
+    public class HolidayCreateValidator : AbstractValidator<HolidayCreateRequestModel>
     {
-        public HolidayCreateRequestValidator()
+        public HolidayCreateValidator()
         {
             RuleFor(x => x.Code).NotEmpty().WithMessage(CommonMessageGlobal.Require("Mã"))
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Mã", 2))
@@ -24,9 +24,9 @@ namespace ERP.Validators
         }
     }
 
-    public class HolidaySaveChangeRequestValidator : AbstractValidator<HolidayUpdateRequestModel>
+    public class HolidaySaveChangeValidator : AbstractValidator<HolidayUpdateRequestModel>
     {
-        public HolidaySaveChangeRequestValidator()
+        public HolidaySaveChangeValidator()
         {
 
             RuleFor(x => x.Id).NotEmpty().WithMessage(CommonMessageGlobal.Require("Id"))
@@ -49,9 +49,9 @@ namespace ERP.Validators
         }
     }
 
-    public class HolidayUpdateRequestValidator : AbstractValidator<HolidayUpdateRequestModel>
+    public class HolidayUpdateValidator : AbstractValidator<HolidayUpdateRequestModel>
     {
-        public HolidayUpdateRequestValidator()
+        public HolidayUpdateValidator()
         {
 
             RuleFor(x => x.Id).NotEmpty().WithMessage(CommonMessageGlobal.Require("Id"))

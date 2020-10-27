@@ -80,49 +80,40 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(EmployeeRelativeRequest request)
         {
-            if (!ModelState.IsValid)
+            var result = 0;
+
+            var model = request.MapTo<EmployeeRelative>();
+
+            if (model.Id == 0)
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Insert, message);
-                return GetCommonRespone();
+                model.InitBeforeSave(RequestUsername, InitType.Create);
+                result = this._employeeRelativeRepository.Insert(model);
             }
             else
             {
-                var result = 0;
+                var currentObj = this._employeeRelativeRepository.GetItemById(model.Id);
 
-                var model = request.MapTo<EmployeeRelative>();
-
-                if (model.Id == 0)
+                if (currentObj != null)
                 {
-                    model.InitBeforeSave(RequestUsername, InitType.Create);
-                    result = this._employeeRelativeRepository.Insert(model);
+                    model.InitBeforeSave(RequestUsername, InitType.Update);
+                    result = this._employeeRelativeRepository.Update(model);
                 }
                 else
                 {
-                    var currentObj = this._employeeRelativeRepository.GetItemById(model.Id);
-
-                    if (currentObj != null)
-                    {
-                        model.InitBeforeSave(RequestUsername, InitType.Update);
-                        result = this._employeeRelativeRepository.Update(model);
-                    }
-                    else
-                    {
-                        Result = new ErrorResult(ActionType.Select, "Lỗi 404");
-                    }
+                    Result = new ErrorResult(ActionType.Select, "Lỗi 404");
                 }
-
-                if (result > 0)
-                {
-                    Result = new SuccessResult(ActionType.Insert, AppGlobal.SaveChangeSuccess);
-                }
-                else
-                {
-                    Result = new ErrorResult(ActionType.Insert, AppGlobal.SaveChangeFalse);
-                }
-
-                return GetCommonRespone();
             }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Insert, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.SaveChangeFalse);
+            }
+
+            return GetCommonRespone();
         }
 
         /// <summary>

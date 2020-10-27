@@ -6,11 +6,11 @@ using FluentValidation;
 
 namespace ERP.Validators
 {
-    public class EmployeeSaveChangeRequestValidator : AbstractValidator<EmployeeSaveChangeRequestModel>
+    public class EmployeeSaveChangeValidator : AbstractValidator<EmployeeSaveChangeRequestModel>
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public EmployeeSaveChangeRequestValidator(ICategoryRepository categoryRepository)
+        public EmployeeSaveChangeValidator(ICategoryRepository categoryRepository)
         {
             this._categoryRepository = categoryRepository;
 
@@ -82,10 +82,10 @@ namespace ERP.Validators
     }
 
 
-    public class EmployeeContactDetailRequestValidator : AbstractValidator<EmployeeContactDetailRequestModel>
+    public class EmployeeContactDetailValidator : AbstractValidator<EmployeeContactDetailRequestModel>
     {
 
-        public EmployeeContactDetailRequestValidator()
+        public EmployeeContactDetailValidator()
         {
 
             RuleFor(x => x.Code).NotEmpty().WithMessage(CommonMessageGlobal.Require("Mã nhân viên"))

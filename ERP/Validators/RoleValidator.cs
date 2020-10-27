@@ -6,12 +6,12 @@ using FluentValidation;
 
 namespace ERP.Validators
 {
-    public class RoleCreateRequestValidator : AbstractValidator<RoleCreateRequestModel>
+    public class RoleCreateValidator : AbstractValidator<RoleCreateRequestModel>
     {
         private readonly IUserRepository _userRepository;
         private readonly ICategoryRepository _categoryRepository;
 
-        public RoleCreateRequestValidator(IUserRepository userRepository, ICategoryRepository categoryRepository)
+        public RoleCreateValidator(IUserRepository userRepository, ICategoryRepository categoryRepository)
         {
 
             this._categoryRepository = categoryRepository;
@@ -44,12 +44,12 @@ namespace ERP.Validators
         }
     }
 
-    public class RoleSaveChangeRequestValidator : AbstractValidator<RoleSaveChangeRequestModel>
+    public class RoleSaveChangeValidator : AbstractValidator<RoleSaveChangeRequestModel>
     {
         private readonly IUserRepository _userRepository;
         private readonly ICategoryRepository _categoryRepository;
 
-        public RoleSaveChangeRequestValidator(IUserRepository userRepository, ICategoryRepository categoryRepository)
+        public RoleSaveChangeValidator(IUserRepository userRepository, ICategoryRepository categoryRepository)
         {
 
             this._categoryRepository = categoryRepository;
@@ -88,12 +88,12 @@ namespace ERP.Validators
         }
     }
 
-    public class RoleUpdateRequestValidator : AbstractValidator<RoleUpdateRequestModel>
+    public class RoleUpdateValidator : AbstractValidator<RoleUpdateRequestModel>
     {
         private readonly IUserRepository _userRepository;
         private readonly ICategoryRepository _categoryRepository;
 
-        public RoleUpdateRequestValidator(IUserRepository userRepository, ICategoryRepository categoryRepository)
+        public RoleUpdateValidator(IUserRepository userRepository, ICategoryRepository categoryRepository)
         {
             RuleFor(x => x.Id).NotEmpty().WithMessage(CommonMessageGlobal.Require("Id"))
                 .GreaterThanOrEqualTo(0).WithMessage(CommonMessageGlobal.GreaterThanOrEqual("Id", 0));

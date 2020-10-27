@@ -37,26 +37,18 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(ShiftEmployeeCreateRequestModel model)
         {
-            if(ModelState.IsValid)
+            var databaseObject = model.MapTo<ShiftEmployee>();
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = shiftEmployeeRepository.Insert(databaseObject);
+            if (result > 0)
             {
-                var databaseObject = model.MapTo<ShiftEmployee>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = shiftEmployeeRepository.Insert(databaseObject);
-                if (result > 0)
-                {
-                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
-                }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
-                }
+                Result = new SuccessResultFactory().Factory(ActionType.Insert);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Insert, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Insert);
             }
-            
+
             return GetCommonRespone();
         }
 
@@ -64,26 +56,18 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(ShiftEmployeeUpdateRequestModel model)
         {
-            if (ModelState.IsValid)
+            var databaseObject = model.MapTo<ShiftEmployee>();
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = shiftEmployeeRepository.Update(databaseObject);
+            if (result > 0)
             {
-                var databaseObject = model.MapTo<ShiftEmployee>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = shiftEmployeeRepository.Update(databaseObject);
-                if (result > 0)
-                {
-                    Result = new SuccessResultFactory().Factory(ActionType.Edit);
-                }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Edit);
-                }
+                Result = new SuccessResultFactory().Factory(ActionType.Edit);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Edit);
             }
-            
+
             return GetCommonRespone();
         }
 
@@ -108,33 +92,25 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(ShiftEmployeeSaveChangeRequestModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var databaseObject = model.MapTo<ShiftEmployee>();
-                int result = 0;
-                
-                if(model.Id > 0)
-                {
-                    result = shiftEmployeeRepository.Update(databaseObject);
-                }
-                else
-                {
-                    result = shiftEmployeeRepository.Insert(databaseObject);
-                }
+            var databaseObject = model.MapTo<ShiftEmployee>();
+            int result = 0;
 
-                if(result > 0)
-                {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
-                }   
-                else
-                {
-                    Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
-                }
+            if (model.Id > 0)
+            {
+                result = shiftEmployeeRepository.Update(databaseObject);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                result = shiftEmployeeRepository.Insert(databaseObject);
+            }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
             }
 
             return GetCommonRespone();

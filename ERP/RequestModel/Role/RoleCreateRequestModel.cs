@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ERP.RequestModel.Role
+﻿namespace ERP.RequestModel.Role
 {
     public class RoleCreateRequestModel
     {

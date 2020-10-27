@@ -11,7 +11,6 @@ using ERP.Ultilities.Global;
 using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
@@ -20,16 +19,19 @@ namespace ERP.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [EnableCors("CorsPolicy")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TrainingCourseController : BaseController
     {
         private readonly ITrainingCourseRepository trainingCourseRepository;
+        private readonly IEntityCenterRepository entityCenterRepository;
         private readonly ILogger<TrainingCourse> logger;
 
-        public TrainingCourseController(ITrainingCourseRepository trainingCourseRepository, ILogger<TrainingCourse> logger)
+        public TrainingCourseController(ITrainingCourseRepository trainingCourseRepository,
+                                        IEntityCenterRepository entityCenterRepository,
+                                        ILogger<TrainingCourse> logger)
         {
             this.trainingCourseRepository = trainingCourseRepository;
+            this.entityCenterRepository = entityCenterRepository;
             this.logger = logger;
         }
 
@@ -37,26 +39,41 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(TrainingCourseCreateRequestModel model)
         {
-            if(ModelState.IsValid)
+            var databaseObject = model.MapTo<TrainingCourse>();
+
+            //empty code
+            if (string.IsNullOrEmpty(databaseObject.Code))
             {
-                var databaseObject = model.MapTo<TrainingCourse>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = trainingCourseRepository.Insert(databaseObject);
-                if (result > 0)
+                var code = entityCenterRepository.GetCodeByEntity(nameof(TrainingCourse));
+
+                if (string.IsNullOrEmpty(code))
                 {
-                    Result = new SuccessResultFactory().Factory(ActionType.Insert);
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                    return GetCommonRespone();
                 }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Insert);
-                }
+
+                databaseObject.Code = code;
+            }
+
+            //check exist in db
+            if (trainingCourseRepository.IsExistCode(databaseObject.Code))
+            {
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                return GetCommonRespone();
+            }
+
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = trainingCourseRepository.Insert(databaseObject);
+
+            if (result > 0)
+            {
+                Result = new SuccessResultFactory().Factory(ActionType.Insert);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Insert, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Insert);
             }
-            
+
             return GetCommonRespone();
         }
 
@@ -64,26 +81,18 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Update(TrainingCourseUpdateRequestModel model)
         {
-            if (ModelState.IsValid)
+            var databaseObject = model.MapTo<TrainingCourse>();
+            databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+            int result = trainingCourseRepository.Update(databaseObject);
+            if (result > 0)
             {
-                var databaseObject = model.MapTo<TrainingCourse>();
-                databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
-                int result = trainingCourseRepository.Update(databaseObject);
-                if (result > 0)
-                {
-                    Result = new SuccessResultFactory().Factory(ActionType.Edit);
-                }
-                else
-                {
-                    Result = new ErrorResultFactory().Factory(ActionType.Edit);
-                }
+                Result = new SuccessResultFactory().Factory(ActionType.Edit);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                Result = new ErrorResultFactory().Factory(ActionType.Edit);
             }
-            
+
             return GetCommonRespone();
         }
 
@@ -91,7 +100,7 @@ namespace ERP.Controllers
         public ActionResult<CommonResponeModel> Delete(long Id)
         {
             int result = trainingCourseRepository.Delete(Id);
-            
+
             if (result > 0)
             {
                 Result = new SuccessResultFactory().Factory(ActionType.Delete);
@@ -108,33 +117,46 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(TrainingCourseSaveChangeRequestModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var databaseObject = model.MapTo<TrainingCourse>();
-                int result = 0;
-                
-                if(model.Id > 0)
-                {
-                    result = trainingCourseRepository.Update(databaseObject);
-                }
-                else
-                {
-                    result = trainingCourseRepository.Insert(databaseObject);
-                }
+            var databaseObject = model.MapTo<TrainingCourse>();
+            int result = 0;
 
-                if(result > 0)
-                {
-                    Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
-                }   
-                else
-                {
-                    Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
-                }
+            if (model.Id > 0)
+            {
+                result = trainingCourseRepository.Update(databaseObject);
             }
             else
             {
-                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-                Result = new ErrorResult(ActionType.Edit, message);
+                //empty code
+                if (string.IsNullOrEmpty(databaseObject.Code))
+                {
+                    var code = entityCenterRepository.GetCodeByEntity(nameof(TrainingCourse));
+
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                        return GetCommonRespone();
+                    }
+
+                    databaseObject.Code = code;
+                }
+
+                //check exist in db
+                if (trainingCourseRepository.IsExistCode(databaseObject.Code))
+                {
+                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    return GetCommonRespone();
+                }
+
+                result = trainingCourseRepository.Insert(databaseObject);
+            }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
             }
 
             return GetCommonRespone();

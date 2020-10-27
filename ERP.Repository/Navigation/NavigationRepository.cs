@@ -45,5 +45,11 @@ namespace ERP.Repository
                         };
             return query.ToList();
         }
+
+        public bool IsExistCode(string Code)
+        {
+            var navigation = context.Navigation.Where(item => item.Code.Equals(Code)).FirstOrDefault();
+            return navigation != null ? true : false;
+        }
     }
 }
