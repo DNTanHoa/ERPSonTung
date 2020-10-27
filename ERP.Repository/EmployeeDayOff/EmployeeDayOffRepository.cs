@@ -46,5 +46,12 @@ namespace ERP.Repository
             var item = this.context.EmployeeDayOff.AsNoTracking().SingleOrDefault(n => n.Id == id);
             return item;
         }
+
+        public List<EmployeeDayOff> GetItemsByEmployeeCode(string employeeCode)
+        {
+            var items = this.context.EmployeeDayOff.Where(n => n.EmployeeCode.Equals(employeeCode));
+
+            return items.ToList();
+        }
     }
 }

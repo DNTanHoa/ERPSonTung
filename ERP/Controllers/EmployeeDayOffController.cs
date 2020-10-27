@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 
 namespace ERP.Controllers
 {
@@ -22,7 +21,6 @@ namespace ERP.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class EmployeeDayOffController : BaseController
     {
-
         #region constructor
 
         private readonly IEmployeeDayOffRepository _employeeDayOffRepository;
@@ -32,18 +30,10 @@ namespace ERP.Controllers
             this._employeeDayOffRepository = employeeDayOffRepository;
         }
 
-
-        #endregion
+        #endregion constructor
 
         #region public method
 
-        /// <summary>
-        /// get filtered list employee day off
-        /// </summary>
-        /// <param name="employeeCode"></param>
-        /// <param name="fromDate"></param>
-        /// <param name="toDate"></param>
-        /// <returns></returns>
         [HttpGet]
         public ActionResult<CommonResponeModel> Get(string employeeCode, DateTime? fromDate, DateTime? toDate)
         {
@@ -53,14 +43,85 @@ namespace ERP.Controllers
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
             return GetCommonRespone();
-
         }
 
-        /// <summary>
-        /// Add and update employee day off
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        [HttpGet]
+        public ActionResult<CommonResponeModel> GetItemsByEmployeeCode(string employeeCode)
+        {
+
+
+            if (string.IsNullOrEmpty(employeeCode))
+            {
+                Result = new ErrorResult(ActionType.Select, AppGlobal.Error);
+            }
+            else
+            {
+                var result = this._employeeDayOffRepository.GetItemsByEmployeeCode(employeeCode);
+
+                Data = result;
+                Result = new SuccessResultFactory().Factory(ActionType.Select);
+            }
+
+            
+
+            return GetCommonRespone();
+        }
+
+
+        [HttpPost]
+        [ApiValidationFilter]
+        public ActionResult<CommonResponeModel> Create(EmployeeDayOffRequest request)
+        {
+            var result = 0;
+
+            var model = request.MapTo<EmployeeDayOff>();
+
+            model.InitBeforeSave(RequestUsername, InitType.Create);
+            result = this._employeeDayOffRepository.Insert(model);
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Insert, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.SaveChangeFalse);
+            }
+
+            return GetCommonRespone();
+        }
+
+        [HttpPut]
+        [ApiValidationFilter]
+        public ActionResult<CommonResponeModel> Update(EmployeeDayOffRequest request)
+        {
+            var result = 0;
+
+            var model = request.MapTo<EmployeeDayOff>();
+
+            var currentObj = this._employeeDayOffRepository.GetItemById(model.Id);
+
+            if (currentObj != null)
+            {
+                model.InitBeforeSave(RequestUsername, InitType.Update);
+                result = this._employeeDayOffRepository.Update(model);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Select, CommonMessageGlobal._404);
+            }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
+            }
+            return GetCommonRespone();
+        }
+
         [HttpPost]
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(EmployeeDayOffRequest request)
@@ -89,7 +150,6 @@ namespace ERP.Controllers
                 }
             }
 
-
             if (result > 0)
             {
                 Result = new SuccessResult(ActionType.Insert, AppGlobal.SaveChangeSuccess);
@@ -101,11 +161,6 @@ namespace ERP.Controllers
             return GetCommonRespone();
         }
 
-        /// <summary>
-        /// deleted a object set deleted is true
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpDelete]
         public ActionResult<CommonResponeModel> Delete(long id)
         {
@@ -115,6 +170,7 @@ namespace ERP.Controllers
 
             if (currentObj != null)
             {
+                //deleted a object set deleted is true
                 currentObj.Deleted = true;
                 result = this._employeeDayOffRepository.Update(currentObj);
             }
@@ -132,13 +188,9 @@ namespace ERP.Controllers
                 Result = new ErrorResult(ActionType.Delete, AppGlobal.SaveChangeFalse);
             }
 
-
             return GetCommonRespone();
-
-
         }
 
-        #endregion
-
+        #endregion public method
     }
 }

@@ -45,7 +45,12 @@ namespace ERP.Repository
         public IEnumerable<Employee> GetEmployeeHasBirthdayInTimeRange(DateTime FromDate, DateTime ToDate)
         {
             ///TODO: Lấy thông tin nhân viên có ngày sinh theo khoảng thời gian
-            throw new NotImplementedException();
+
+            var items = this.context.Employee.Where(n => n.DateOfBirth.Value >= FromDate && n.DateOfBirth.Value <= ToDate);
+
+            return items;
+
+
         }
 
         public IEnumerable<Employee> GetEmployeeHasContractExpireInTimeRange(DateTime FromDate, DateTime ToDate)

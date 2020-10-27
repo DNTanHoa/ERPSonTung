@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ERP.Model.DataTransferObjects.Dashboard
+﻿namespace ERP.Model.DataTransferObjects.Dashboard
 {
     public class DepartmentStatisticDataTransfer
     {
@@ -12,7 +8,7 @@ namespace ERP.Model.DataTransferObjects.Dashboard
         public string Name { get; set; }
 
         /// <summary>
-        /// Tỷ lệ nhân sự bộ phận 
+        /// Tỷ lệ nhân sự bộ phận
         /// </summary>
         public decimal? EmployeePercent { get; set; }
 
@@ -40,7 +36,5 @@ namespace ERP.Model.DataTransferObjects.Dashboard
         /// Số lượng đi trễ
         /// </summary>
         public int EmployeeGoLate { get; set; }
-
-
     }
 }

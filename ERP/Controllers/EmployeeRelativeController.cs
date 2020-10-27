@@ -34,13 +34,6 @@ namespace ERP.Controllers
 
         #region public method
 
-        /// <summary>
-        /// get filtered list employee relative
-        /// </summary>
-        /// <param name="employeeCode"></param>
-        /// <param name="fromDate"></param>
-        /// <param name="toDate"></param>
-        /// <returns></returns>
         [HttpGet]
         public ActionResult<CommonResponeModel> Get(string employeeCode)
         {
@@ -59,7 +52,7 @@ namespace ERP.Controllers
         {
             var currentObj = this._employeeRelativeRepository.GetById(id);
 
-            if (currentObj == null || currentObj.Deleted==true)
+            if (currentObj == null || currentObj.Deleted == true)
             {
                 Result = new ErrorResult(ActionType.Select, "Lỗi 404");
 
@@ -71,11 +64,61 @@ namespace ERP.Controllers
             return GetCommonRespone();
         }
 
-        /// <summary>
-        /// Add and update employee relative
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        [HttpPost]
+        [ApiValidationFilter]
+        public ActionResult<CommonResponeModel> Create(EmployeeRelativeRequest request)
+        {
+            var result = 0;
+
+            var model = request.MapTo<EmployeeRelative>();
+
+            model.InitBeforeSave(RequestUsername, InitType.Create);
+            result = this._employeeRelativeRepository.Insert(model);
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Insert, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.SaveChangeFalse);
+            }
+
+            return GetCommonRespone();
+        }
+
+        [HttpPut]
+        [ApiValidationFilter]
+        public ActionResult<CommonResponeModel> Update(EmployeeRelativeRequest request)
+        {
+            var result = 0;
+
+            var model = request.MapTo<EmployeeRelative>();
+
+            var currentObj = this._employeeRelativeRepository.GetItemById(model.Id);
+
+            if (currentObj != null)
+            {
+                model.InitBeforeSave(RequestUsername, InitType.Update);
+                result = this._employeeRelativeRepository.Update(model);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Select, "Lỗi 404");
+            }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Insert, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Insert, AppGlobal.SaveChangeFalse);
+            }
+
+            return GetCommonRespone();
+        }
+
         [HttpPost]
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> SaveChange(EmployeeRelativeRequest request)
@@ -116,11 +159,6 @@ namespace ERP.Controllers
             return GetCommonRespone();
         }
 
-        /// <summary>
-        /// deleted a object set deleted is true
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpDelete]
         public ActionResult<CommonResponeModel> Delete(long id)
         {
@@ -128,8 +166,9 @@ namespace ERP.Controllers
 
             var currentObj = this._employeeRelativeRepository.GetById(id);
 
-            if (currentObj != null && currentObj.Deleted==false)
+            if (currentObj != null && currentObj.Deleted == false)
             {
+                /// deleted a object set deleted is true
                 currentObj.Deleted = true;
                 result = this._employeeRelativeRepository.Update(currentObj);
             }

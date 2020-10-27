@@ -10,5 +10,7 @@ namespace ERP.Repository
         public List<EmployeDayOffDataTransfer> GetFilteredItems(string employeeCode, DateTime? fromDate, DateTime? toDate);
 
         public EmployeeDayOff GetItemById (long id);
+
+        public List<EmployeeDayOff> GetItemsByEmployeeCode(string employeeCode);
     }
 }

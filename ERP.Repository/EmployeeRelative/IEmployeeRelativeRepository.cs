@@ -9,5 +9,8 @@ namespace ERP.Repository
         public List<EmployeeRelativeDataTransfer> GetFilteredItems(string employeeCode);
 
         public EmployeeRelative GetItemById(long id);
+
+        public List<EmployeeRelative> GetItemsByEmployeeCode(string employeeCode);
+
     }
 }

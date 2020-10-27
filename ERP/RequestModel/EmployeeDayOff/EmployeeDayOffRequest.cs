@@ -1,6 +1,5 @@
 ﻿using ERP.Model.Models;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace ERP.RequestModel.Employee
 {

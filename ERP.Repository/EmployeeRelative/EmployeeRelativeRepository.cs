@@ -46,6 +46,14 @@ namespace ERP.Repository
             return item;
         }
 
+        public List<EmployeeRelative> GetItemsByEmployeeCode(string employeeCode)
+        {
+            var item = this.context.EmployeeRelative.Where(n => n.EmployeeCode.Equals(employeeCode));
+            return item.ToList();
+        }
+
+
+
         #endregion
     }
 }
