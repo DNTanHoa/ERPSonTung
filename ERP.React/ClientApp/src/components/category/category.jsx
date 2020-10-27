@@ -139,11 +139,12 @@ export class Category extends React.Component {
                                 <Grid style={{ height: "550px" }}
                                         data={this.state.data.slice(this.state.skip, this.state.take + this.state.skip)}
                                         onItemChange={this.itemChange}
-                                        pageable={true}
+                                        pageable={{buttonCount: 5, info: true, pageSizes:true}}
                                         resizable={true}
                                         total={this.state.data.length}
                                         skip={this.state.skip}
                                         take={this.state.take}
+                                        pageSize={20}
                                         onPageChange={this.pageChange}
                                         editField={this.editField}>
                                         <GridToolbar>

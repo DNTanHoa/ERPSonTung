@@ -108,7 +108,7 @@ export default class DailyMonitor extends React.Component {
                                             <tbody>
                                                 {this.state.departmentStatistic.map((item, index) => {
                                                     return(
-                                                        <tr>
+                                                        <tr key={index}>
                                                             <td>{item.name}</td>
                                                             <td>{item.employeeCount}</td>
                                                             <td>{item.employeeLeave}</td>

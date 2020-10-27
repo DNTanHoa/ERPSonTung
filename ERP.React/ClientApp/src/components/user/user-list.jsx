@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
 import { CommandCell } from '../command/common-command';
 import { process } from '@progress/kendo-data-query';
-import { UserProvider, UserConxtext } from '../../providers/context/user-context'
 import { deleteUser, getUsers, insertUser, updateUser } from '../../apis/user/user-service';
 import { Loading } from '../loading';
 import { ToastContainer, toast } from 'react-toastify';    

@@ -1,0 +1,37 @@
+.k-animation-container-relative {
+    width: 100%;
+}
+
+.k-tabstrip > .k-content {
+    padding: 2px;
+    padding-top: 8px;
+}
+
+.k-tabstrip-items {
+    overflow-x: scroll;
+}
+
+.k-tabstrip ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+.customDatePickerWidth, 
+.customDatePickerWidth > div.react-datepicker-wrapper, 
+.customDatePickerWidth > div > div.react-datepicker__input-container
+.customDatePickerWidth > div > div.react-datepicker__input-container input {
+   width: 100%;
+}
+
+.k-calendar-container {
+    width: inherit;
+}
+
+.k-grid .k-grid-edit-row td, .k-grid .k-command-cell, .k-grid .k-edit-cell{
+    padding: 5px;
+}
+
+.k-list-container {
+    z-index: 10005;
+}
+

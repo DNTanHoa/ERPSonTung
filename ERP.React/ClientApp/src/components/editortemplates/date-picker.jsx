@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
-import { DropDownList } from '@progress/kendo-react-dropdowns';
 import { dateFormat } from 'date-format-helper'
 
 export class CustomDatePicker extends React.Component {
@@ -17,6 +16,7 @@ export class CustomDatePicker extends React.Component {
             <td>
                 {dataItem.inEdit ? (
                     <DatePicker format="dd-MM-yyyy"
+                        navigation={false}
                         defaultValue={new Date()}/>
                 ) : (
                     dateFormat({t: dataValue, format: format})

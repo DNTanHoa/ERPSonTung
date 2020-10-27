@@ -1,0 +1,19 @@
+{
+    "upload": {
+        "cancel": "Hủy",
+        "clearSelectedFiles": "Bỏ chọn",
+        "dropFilesHere": "Kéo thả file",
+        "headerStatusUploaded": "Đang tải",
+        "headerStatusUploading": "Đang tải",
+        "invalidFileExtension": "Định dạng file không hợp lệ",
+        "invalidFiles": "File không hợp lệ",
+        "invalidMaxFileSize": "Kích thước quá lớn",
+        "invalidMinFileSize": "File không có dữ liệu",
+        "remove": "Xóa",
+        "retry": "Thử lại",
+        "select": "Chọn tệp",
+        "uploadSelectedFiles": "Tải lên",
+        "total": "Tổng",
+        "files": "Danh sách"
+    }
+}

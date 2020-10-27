@@ -80,7 +80,7 @@ namespace ERP.Controllers
         [HttpGet]
         public ActionResult<CommonResponeModel> GetDataTransferHasFilter(EmployeeFilterRequestModel filterModel)
         {
-            Data = employeeRepository.GetDataTransferHasFilter(filterModel.DepartmentCode, filterModel.GroupCode, filterModel.LaborGroupCode, filterModel.StatusCode, filterModel.StartFromDate, filterModel.StartToDate);
+            Data = employeeRepository.GetDataTransferHasFilter(filterModel?.DepartmentCode, filterModel?.GroupCode, filterModel?.LaborGroupCode, filterModel?.StatusCode, filterModel?.StartFromDate, filterModel?.StartToDate);
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
             return GetCommonRespone();

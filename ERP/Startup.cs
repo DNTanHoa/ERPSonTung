@@ -33,7 +33,7 @@ namespace ERP
             {
                 opt.AddPolicy(MyAllowSpecificOrigins, builder =>
                 {
-                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("http://localhost:3000");
                 });
             });
 
@@ -112,13 +112,17 @@ namespace ERP
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseSwagger(c =>
             {

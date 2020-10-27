@@ -2,7 +2,7 @@ import React, { Component, PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { InforCard } from '../card/infor-card';
 import { getDashboardOverview } from '../../apis/Statistic/statistic-api'
-import { Chart, ChartLegend, ChartSeries, ChartSeriesItem } from '@progress/kendo-react-charts';
+import { Chart, ChartLegend, ChartSeries, ChartSeriesItem, ChartCategoryAxis, ChartCategoryAxisItem } from '@progress/kendo-react-charts';
 
 export class DailyTimeKeeping extends React.Component {
     constructor(props){
@@ -13,7 +13,15 @@ export class DailyTimeKeeping extends React.Component {
             employeeGoLate: 0,
             employeeFoods: 0,
             employeeOutSide: 0,
-            departmentStatistic: []
+            departmentStatistic: [],
+            monitorDate: new Date(),
+            categories: [
+                {name: 'Tổ sản xuất', percent: 0.25, employeeCount: 250, employeeLeave: 10},
+                {name: 'Chuyền', percent: 0.15, employeeCount: 150, employeeLeave: 10},
+                {name: 'Wash', percent: 0.3, employeeCount: 300, employeeLeave: 10},
+                {name: 'Hành chính - nhân sự', percent: 0.2, employeeCount: 200, employeeLeave: 10},
+                {name: 'IT', percent: 0.1, employeeCount: 100, employeeLeave: 10},
+            ]
         }
     }
 
@@ -50,7 +58,7 @@ export class DailyTimeKeeping extends React.Component {
                                 icon='fas fa-users'
                                 href=''
                                 displayText='Xem chi tiết'></InforCard>
-                            <InforCard boxType='small-box bg bg-danger'
+                            <InforCard boxType='small-box bg bg-primary'
                                 displayName='Xuất cơm dự kiến'
                                 boxValue={this.state.employeeFoods}
                                 icon='fas fa-users'
@@ -113,7 +121,23 @@ export class DailyTimeKeeping extends React.Component {
                                         <h3 className="card-title">Biểu đồ tỷ lệ nhân sự</h3>
                                     </div>
                                     <div className="card-body">
-                                        
+                                    <Chart style={{ height: 350 }}>
+                                        <ChartLegend position="top" orientation="horizontal" />
+                                        <ChartCategoryAxis>
+                                            <ChartCategoryAxisItem categories={this.state.categories.map((item) => item.name)} startAngle={45} />
+                                        </ChartCategoryAxis>
+                                        <ChartSeries>
+                                            {this.state.categories.map((item, idx) => (
+                                                <ChartSeriesItem
+                                                    key={idx}
+                                                    type="column"
+                                                    tooltip={{ visible: true }}
+                                                    data={item.employeeCount}
+                                                    name={item.name}
+                                                />
+                                            ))}
+                                        </ChartSeries>
+                                    </Chart>
                                     </div>
                                 </div>
                             </div>

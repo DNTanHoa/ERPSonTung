@@ -3,9 +3,11 @@ import * as ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
 import config from '../../appsettings.json';
 import { EmployeeCommandCell } from "./employee-command.jsx";
-import { EmployeeService, insertItem, deleteItem, getItems, updateItem } from './employee-service';
-
+import { getEmployeesHasFillter } from "../../apis/employee/employee-service"
+import EmployeeImportModal from '../employee/employee-import-modal'
 import { CustomDatePicker } from '../editortemplates/date-picker';
+import EmployeeInfoModal from './employee-info-modal';
+import { Modal } from 'react-bootstrap';
 
 export class Employee extends React.Component {
 
@@ -14,11 +16,18 @@ export class Employee extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            employees: [],
             editID: null,
             skip: 0,
-            take: 10
+            take: 50,
+            showInforModal:false,
+            showImportModal:false,
         }
+    }
+
+    componentDidMount = async() => {
+        let employees = await getEmployeesHasFillter();
+        this.setState({employees})
     }
 
     CommandCell = props => (
@@ -34,16 +43,15 @@ export class Employee extends React.Component {
         />
     );
 
-    dataRecieved = (employees) => {
-        let data = employees.map((employee) => {
-            return {
-                ...employee, 
-                startDate: new Date(employee.startDate),
-                dateOfBirth: new Date(employee.dateOfBirth)
-            }
-        })
-        console.log(data);
-        this.setState({ data });
+    handleModalHide = () => {
+        this.setState({showInforModal: false})
+    }
+
+    pageChange = (event) => {
+        this.setState({
+            skip: event.page.skip,
+            take: event.page.take
+        });
     }
     
     render() {
@@ -73,32 +81,63 @@ export class Employee extends React.Component {
                                 </div>
                                 <div className="card-body">
                                 <Grid style={{ height: "550px" }}
-                                        data={this.state.data.slice(this.state.skip, this.state.take + this.state.skip)}
+                                        data={this.state.employees.slice(this.state.skip, this.state.take + this.state.skip)}
                                         onItemChange={this.itemChange}
-                                        pageable={true}
-                                        total={this.state.data.length}
+                                        pageable={{buttonCount: 5, info: true, pageSizes:true}}
+                                        resizable={true}
+                                        reorderable={true}
+                                        onPageChange={this.pageChange}
+                                        total={this.state.employees.length}
                                         skip={this.state.skip}
                                         resizable={true}
                                         take={this.state.take}
-                                        onPageChange={this.pageChange}
                                         editField={this.editField}>
                                         <GridToolbar>
-                                            <button className="btn btn-success"
-                                                    title="Thêm thành viên"
-                                                    onClick={this.addNew}>
-                                                <i className="fas fa-plus-circle"></i>
-                                            </button>
+                                            <div className="d-flex" style={{overflowX: "auto"}}>
+                                                <button className="btn btn-success"
+                                                    onClick={() => {this.setState({showInforModal: true})}}
+                                                    title="Thêm nhân viên">
+                                                    <i className="fas fa-plus-circle"></i>
+                                                </button>
+                                                <button className="btn btn-success ml-1"
+                                                    title="Tải lại">
+                                                    <i className="fas fa-sync"></i>
+                                                </button>
+                                                <button className="btn btn-warning ml-1 text-white"
+                                                    onClick={() => {this.setState({showImportModal: true})}}
+                                                    title="Import Excel">
+                                                    <i className="fas fa-file-import"></i>
+                                                </button>
+                                            </div>
                                         </GridToolbar>
-                                        <Column field="code" title="Mã quản lý" width="200px" editable={false} />
+                                        <Column field="code" title="Mã quản lý" width="120px" editable={false} />
                                         <Column field="fullName" title="Nhân viên" width="250px" />
                                         <Column field="startDate" title="Vào làm" width="150px" format="dd-MM-yyyy" cell={CustomDatePicker}/>
+                                        <Column field="department" title="Bộ phận" width="250px" />
+                                        <Column field="group" title="Tổ làm" width="250px" />
+                                        <Column field="job" title="Công việc" width="250px" />
+                                        <Column field="position" title="Chức vụ" width="250px" />
+                                        <Column field="laborGroup" title="Nhóm lao động" width="250px" />
                                         <Column field="status" title="Trạng thái" width="150px" />
                                         <Column field="dateOfBirth" title="Ngày sinh" width="150px" format="dd-MM-yyyy" cell={CustomDatePicker}/>
                                         <Column field="age" title="Tuổi" width="80px"/>
                                         <Column field="note" title="Ghi chú"/>
                                         <Column cell={this.CommandCell} width="200px" />
                                 </Grid>
-                                <EmployeeService onDataRecieved={this.dataRecieved}></EmployeeService>
+                                <Modal centered={false} 
+                                    size="xl"
+                                    onHide={this.handleModalHide}
+                                    enforceFocus={false}
+                                    show={this.state.showInforModal}>
+                                    <EmployeeInfoModal onHide={this.handleModalHide}></EmployeeInfoModal>
+                                </Modal>
+                                <Modal centered={false} 
+                                    size="xl"
+                                    onHide={this.handleModalHide}
+                                    enforceFocus={false}
+                                    show={this.state.showImportModal}>
+                                    <EmployeeImportModal onHide={this.handleModalHide}></EmployeeImportModal>
+                                </Modal>
                                 </div>
                             </div>
                         </div>
@@ -107,74 +146,4 @@ export class Employee extends React.Component {
             </div>
         )
     }
-
-    pageChange = (event) => {
-        this.setState({
-            skip: event.page.skip,
-            take: event.page.take
-        });
-    }
-
-    remove = dataItem => {
-        const data = deleteItem(dataItem);
-        this.setState({ data });
-    };
-
-    add = dataItem => {
-        dataItem.inEdit = true;
-
-        const data = insertItem(dataItem);
-        this.setState({
-            data: data
-        });
-    };
-
-    update = dataItem => {
-        dataItem.inEdit = false;
-        const data = updateItem(dataItem);
-        this.setState({ data });
-    };
-
-    discard = dataItem => {
-        const data = [...this.state.data];
-        data.splice(0, 1)
-        this.setState({ data });
-    };
-
-    cancel = dataItem => {
-        const originalItem = getItems().find(
-            p => p.id === dataItem.id
-        );
-        const data = this.state.data.map(item =>
-            item.id === originalItem.id ? originalItem : item
-        );
-
-        this.setState({ data });
-    };
-
-    enterEdit = dataItem => {
-        this.setState({
-            data: this.state.data.map(item =>
-                item.id === dataItem.id ? { ...item, inEdit: true } : item
-            )
-        });
-    };
-
-    itemChange = event => {
-        const data = this.state.data.map(item =>
-            item.id === event.dataItem.id
-                ? { ...item, [event.field]: event.value }
-                : item
-        );
-
-        this.setState({ data });
-    };
-
-    addNew = () => {
-        const newDataItem = { inEdit: true, Discontinued: false };
-
-        this.setState({
-            data: [newDataItem, ...this.state.data]
-        });
-    };
 }

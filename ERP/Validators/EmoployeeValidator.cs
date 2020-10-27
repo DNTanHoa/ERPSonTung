@@ -55,19 +55,16 @@ namespace ERP.Validators
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Giới tính", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Giới tính", 20));
 
-            RuleFor(x => x.PositionCode).NotEmpty().WithMessage(CommonMessageGlobal.Require("Vị trí"))
-                .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Vị trí", 2))
+            RuleFor(x => x.PositionCode).MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Vị trí", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Vị trí", 20));
 
             RuleFor(x => x.BankCode).MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Ngân hàng", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Ngân hàng", 20));
 
-            RuleFor(x => x.JobCode).NotEmpty().WithMessage(CommonMessageGlobal.Require("Công việc"))
-                .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Công việc", 2))
+            RuleFor(x => x.JobCode).MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Công việc", 2))
                 .MaximumLength(10).WithMessage(CommonMessageGlobal.Maximum("Công việc", 10));
 
-            RuleFor(x => x.LaborGroupCode).NotEmpty().WithMessage(CommonMessageGlobal.Require("Nhóm lao động"))
-                .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Nhóm lao động", 2))
+            RuleFor(x => x.LaborGroupCode).MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Nhóm lao động", 2))
                 .MaximumLength(10).WithMessage(CommonMessageGlobal.Maximum("Nhóm lao động", 10));
         }
 
