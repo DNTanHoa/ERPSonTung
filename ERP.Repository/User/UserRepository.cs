@@ -1,26 +1,23 @@
-﻿using DevExpress.DirectX.Common.Direct2D;
-using DevExpress.Services.Internal;
-using ERP.Model.DataTransferObjects;
+﻿using ERP.Model.DataTransferObjects;
 using ERP.Model.Models;
 using ERP.Ultilities.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ERP.Repository
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        public UserRepository(SonTungContext context) : base(context) { }
+        public UserRepository(SonTungContext context) : base(context)
+        {
+        }
 
         public bool IsValidUser(string Username, string Password)
         {
             var user = dbSet.Where(item => item.Username.Equals(Username)).FirstOrDefault();
-            if(user != null)
+            if (user != null)
             {
-                if(user.Password == SecurityHelper.Encrypt(user.GuidCode, Password))
+                if (user.Password == SecurityHelper.Encrypt(user.GuidCode, Password))
                 {
                     return true;
                 }
@@ -40,7 +37,7 @@ namespace ERP.Repository
                         join employee in context.Employee on user.EmployeeCode equals employee.Code into userGroup
                         from users in userGroup.DefaultIfEmpty()
                         where user.Username == Username
-                        select new UserDataTransfer 
+                        select new UserDataTransfer
                         {
                             Username = user.Username,
                             Name = users.FullName,
