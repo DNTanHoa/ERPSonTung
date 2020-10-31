@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ERP.Controllers
@@ -107,13 +108,139 @@ namespace ERP.Controllers
                     model.Code = code;
                 }
 
-                if (this._categoryRepository.IsExistEntityWithCode("Category",model.Code,out Category category)==true)
+                if (this._categoryRepository.IsExistEntityWithCode("Category", model.Code, out Category category) == true)
                 {
                     Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
                     return GetCommonRespone();
                 }
 
                 result = this._categoryRepository.Insert(model);
+            }
+
+            if (result > 0)
+            {
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+            }
+            else
+            {
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
+            }
+
+            return GetCommonRespone();
+        }
+
+        [HttpPost]
+        [ApiValidationFilter]
+        public ActionResult<CommonResponeModel> SaveChanges(List<CategorySaveChangeRequestModel> request)
+        {
+
+
+            int result = 0;
+            var newCategories = new List<Category>();
+            var updateCategories = new List<Category>();
+
+            foreach (var item in request)
+            {
+                if (!string.IsNullOrEmpty(item.Code))
+                {
+                    var isExisting = this._categoryRepository.IsExistEntityWithCode("Category", item.Code, out Category category);
+
+                    if (isExisting == true)
+                    {
+
+                        Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                        return GetCommonRespone();
+                    }
+                    else
+                    {
+                        var model = item.MapTo<Category>();
+
+                        if (model.Id == 0)
+                        {
+
+                            model.InitBeforeSave(RequestUsername, InitType.Create);
+                            newCategories.Add(model);
+
+                        }
+                        else
+                        {
+
+                            var currentObj = this._categoryRepository.GetById(model.Id);
+
+                            if (currentObj == null)
+                            {
+                                Result = new ErrorResult(ActionType.Select, CommonMessageGlobal._404);
+                                return GetCommonRespone();
+                            }
+                            else
+                            {
+
+                                model.InitBeforeSave(RequestUsername, InitType.Update);
+                                updateCategories.Add(model);
+                            }
+
+
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    
+
+                    var model = item.MapTo<Category>();
+
+                    if (model.Id == 0)
+                    {
+
+                        var code = this._entityCenterRepository.GetCodeByEntity(nameof(Category));
+
+                        if (string.IsNullOrEmpty(code))
+                        {
+                            Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                            return GetCommonRespone();
+                        }
+
+                        item.Code = code;
+
+                        model.InitBeforeSave(RequestUsername, InitType.Create);
+                        newCategories.Add(model);
+
+                    }
+                    else
+                    {
+                        var currentObj = this._categoryRepository.GetById(model.Id);
+
+                        if (currentObj == null)
+                        {
+                            Result = new ErrorResult(ActionType.Select, CommonMessageGlobal._404);
+                            return GetCommonRespone();
+                        }
+                        else
+                        {
+
+                            model.InitBeforeSave(RequestUsername, InitType.Update);
+                            updateCategories.Add(model);
+                        }
+
+
+                    }
+
+                }
+            }
+
+
+
+            if (newCategories.Count() > 0)
+            {
+                result = this._categoryRepository.Insert(newCategories);
+            }
+
+            if (updateCategories.Count() > 0)
+            {
+                result = this._categoryRepository.Update(updateCategories);
+
             }
 
             if (result > 0)
