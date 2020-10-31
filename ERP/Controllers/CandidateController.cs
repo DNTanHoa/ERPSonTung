@@ -26,9 +26,9 @@ namespace ERP.Controllers
     {
         private readonly ICandidateRepository _candidateRepository;
         private readonly IEntityCenterRepository _entityCenterRepository;
-        private readonly ILogger<Candidate> logger;
+        private readonly ILogger<CandidateController> logger;
 
-        public CandidateController(ICandidateRepository candidateRepository, ILogger<Candidate> logger, IEntityCenterRepository entityCenterRepository)
+        public CandidateController(ICandidateRepository candidateRepository, ILogger<CandidateController> logger, IEntityCenterRepository entityCenterRepository)
         {
             this._candidateRepository = candidateRepository;
             this.logger = logger;
