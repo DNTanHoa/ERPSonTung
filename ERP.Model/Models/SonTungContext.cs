@@ -44,6 +44,7 @@ namespace ERP.Model.Models
         public virtual DbSet<Candidate> Candidate { get; set; }
         public virtual DbSet<CandidatePaper> CandidatePaper { get; set; }
         public virtual DbSet<ContractType> ContractType { get; set; }
+        public virtual DbSet<EmployeeCertificate> EmployeeCertificate { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -157,7 +158,7 @@ namespace ERP.Model.Models
 
                 entity.Property(e => e.OriginAddress).HasMaxLength(4000);
 
-                entity.Property(e => e.IdentityLicensePlaceCode).HasMaxLength(4000);
+                entity.Property(e => e.IdentityLicensePlace).HasMaxLength(4000);
 
                 entity.Property(e => e.PersonalEmail).HasMaxLength(4000);
 
@@ -232,7 +233,7 @@ namespace ERP.Model.Models
 
                 entity.Property(e => e.Path).HasMaxLength(4000);
 
-                entity.Property(e => e.Salary).HasColumnType("decimal(19, 4)");
+                entity.Property(e => e.ContractSalary).HasColumnType("decimal(19, 4)");
 
                 entity.Property(e => e.SignDate).HasColumnType("smalldatetime");
 

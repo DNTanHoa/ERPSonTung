@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace ERP.Model.Models
 {
+    /// <summary>
+    /// Quản lý
+    /// </summary>
     public partial class CheckInOutDevice : BaseModel
     {
         public string Code { get; set; }

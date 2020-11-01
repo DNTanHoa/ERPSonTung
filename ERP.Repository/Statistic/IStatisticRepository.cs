@@ -7,5 +7,8 @@ namespace ERP.Repository.Statistic
     public interface IStatisticRepository
     {
         IEnumerable<DashboardOverviewDataTransfer> GetDataTransferDashboardOverview(DateTime fromDate, DateTime toDate);
+        
+        ///
+        IEnumerable<DepartmentStatisticDataTransfer> SelectEmployeeDepartmentCountStatistic(DateTime fromDate, DateTime toDate);
     }
 }
