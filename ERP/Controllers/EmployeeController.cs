@@ -206,14 +206,19 @@ namespace ERP.Controllers
         }
 
         [HttpPost]
-        ///TODO: chưa hoàn thành
         public ActionResult<CommonResponeModel> CheckFileEmployees(IFormFile file)
         {
+            if(file == null || string.IsNullOrWhiteSpace(file.FileName))
+            {
+                Result = new ErrorResult(ActionType.CheckFileExcel, CommonMessageGlobal.Require("File Excel"));
+                return GetCommonRespone();
+            }
+
             try
             {
-                //string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Storages", file.FileName);
+                //string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Storages", DateTime.Now.ToString("yyyyMMddHHmmss") + file.FileName);
                 //string pathXmlCheck = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "TemplateImport", "Xml", "Employee.xml");
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "Storages", file.FileName);
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Storages", DateTime.Now.ToString("yyyyMMddHHmmss") + file.FileName);
                 string pathXmlCheck = Path.Combine(Directory.GetCurrentDirectory(), "TemplateImport", "Xml", "Employee.xml");
 
                 //save file to server
