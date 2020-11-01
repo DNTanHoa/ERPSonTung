@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
@@ -10,11 +11,13 @@ using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.Employee;
 using ERP.ResponeModel;
+using ERP.TemplateImport;
 using ERP.Ultilities.Enum;
 using ERP.Ultilities.Extensions;
 using ERP.Ultilities.Factory.Implement;
 using ERP.Ultilities.Global;
 using ERP.Ultilities.Results;
+using ExcelDataReader;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -194,6 +197,61 @@ namespace ERP.Controllers
                 Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
             }
             else
+            {
+                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
+            }
+
+            return GetCommonRespone();
+        }
+
+        [HttpPost]
+        ///TODO: chưa hoàn thành
+        public ActionResult<CommonResponeModel> CheckFileEmployees(IFormFile file)
+        {
+            try
+            {
+                //string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Storages", file.FileName);
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Storages", file.FileName);
+                string pathXmlCheck = Path.Combine(Directory.GetCurrentDirectory(), "TemplateImport", "Xml", "Employee.xml");
+                SheetTemplateImport templateImport = new SheetTemplateImport(pathXmlCheck);
+
+                //save file to server
+                using (Stream stream = new FileStream(path, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                //read file to check
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                using (var stream = System.IO.File.Open(path, FileMode.Open, FileAccess.Read))
+                {
+                    using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream))
+                    {
+                        var dataSet = reader.AsDataSet(new ExcelDataSetConfiguration
+                        {
+                            ConfigureDataTable = _ => new ExcelDataTableConfiguration
+                            {
+                                UseHeaderRow = true // Use first row is ColumnName here 
+                            }
+                        });
+
+                        if (dataSet.Tables.Count > 0)
+                        {
+                            var dtData = dataSet.Tables[templateImport.SheetName].Rows;
+                            foreach (var row in dtData)
+                            {
+                                foreach (var column in templateImport.Columns)
+                                {
+                                    //dtData[column.excelColumn]
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+            }
+            catch (Exception ex)
             {
                 Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
             }
