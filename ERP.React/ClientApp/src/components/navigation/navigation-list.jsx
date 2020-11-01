@@ -10,6 +10,10 @@ import { insertCategory, getCategories, updateItem, deleteItem, getCategoriesByE
 import { filterBy } from '@progress/kendo-data-query';
 import {NavigationCommandCell} from './navigation-command'
 import { getNavigations } from '../../apis/navigation/navigation-service';
+import NavigationModal from './navigation-modal';
+import { Modal } from 'react-bootstrap';
+
+let navigations = [];
 
 export class Navigation extends React.Component {
     constructor(props) {
@@ -17,14 +21,18 @@ export class Navigation extends React.Component {
 
         this.state = {
             navigationTypes:[],
-            navigations: []
+            navigations: [],
+            selectedEntity: "",
+            loading: false,
+            showModal: false
         }
     }
 
     componentDidMount = async () => {
+        this.setState({loading: true})
         let navigationTypes = await getCategoriesByEntity('NavigationType');
-        let navigations = await getNavigations();
-        this.setState({ navigationTypes, navigations });
+        navigations = await getNavigations();
+        this.setState({ navigationTypes, navigations, loading: false });
     }
 
     CommandCell = props => (
@@ -38,6 +46,24 @@ export class Navigation extends React.Component {
             cancel={this.cancel}
             editField={this.editField}></NavigationCommandCell>
     )
+
+    selectedEntityChange = (e) => {
+        this.setState({selectedEntity: e.value.code});
+    }
+
+    search = () => {
+        this.setState({loading: true});
+        let result = navigations.filter(item => item.type.includes(this.state.selectedEntity))
+        this.setState({navigations: result, loading: false});
+    }
+
+    handleModalHide = () => {
+        this.setState({showModal: false});
+    }
+
+    handleAdd = () => {
+        this.setState({showModal: true})
+    }
 
     render = () => {
         return(
@@ -66,7 +92,7 @@ export class Navigation extends React.Component {
                                         <div className="col-md-1 mt-md-1">
                                             <b>Danh mục</b>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div className="col-md-4">
                                             <DropDownList data={this.state.navigationTypes} 
                                                 textField="name"
                                                 dataItemKey="code"
@@ -77,9 +103,9 @@ export class Navigation extends React.Component {
                                                 onChange={this.selectedEntityChange}
                                                 style={{width: '100%'}}/>
                                         </div>
-                                        <div class="col-md-1 mt-1 mt-md-0">
+                                        <div className="col-md-1 mt-1 mt-md-0">
                                             <button type="button" class="btn btn-success w-100" onClick={this.search}>
-                                                <span class="fa fa-search"></span>
+                                                <span className="fa fa-search"></span>
                                             </button>
                                         </div>
                                     </div>
@@ -94,12 +120,12 @@ export class Navigation extends React.Component {
                                         <GridToolbar>
                                             <button title="Thêm mới"
                                                     className="btn btn-success"
-                                                    onClick={this.addNew}>
+                                                    onClick={this.handleAdd}>
                                                 <i className="fas fa-plus-circle"></i>
                                             </button>
                                             <button title="Tải lại"
                                                     className="btn btn-success"
-                                                    onClick={this.addNew}>
+                                                    onClick={this.search}>
                                                 <i class="fas fa-sync"></i>
                                             </button>
                                         </GridToolbar>
@@ -107,12 +133,20 @@ export class Navigation extends React.Component {
                                         <Column field="type" title="Phân loại" width="200px" />
                                         <Column field="displayName" title="Tên hiển thị" width="200px" />
                                         <Column field="code" title="Mã" width="200px" />
+                                        <Column field="icon" title="Biểu tượng" width="200px" />
                                         <Column field="componentPath" title="ComponentPath" width="200px" />
                                         <Column field="sortOrder" title="Sắp xếp" width="200px" />
-                                        <Column field="note" title="Ghi chú" />
+                                        <Column field="note" title="Ghi chú" width="300px"/>
                                         <Column cell={this.CommandCell} width="200px" />
                                 </Grid>
-                                {this.state.loading === true ? <Loading></Loading> : null} 
+                                {this.state.loading === true ? <Loading></Loading> : null}
+                                <Modal centered={false} 
+                                    size="xl"
+                                    onHide={this.handleModalHide}
+                                    enforceFocus={false}
+                                    show={this.state.showModal}>
+                                    <NavigationModal onHide={this.handleModalHide}></NavigationModal>
+                                </Modal>
                                 </div>
                             </div>
                         </div>

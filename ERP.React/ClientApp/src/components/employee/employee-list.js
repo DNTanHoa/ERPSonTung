@@ -53,6 +53,10 @@ export class Employee extends React.Component {
             take: event.page.take
         });
     }
+
+    gridRowDoubleClick = () => {
+        this.setState({showInforModal: true})
+    }
     
     render() {
         return(
@@ -90,6 +94,7 @@ export class Employee extends React.Component {
                                         total={this.state.employees.length}
                                         skip={this.state.skip}
                                         resizable={true}
+                                        onRowDoubleClick={this.gridRowDoubleClick}
                                         take={this.state.take}
                                         editField={this.editField}>
                                         <GridToolbar>

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { InforCard } from '../card/infor-card';
 import { getDashboardOverview } from '../../apis/Statistic/statistic-api'
 import { Chart, ChartLegend, ChartSeries, ChartSeriesItem } from '@progress/kendo-react-charts';
+import AppContext from '../../providers/context/app-context';
+import { AppProvider } from '../../providers/context/app-provider';
 
 
 export default class DailyMonitor extends React.Component {

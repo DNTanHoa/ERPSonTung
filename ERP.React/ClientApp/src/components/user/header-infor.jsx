@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import PropTypes from 'prop-types'
+import AppContext from '../../providers/context/app-context';
 
 export class HeaderInfor extends React.Component {
 
@@ -37,7 +38,9 @@ export class HeaderInfor extends React.Component {
                         </li>
                         <li className="user-footer">
                             <a className="btn btn-success btn-flat text-white">Đổi Mật Khẩu</a>
-                            <a className="btn btn-warning btn-flat text-white float-right">Thoát</a>
+                            <AppContext.Consumer>
+                                {({logOut}) => <button className="btn btn-warning btn-flat text-white float-right" onClick={() => logOut()}>Thoát</button>}
+                            </AppContext.Consumer>
                         </li>
                     </ul>
             </li>
