@@ -27,6 +27,7 @@ namespace ERP.Model.Models
         public string IdentityNumber { get; set; }              //Số CMND
         public DateTime? IdentityLicenseDate { get; set; }      //Ngày cấp
         public string IdentityLicensePlace { get; set; }        //Nơi cấp
+        public string IdentityPlaceCode { get; set; }           //Mã nguyên quán trong CMND
         public string Phone { get; set; }                       //Số điện thoại
         public string PersonalEmail { get; set; }               //Email cá nhân
         public string GenderCode { get; set; }                  //Mã giới tính

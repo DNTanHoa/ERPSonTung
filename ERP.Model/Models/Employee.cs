@@ -23,7 +23,7 @@ namespace ERP.Model.Models
         public string IdentityNumber { get; set; }              //Số CMND
         public DateTime? IdentityLicenseDate { get; set; }      //Ngày cấp
         public string IdentityLicensePlace { get; set; }        //Nơi cấp CMND
-        public string IdentityPlace { get; set; }               //Nguyên quán trong CMND
+        public string IdentityPlaceCode { get; set; }           //Nguyên quán trong CMND
         public string Phone { get; set; }                       //số điện thoại
         public string CompanyEmail { get; set; }                //email công ty
         public string PersonalEmail { get; set; }               //email cá nhân
