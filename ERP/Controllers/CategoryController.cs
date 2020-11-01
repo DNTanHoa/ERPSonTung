@@ -23,21 +23,21 @@ namespace ERP.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoryController : BaseController
     {
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IEntityCenterRepository _entityCenterRepository;
+        private readonly IEntityCenterRepository entityCenterRepository;
+        private readonly ICategoryRepository categoryRepository;
         private readonly ILogger<CategoryController> logger;
 
         public CategoryController(ICategoryRepository categoryRepository, ILogger<CategoryController> logger, IEntityCenterRepository entityCenterRepository)
         {
-            this._categoryRepository = categoryRepository;
+            this.categoryRepository = categoryRepository;
             this.logger = logger;
-            this._entityCenterRepository = entityCenterRepository;
+            this.entityCenterRepository = entityCenterRepository;
         }
 
         [HttpPost]
         public ActionResult<CommonResponeModel> GetByEntity(CategoryGetRequestModel model)
         {
-            Data = _categoryRepository.GetByEntity(model.Entity).ToList();
+            Data = categoryRepository.GetByEntity(model.Entity).ToList();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
 
             return GetCommonRespone();
@@ -55,7 +55,7 @@ namespace ERP.Controllers
 
             if (string.IsNullOrEmpty(model.Code))
             {
-                var code = this._entityCenterRepository.GetCodeByEntity(nameof(Candidate));
+                var code = this.entityCenterRepository.GetCodeByEntity(nameof(Candidate));
 
                 if (string.IsNullOrEmpty(code))
                 {
@@ -66,7 +66,7 @@ namespace ERP.Controllers
                 model.Code = code;
             }
 
-            result = this._categoryRepository.Insert(model);
+            result = this.categoryRepository.Insert(model);
 
             if (result > 0)
             {
@@ -89,7 +89,7 @@ namespace ERP.Controllers
             if (model.Id > 0)
             {
                 model.InitBeforeSave(RequestUsername, InitType.Update);
-                result = this._categoryRepository.Update(model);
+                result = this.categoryRepository.Update(model);
             }
             else
             {
@@ -97,7 +97,7 @@ namespace ERP.Controllers
 
                 if (string.IsNullOrEmpty(model.Code))
                 {
-                    var code = this._entityCenterRepository.GetCodeByEntity(nameof(Category));
+                    var code = this.entityCenterRepository.GetCodeByEntity(nameof(Category));
 
                     if (string.IsNullOrEmpty(code))
                     {
@@ -108,13 +108,13 @@ namespace ERP.Controllers
                     model.Code = code;
                 }
 
-                if (this._categoryRepository.IsExistEntityWithCode("Category", model.Code, out Category category) == true)
+                if (this.categoryRepository.IsExistEntityWithCode("Category", model.Code, out Category category) == true)
                 {
                     Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
                     return GetCommonRespone();
                 }
 
-                result = this._categoryRepository.Insert(model);
+                result = this.categoryRepository.Insert(model);
             }
 
             if (result > 0)
@@ -143,7 +143,7 @@ namespace ERP.Controllers
             {
                 if (!string.IsNullOrEmpty(item.Code))
                 {
-                    var isExisting = this._categoryRepository.IsExistEntityWithCode("Category", item.Code, out Category category);
+                    var isExisting = this.categoryRepository.IsExistEntityWithCode("Category", item.Code, out Category category);
 
                     if (isExisting == true)
                     {
@@ -165,7 +165,7 @@ namespace ERP.Controllers
                         else
                         {
 
-                            var currentObj = this._categoryRepository.GetById(model.Id);
+                            var currentObj = this.categoryRepository.GetById(model.Id);
 
                             if (currentObj == null)
                             {
@@ -194,7 +194,7 @@ namespace ERP.Controllers
                     if (model.Id == 0)
                     {
 
-                        var code = this._entityCenterRepository.GetCodeByEntity(nameof(Category));
+                        var code = this.entityCenterRepository.GetCodeByEntity(nameof(Category));
 
                         if (string.IsNullOrEmpty(code))
                         {
@@ -210,7 +210,7 @@ namespace ERP.Controllers
                     }
                     else
                     {
-                        var currentObj = this._categoryRepository.GetById(model.Id);
+                        var currentObj = this.categoryRepository.GetById(model.Id);
 
                         if (currentObj == null)
                         {
@@ -234,12 +234,12 @@ namespace ERP.Controllers
 
             if (newCategories.Count() > 0)
             {
-                result = this._categoryRepository.Insert(newCategories);
+                result = this.categoryRepository.Insert(newCategories);
             }
 
             if (updateCategories.Count() > 0)
             {
-                result = this._categoryRepository.Update(updateCategories);
+                result = this.categoryRepository.Update(updateCategories);
 
             }
 
@@ -263,12 +263,12 @@ namespace ERP.Controllers
 
             var model = request.MapTo<Category>();
 
-            var currentObj = this._categoryRepository.GetById(model.Id);
+            var currentObj = this.categoryRepository.GetById(model.Id);
 
             if (currentObj != null)
             {
                 model.InitBeforeSave(RequestUsername, InitType.Update);
-                result = this._categoryRepository.Update(model);
+                result = this.categoryRepository.Update(model);
             }
             else
             {
