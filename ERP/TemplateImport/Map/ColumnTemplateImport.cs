@@ -7,6 +7,6 @@ namespace ERP.TemplateImport
     public class ColumnTemplateImport
     {
         public string propertyName { get; set; }
-        public int excelColumn { get; set; } //start from 0
+        public string excelHeader { get; set; } //header from excel file
     }
 }

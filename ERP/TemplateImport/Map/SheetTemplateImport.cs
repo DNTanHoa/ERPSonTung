@@ -42,7 +42,7 @@ namespace ERP.TemplateImport
                             select new ColumnTemplateImport()
                             {
                                 propertyName = (string)c.Attribute("propertyName"),
-                                excelColumn = (int)c.Attribute("excelColumn")
+                                excelHeader = (string)c.Attribute("excelHeader")
                             };
 
                 this.Columns = query?.ToList();
@@ -53,15 +53,5 @@ namespace ERP.TemplateImport
             }
         }
 
-        /// <summary>
-        /// Get column index in excel file search by property name
-        /// </summary>
-        /// <param name="propertyName">property name to search</param>
-        /// <returns>-1: not found, int: index if found</returns>
-        public int getIndexByPropertyName(string propertyName)
-        {
-            var column = Columns.Where(item => item.propertyName == propertyName).FirstOrDefault();
-            return column == null ? -1 : column.excelColumn;
-        }
     }
 }

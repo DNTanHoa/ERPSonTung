@@ -1,4 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Sheet name="NHÂN VIÊN">
-  <Column propertyName="" excelColumn="0"/>
+  <Column propertyName="Code" excelHeader="MSNV"/>
+  <Column propertyName="FirstName" excelHeader="TÊN"/>
+  <Column propertyName="LastName" excelHeader="HỌ VÀ TÊN ĐỆM"/>
+  <Column propertyName="FullName" excelHeader="HỌ VÀ TÊN"/>
+  <Column propertyName="DateOfBirth" excelHeader="NGÀY SINH"/>
+  <Column propertyName="OriginAddress" excelHeader="ĐỊA CHỈ ĐẦY ĐỦ (THƯỜNG TRÚ)"/>
+  <Column propertyName="TemporaryAddress" excelHeader="ĐỊA CHỈ ĐẦY ĐỦ (TẠM TRÚ)"/>
+  <Column propertyName="ReligionCode" excelHeader="MÃ TÔN GIÁO"/>
+  <Column propertyName="DepartmentCode" excelHeader="MÃ BỘ PHẬN"/>
+  <Column propertyName="GroupCode" excelHeader="MÃ NHÓM"/>
+  <Column propertyName="NationCode" excelHeader="MÃ QUỐC GIA"/>
+  <Column propertyName="NationalityCode" excelHeader="MÃ DÂN TỘC"/>
+  <Column propertyName="IdentityNumber" excelHeader="CMND"/>
+  <Column propertyName="IdentityLicenseDate" excelHeader="NGÀY CẤP"/>
+  <Column propertyName="IdentityLicensePlace" excelHeader="NƠI CẤP"/>
+  <Column propertyName="IdentityPlaceCode" excelHeader="MÃ NGUYÊN QUÁN"/>
+  <Column propertyName="Phone" excelHeader="SỐ ĐIỆN THOẠI"/>
+  <Column propertyName="CompanyEmail" excelHeader="EMAIL CÔNG TY"/>
+  <Column propertyName="PersonalEmail" excelHeader="EMAIL CÁ NHÂN"/>
+  <Column propertyName="StartDate" excelHeader="NGÀY VÀO CÔNG TY"/>
+  <Column propertyName="StatusCode" excelHeader="MÃ TRẠNG THÁI NHÂN VIÊN"/>
+  <Column propertyName="TitleCode" excelHeader="MÃ DANH XƯNG"/>
+  <Column propertyName="GenderCode" excelHeader="MÃ GIỚI TÍNH"/>
+  <Column propertyName="SupervisorCode" excelHeader="MÃ NGƯỜI GIÁM SÁT"/>
+  <Column propertyName="PositionCode" excelHeader="MÃ CHỨC VỤ"/>
+  <Column propertyName="Image" excelHeader="ĐƯỜNG DẪN HÌNH ẢNH"/>
+  <Column propertyName="BankCode" excelHeader="MÃ NGÂN HÀNG (CHÍNH)"/>
+  <Column propertyName="BankNumber" excelHeader="SỐ TÀI KHOẢN (CHÍNH)"/>
+  <Column propertyName="SubBankCode" excelHeader="MÃ NGÂN HÀNG (PHỤ)"/>
+  <Column propertyName="SubBankNumber" excelHeader="SỐ TÀI KHOẢN (PHỤ)"/>
+  <Column propertyName="JobCode" excelHeader="MÃ TIÊU ĐỀ CÔNG VIỆC"/>
+  <Column propertyName="LaborGroupCode" excelHeader="MÃ NHÓM LAO ĐỘNG"/>
+  <Column propertyName="TemporaryProvinceCode" excelHeader="MÃ TỈNH/THÀNH PHỐ (TẠM TRÚ)"/>
+  <Column propertyName="TemporaryDistrictCode" excelHeader="MÃ QUẬN/HUYỆN (TẠM TRÚ)"/>
+  <Column propertyName="TemporaryWardCode" excelHeader="MÃ PHƯỜNG/XÃ (TẠM TRÚ)"/>
+  <Column propertyName="TemporaryAddtional" excelHeader="SỐ NHÀ (TẠM TRÚ)"/>
+  <Column propertyName="OriginProvinceCode" excelHeader="MÃ TỈNH/THÀNH PHỐ (THƯỜNG TRÚ)"/>
+  <Column propertyName="OriginDistrictCode" excelHeader="MÃ QUẬN/HUYỆN (THƯỜNG TRÚ)"/>
+  <Column propertyName="OriginWardCode" excelHeader="MÃ PHƯỜNG/XÃ (THƯỜNG TRÚ)"/>
+  <Column propertyName="OriginAddtional" excelHeader="SỐ NHÀ (THƯỜNG TRÚ)"/>
+  <Column propertyName="CheckInOutCode" excelHeader="MÃ CHẤM CÔNG"/>
+  <Column propertyName="TaxNumber" excelHeader="MÃ SỐ THUẾ"/>
+  <Column propertyName="EducationLevel" excelHeader="TĐ VĂN HÓA"/>
+  <Column propertyName="QualificationLevel" excelHeader="TRÌNH ĐỘ CHUYÊN MÔN KỸ THUẬT"/>
+  <Column propertyName="PayrollTypeCode" excelHeader="MÃ HÌNH THỨC THANH TOÁN"/>
 </Sheet>

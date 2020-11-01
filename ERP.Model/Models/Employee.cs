@@ -39,7 +39,7 @@ namespace ERP.Model.Models
         public string SubBankCode { get; set; }                 //Tài khoản ngân hàng (phụ)
         public string SubBankNumber { get; set; }               //Số tài khoản ngân hàng (phụ)
         public string JobCode { get; set; }                     //Mã vị trí công việc
-        public string LaborGroupCode { get; set; }              //Nhóm lao động
+        public string LaborGroupCode { get; set; }              //Nhóm lao động: Dưới 15, cao tuổi, tay nghề cao...
         public string TemporaryProvinceCode { get; set; }       //Tỉnh/Thành phố (tạm trú)
         public string TemporaryDistrictCode { get; set; }       //Quận/Huyện (tạm trú)
         public string TemporaryWardCode { get; set; }           //Phường/xã (tạm trú)
