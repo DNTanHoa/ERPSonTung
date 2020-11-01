@@ -171,6 +171,7 @@ export class Category extends React.Component {
             </div>
         );
     }
+    
     pageChange = (event) => {
         this.setState({
             skip: event.page.skip,

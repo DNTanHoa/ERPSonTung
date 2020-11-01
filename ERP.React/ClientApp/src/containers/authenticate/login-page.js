@@ -7,8 +7,13 @@ import 'icheck/skins/all.css';
 import config from '../../appsettings.json';
 import { isForOfStatement } from 'typescript';
 import { BrowserRouter as Router, Route, Redirect, useHistory, useLocation } from "react-router-dom";
+import AppContext from '../../providers/context/app-context';
+import { AppProvider } from '../../providers/context/app-provider';
+
 
 export class Login extends Component {
+    static contextType = AppContext
+
     constructor(props) {
         super(props);
 
@@ -17,7 +22,8 @@ export class Login extends Component {
             password: "",
             rememberPassword: true,
             errorMessage: "",
-            redirect: false
+            redirect: false,
+            token: '',
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,24 +42,21 @@ export class Login extends Component {
                 {
                     username: username,
                     password: password,
-                    rememberPassword: rememberPassword
                 }
             )
             .then(res => {
                 var result = res.data.result;
                 if(result.resultType === 0) {
                     var token = res.data.data.token;
-                    localStorage.setItem('token',token);
-                    localStorage.setItem('userName', this.state.username)
+                    this.renderContext.logIn(token);
                     this.setState({redirect: true});
                 } else {
-                    this.setState({["errorMessage"] : result.message});
+                   this.setState({errorMessage : result.message});
                 }
             })
             .catch(err => {
                 console.log("Login has error", err);
             });
-        
         event.preventDefault();
     }
 
@@ -64,15 +67,16 @@ export class Login extends Component {
     }
     
     render() {
-
-        if(this.state.redirect) {
+        if(this.state.redirect === true) {
             return(
                 <Redirect to='/hrm'/>
             )
         }
-
         return (
             <div className="hold-transition login-page loginPage">
+                    <AppContext.Consumer>
+                    {value => {this.renderContext = value;}}
+                    </AppContext.Consumer>
                 <div className="d-flex justify-content-center align-items-center login-page" style= {{minHeight: "100%"}} id="loginContent">
                 <div className = "titleStyle">
                     <p className="text-white h4 text-center h4"><b>THÔNG TIN NHÂN SỰ</b></p>
@@ -118,7 +122,7 @@ export class Login extends Component {
                                                 name = "rememberPassword"
                                                 label = " Lưu mật khẩu"
                                                 value = {this.state.rememberPassword}
-                                                onChange = {(event, value) => { this.setState({["rememberPassword"] : value})}}/>
+                                                onChange = {this.handleChange}/>
                                             </div>
                                             <div className="col-4">
                                                 <button className="btn btn-primary btn-block text-white" type="submit"><i className="fas fa-sign-in-alt"></i></button>
@@ -139,3 +143,5 @@ export class Login extends Component {
         );
     }
 }
+
+
