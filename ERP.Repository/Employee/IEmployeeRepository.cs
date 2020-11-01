@@ -2,6 +2,7 @@
 using ERP.Model.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace ERP.Repository
 {
@@ -18,5 +19,7 @@ namespace ERP.Repository
         public IEnumerable<Employee> GetEmployeeHasBirthdayInTimeRange(DateTime FromDate, DateTime ToDate);
 
         public IEnumerable<Employee> GetEmployeeHasContractExpireInTimeRange(DateTime FromDate, DateTime ToDate);
+
+        public List<EmployeeImportDataTransfer> ImportDataTableToList(DataTable table);
     }
 }

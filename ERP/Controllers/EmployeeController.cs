@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -211,15 +212,12 @@ namespace ERP.Controllers
             try
             {
                 //string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Storages", file.FileName);
+                //string pathXmlCheck = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "TemplateImport", "Xml", "Employee.xml");
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "Storages", file.FileName);
                 string pathXmlCheck = Path.Combine(Directory.GetCurrentDirectory(), "TemplateImport", "Xml", "Employee.xml");
-                SheetTemplateImport templateImport = new SheetTemplateImport(pathXmlCheck);
 
                 //save file to server
-                using (Stream stream = new FileStream(path, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+                file.SaveTo(path);
 
                 //read file to check
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -237,23 +235,28 @@ namespace ERP.Controllers
 
                         if (dataSet.Tables.Count > 0)
                         {
-                            var dtData = dataSet.Tables[templateImport.SheetName].Rows;
-                            foreach (var row in dtData)
+                            SheetTemplateImport templateImport = new SheetTemplateImport(pathXmlCheck);
+
+                            DataTable table = dataSet.Tables[templateImport.SheetName];
+
+                            foreach (var column in templateImport.Columns)
                             {
-                                foreach (var column in templateImport.Columns)
+                                if (!string.IsNullOrWhiteSpace(column.excelHeader))
                                 {
-                                    //dtData[column.excelColumn]
+                                    table.Columns[column.excelHeader].ColumnName = column.propertyName;
                                 }
                             }
-                            
+
+                            Data = employeeRepository.ImportDataTableToList(table);
                         }
                     }
                 }
-                Result = new SuccessResult(ActionType.Edit, AppGlobal.SaveChangeSuccess);
+
+                Result = new SuccessResultFactory().Factory(ActionType.CheckFileExcel);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
+                Result = new ErrorResultFactory().Factory(ActionType.CheckFileExcel);
             }
 
             return GetCommonRespone();

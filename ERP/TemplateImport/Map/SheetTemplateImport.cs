@@ -35,7 +35,7 @@ namespace ERP.TemplateImport
                 // Loading from a file, you can also load from a stream
                 var xml = XDocument.Load(Url);
 
-                this.SheetName = (string)xml.Root.Attribute("Name");
+                this.SheetName = (string)xml.Root.Attribute("name");
 
                 // Query the data and write out a subset of contacts
                 var query = from c in xml.Root.Descendants("Column")

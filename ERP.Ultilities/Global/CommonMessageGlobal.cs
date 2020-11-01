@@ -23,7 +23,8 @@ namespace ERP.Ultilities.Global
 
         //example get 404
         public static string _404 => GetMessage("404");
-
+        public static string CheckSuccess => GetMessage("CheckSuccess");
+        public static string CheckFail => GetMessage("CheckFail");
         public static string Require(string fieldName) => GetMessage("Require", fieldName);
         public static string Minimum(string fieldName, int minCharacter) => GetMessage("Minimum", fieldName, minCharacter);
         public static string Maximum(string fieldName, int maxCharacter) => GetMessage("Maximum", fieldName, maxCharacter);

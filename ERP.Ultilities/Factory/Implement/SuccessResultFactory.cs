@@ -22,6 +22,8 @@ namespace ERP.Ultilities.Factory.Implement
                     return new SuccessResult(ActionType, AppGlobal.Success);
                 case ActionType.Select:
                     return new SuccessResult(ActionType, AppGlobal.Success);
+                case ActionType.CheckFileExcel:
+                    return new SuccessResult(ActionType, CommonMessageGlobal.CheckSuccess);
                 case ActionType.None:
                     return new SuccessResult(ActionType, AppGlobal.Success);
                 default:
