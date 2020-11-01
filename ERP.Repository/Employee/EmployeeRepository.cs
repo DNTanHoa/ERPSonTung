@@ -46,7 +46,7 @@ namespace ERP.Repository
         {
             ///TODO: Lấy thông tin nhân viên có ngày sinh theo khoảng thời gian
 
-            var items = this.context.Employee.Where(n => n.DateOfBirth.Value >= FromDate && n.DateOfBirth.Value <= ToDate);
+            var items = this.context.Employee.Where(n => n.DateOfBirth.Value.Month >= FromDate.Month && n.DateOfBirth.Value.Month <= ToDate.Month);
 
             return items;
 
