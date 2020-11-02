@@ -11,6 +11,7 @@ namespace ERP.Ultilities.Enum
         Edit = 101,
         Delete = 102,
         Select = 103,
+        CheckFileExcel = 104,
         Login = 500
     }
 }

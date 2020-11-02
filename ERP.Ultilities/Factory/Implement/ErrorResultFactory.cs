@@ -24,6 +24,8 @@ namespace ERP.Ultilities.Factory.Implement
                     return new ErrorResult(ActionType, AppGlobal.LoginFailMessage);
                 case ActionType.Select:
                     return new ErrorResult(ActionType, AppGlobal.Error);
+                case ActionType.CheckFileExcel:
+                    return new ErrorResult(ActionType, CommonMessageGlobal.CheckFail);
                 case ActionType.None:
                     return new ErrorResult(ActionType, AppGlobal.Error);
                 default:

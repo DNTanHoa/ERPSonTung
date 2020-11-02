@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 namespace ERP.Model.Models
 {
+    /// <summary>
+    /// Map giữa nhân viên và ca làm việc
+    /// </summary>
     public partial class ShiftEmployee : BaseModel
     {
-        public string ShiftCode { get; set; }
-        public string EmployeeCode { get; set; }
+        public string ShiftCode { get; set; }       //Mã ca làm việc
+        public string EmployeeCode { get; set; }    //Mã nhân viên
     }
 }

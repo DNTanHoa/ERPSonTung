@@ -22,5 +22,17 @@ namespace ERP.Repository.Statistic
             DataTable table = SqlHelper.FillByReader(AppGlobal.ConnectionString, "sprocStatisticSelectDashboardOverview", parameters);
             return table.ToList<DashboardOverviewDataTransfer>();
         }
+
+        public IEnumerable<DepartmentStatisticDataTransfer> SelectEmployeeDepartmentCountStatistic(DateTime fromDate, DateTime toDate)
+        {
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@fromDate",fromDate),
+                new SqlParameter("@toDate",toDate),
+            };
+            ///TODO: VIết SP bổ sung
+            DataTable table = SqlHelper.FillByReader(AppGlobal.ConnectionString, "sprocStatisticSelectEmployeeDepartmentCount", parameters);
+            return table.ToList<DepartmentStatisticDataTransfer>();
+        }
     }
 }
