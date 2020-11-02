@@ -141,7 +141,7 @@ export class Navigation extends React.Component {
                                 </Grid>
                                 {this.state.loading === true ? <Loading></Loading> : null}
                                 <Modal centered={false} 
-                                    size="xl"
+                                    size="md"
                                     onHide={this.handleModalHide}
                                     enforceFocus={false}
                                     show={this.state.showModal}>

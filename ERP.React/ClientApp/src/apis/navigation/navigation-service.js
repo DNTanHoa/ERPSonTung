@@ -1,6 +1,6 @@
 import config from '../../appsettings.json';
 import axios from "axios";
-import {getInit} from '../api-caller';
+import { getInit } from '../api-caller';
 import React from 'react';
 import { Loading} from '../../components/loading';
 import { JsxEmit } from 'typescript';
@@ -21,4 +21,48 @@ export const getNavigations = async (entity)  => {
             return data;
         });
     return data;
+}
+
+export const insertNavigation = async (navigation) => {
+    let url = config.appSettings.ServerUrl + 'navigation/create';
+
+    let init = getInit('POST');
+
+    init.body = JSON.stringify(navigation);
+
+    navigation.inEdit = false;
+
+    let result = {};
+
+    await fetch(url, init)
+        .then(response =>
+            response.json()
+        )
+        .then(json => {
+            result = json;
+            return result;
+        });
+    return result;
+}
+
+export const updateNavigation = async (navigation) => {
+    let url = config.appSettings.ServerUrl + 'navigation/update';
+
+    let init = getInit('POST');
+
+    init.body = JSON.stringify(navigation);
+
+    navigation.inEdit = false;
+
+    let result = {};
+
+    await fetch(url, init)
+        .then(response =>
+            response.json()
+        )
+        .then(json => {
+            result = json;
+            return result;
+        });
+    return result;
 }
