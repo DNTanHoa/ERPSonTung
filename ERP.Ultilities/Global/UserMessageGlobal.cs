@@ -21,7 +21,10 @@ namespace ERP.Ultilities.Global
             return string.Format(configurationSection.GetSection(Key).Value, args);
         }
 
-        //example get EmptyFirstName
-        //public static string EmptyFirstName => GetMessage("EmptyFirstName");
+        public static string ExistUsername => GetMessage("ExistUsername");
+        
+        public static string NotExistUsername => GetMessage("NotExistUsername");
+        
+        public static string NotExistUser => GetMessage("NotExistUser");
     }
 }

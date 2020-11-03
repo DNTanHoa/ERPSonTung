@@ -48,7 +48,9 @@ export class Login extends Component {
                 var result = res.data.result;
                 if(result.resultType === 0) {
                     var token = res.data.data.token;
-                    this.renderContext.logIn(token);
+                    let userName = res.data.data.user.username;
+                    let employeeName = res.data.data.user.name;
+                    this.renderContext.logIn(token,userName,employeeName);
                     this.setState({redirect: true});
                 } else {
                    this.setState({errorMessage : result.message});

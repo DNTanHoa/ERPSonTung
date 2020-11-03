@@ -20,13 +20,17 @@ export class HeaderInfor extends React.Component {
             <li className="nav-item dropdown user-menu" id="HeaderInfor">
                 <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <img src="/images/avatar.png" className="user-image img-circle elevation-2" alt="@Model.Name" />
-                        <span className="d-none d-md-inline" id="UsernameHeader">Tài khoản - Tên Nhân Viên</span>
+                        <AppContext.Consumer>
+                            {value => <span className="d-none d-md-inline" id="UsernameHeader">{value.user.userName} - {value.user.employeeName}</span>}
+                        </AppContext.Consumer>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-lg dropdown-menu-right" style={{left: 'inherit', right: 0}}>
                         <li className="user-header bg-primary d-flex flex-column justify-content-center align-items-center">
                             <img src="/images/avatar.png" className="img-circle elevation-2" alt="@Model.Username - @Model.Name" />
                             <p>
-                                <span id="Username">Tài khoản - Tên Nhân Viên</span>
+                                <AppContext.Consumer>
+                                    {(value) => <span id="Username">{value.user.userName} - {value.user.employeeName}</span>}
+                                </AppContext.Consumer>
                             </p>
                         </li>
                         <li className="user-body">
