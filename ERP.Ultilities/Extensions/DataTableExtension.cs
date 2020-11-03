@@ -76,7 +76,12 @@ namespace ERP.Ultilities.Extensions
                         catch(Exception ex)
                         {
                             obj.GetType().GetProperty("IsError")?.SetValue(obj, true);
-                            obj.GetType().GetProperty("ErrorMessage")?.SetValue(obj, ex.Message);
+                            var errorList = (IList<string>)obj.GetType().GetProperty("ErrorMessage");
+                            if(errorList != null)
+                            {
+                                errorList.Add(ex.Message);
+                            }
+                            obj.GetType().GetProperty("ErrorMessage")?.SetValue(obj, errorList);
                         }
                     }
                 }
