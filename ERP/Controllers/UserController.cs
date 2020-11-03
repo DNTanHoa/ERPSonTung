@@ -36,7 +36,7 @@ namespace ERP.Controllers
         {
             if (userRepository.IsExistUsername(model.Username))
             {
-                string message = "Tên đăng nhập đã tồn tại";
+                string message = UserMessageGlobal.ExistUsername;
                 Result = new ErrorResult(ActionType.Login, message);
             }
             else
@@ -72,7 +72,7 @@ namespace ERP.Controllers
             {
                 if (userRepository.IsExistUsername(model.Username) && user.Username != model.Username)
                 {
-                    string message = "Tên đăng nhập đã tồn tại";
+                    string message = UserMessageGlobal.ExistUsername;
                     Result = new ErrorResult(ActionType.Login, message);
                     return GetCommonRespone();
                 }
@@ -106,7 +106,7 @@ namespace ERP.Controllers
             }
             else
             {
-                string message = "Người dùng không tồn tại trong hệ thống";
+                string message = UserMessageGlobal.NotExistUser;
                 Result = new ErrorResult(ActionType.Login, message);
             }
             return GetCommonRespone();
@@ -174,7 +174,7 @@ namespace ERP.Controllers
             }
             else
             {
-                string message = "Người dùng không tồn tại trong hệ thống";
+                string message = UserMessageGlobal.NotExistUser;
                 Result = new ErrorResult(ActionType.Login, message);
             }
 

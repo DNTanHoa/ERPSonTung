@@ -20,7 +20,6 @@ namespace ERP.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [EnableCors("CorsPolicy")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class RoleGroupController : BaseController
     {
@@ -170,17 +169,5 @@ namespace ERP.Controllers
             Result = new SuccessResultFactory().Factory(ActionType.Select);
             return GetCommonRespone();
         }
-
-        //[HttpGet]
-        //public ActionResult<CommonResponeModel> GetUserNavigationRole(string username)
-        //{
-        //    if (string.IsNullOrEmpty(username))
-        //    {
-        //        username = RequestUsername;
-        //    }
-        //    Result = Result = new SuccessResultFactory().Factory(ActionType.Select);
-        //    Data = roleGroupRepository.GetAllowedDataTransfersByUserName(username);
-        //    return GetCommonRespone();
-        //}
     }
 }
