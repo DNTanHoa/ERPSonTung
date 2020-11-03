@@ -1,8 +1,10 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
-import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { AutoComplete, ComboBox, DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { insertNavigation } from "../../apis/navigation/navigation-service";
+import { getCategoriesByEntity } from "../../apis/category/category-service";
+import config from '../../appsettings.json'
+import { isConstructorDeclaration } from 'typescript';
 
 export default class NavigationModal extends React.Component {
     constructor(props) {
@@ -10,15 +12,25 @@ export default class NavigationModal extends React.Component {
 
         this.state = {
             id: 0,
-            type: '',
+            type: 'NT001',
             code: '',
             icon: '',
             displayName: '',
             componentPath: '',
             controller: '',
             action: '',
-            note:''
+            note:'',
+            navigationTypes: [],
+            defaultNavigationType: {},
         }
+    }
+
+    componentDidMount = async () => {
+        let navigationTypes = await (await getCategoriesByEntity(config.entities.navigationType))
+        .map((navigationType) => {return {...navigationType, textname: navigationType.code +' - '+ navigationType.name}});
+        let defaultNavigationType = navigationTypes[0];
+        this.setState({ navigationTypes, defaultNavigationType });
+        console.log(this.state);
     }
 
     handleSaveChange = () => {
@@ -35,8 +47,6 @@ export default class NavigationModal extends React.Component {
         }
 
         console.log(dataItem);
-
-        debugger;
 
         let result = insertNavigation(dataItem);
 
@@ -60,7 +70,16 @@ export default class NavigationModal extends React.Component {
                         <div className="col-md-12">
                             <div className="form-group m-0">
                                 <label className="m-0">Loại điều hướng</label>
-                                <input name="type" className="form-control" placeholder="Phân loại" onChange={this.handleChange}></input>
+                                <DropDownList data={this.state.navigationTypes} 
+                                    textField="textname"
+                                    dataItemKey="code"
+                                    name="employeeStatus"
+                                    defaultValue={this.state.defaultNavigationType}
+                                    delay={1000}
+                                    filterable={true}
+                                    value={this.state.employeeStatus}
+                                    onChange={this.handleSelectChange}
+                                    style={{width: '100%'}}/>
                             </div>
                         </div>
                     </div>

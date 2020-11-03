@@ -24,14 +24,17 @@ export class AppProvider extends React.Component {
         this.logOut = this.logOut.bind(this);
     }
 
-    componentDidMount = () => {
-        
+    user = {
+        userName: localStorage.getItem('userName'),
+        employeeName: localStorage.getItem('employeeName'),
     }
 
-    logIn = (token, username, employeeName) => {
+    logIn = (token, userName, employeeName) => {
         if(token != undefined && token != '') {
             localStorage.setItem('token', token);
-            this.setState({hasLogin: true, username, employeeName});
+            localStorage.setItem('userName',userName);
+            localStorage.setItem('employeeName', employeeName);
+            this.setState({hasLogin: true, userName, employeeName});
         }
     }
 
@@ -44,6 +47,7 @@ export class AppProvider extends React.Component {
         return(
             <AppContext.Provider value={{ 
                 hasLogin: this.state.hasLogin,
+                user: this.user,
                 logIn: this.logIn,
                 logOut: this.logOut
             }}>
