@@ -3,8 +3,15 @@ import { Modal } from 'react-bootstrap';
 import { AutoComplete, ComboBox, DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { insertNavigation } from "../../apis/navigation/navigation-service";
 import { getCategoriesByEntity } from "../../apis/category/category-service";
-import config from '../../appsettings.json'
-import { isConstructorDeclaration } from 'typescript';
+import { getNavigations } from '../../apis/navigation/navigation-service';
+import config from '../../appsettings.json';
+import { filterBy } from '@progress/kendo-data-query';
+
+let navigationTypes = [];
+
+let navigations = [];
+
+const delay = 300;
 
 export default class NavigationModal extends React.Component {
     constructor(props) {
@@ -12,7 +19,7 @@ export default class NavigationModal extends React.Component {
 
         this.state = {
             id: 0,
-            type: 'NT001',
+            type: '',
             code: '',
             icon: '',
             displayName: '',
@@ -20,17 +27,28 @@ export default class NavigationModal extends React.Component {
             controller: '',
             action: '',
             note:'',
+            parentCode:'',
             navigationTypes: [],
             defaultNavigationType: {},
+            navigations: [],
         }
     }
 
+    componentDidUpdate = () => {
+        console.log(this.props.model)
+    }
+    
+
     componentDidMount = async () => {
-        let navigationTypes = await (await getCategoriesByEntity(config.entities.navigationType))
+        navigationTypes = await (await getCategoriesByEntity(config.entities.navigationType))
         .map((navigationType) => {return {...navigationType, textname: navigationType.code +' - '+ navigationType.name}});
+
+        navigations = await (await getNavigations())
+        .map((navigation) => {return {...navigation, textname: navigation.code +' - '+ navigation.displayName}});
+        
         let defaultNavigationType = navigationTypes[0];
-        this.setState({ navigationTypes, defaultNavigationType });
-        console.log(this.state);
+
+        this.setState({ navigationTypes, defaultNavigationType, navigations });
     }
 
     handleSaveChange = () => {
@@ -45,18 +63,41 @@ export default class NavigationModal extends React.Component {
             action: this.state.action,
             note: this.state.note,
         }
-
         console.log(dataItem);
-
-        let result = insertNavigation(dataItem);
-
-        console.log(result);
     }
 
     handleChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
         });
+    }
+
+    filterNavigationTypeChange = (e) => {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+            this.setState({navigationTypes: this.filterNavigationTypes(e.filter)});
+        }, delay);
+    }
+
+    filterNavigationChange = (e) => {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+            this.setState({navigations: this.filterNavigations(e.filter)});
+        }, delay);
+    }
+
+    filterNavigationTypes(filter) {
+        return filterBy(navigationTypes, filter);
+    }
+
+    filterNavigations(filter) {
+        return filterBy(navigations, filter);
+    }
+
+    handleSelectChange = (event) => {
+        this.setState({
+            [event.target.name]: event.value.code
+        })
     }
 
     render = () => {
@@ -73,12 +114,13 @@ export default class NavigationModal extends React.Component {
                                 <DropDownList data={this.state.navigationTypes} 
                                     textField="textname"
                                     dataItemKey="code"
-                                    name="employeeStatus"
+                                    name="type"
                                     defaultValue={this.state.defaultNavigationType}
                                     delay={1000}
                                     filterable={true}
                                     value={this.state.employeeStatus}
                                     onChange={this.handleSelectChange}
+                                    onFilterChange={this.filterNavigationTypeChange}
                                     style={{width: '100%'}}/>
                             </div>
                         </div>
@@ -87,7 +129,16 @@ export default class NavigationModal extends React.Component {
                         <div className="col-md-12">
                             <div className="form-group m-0">
                                 <label className="m-0">Nhóm</label>
-                                <input name="parentCode" className="form-control" placeholder="Nhóm" onChange={this.handleChange}></input>
+                                <DropDownList data={this.state.navigations} 
+                                    textField="textname"
+                                    dataItemKey="code"
+                                    name="parentNavigation"
+                                    delay={1000}
+                                    filterable={true}
+                                    value={this.state.employeeStatus}
+                                    onChange={this.handleSelectChange}
+                                    onFilterChange={this.filterNavigationChange}
+                                    style={{width: '100%'}}/>
                             </div>
                         </div>
                     </div>

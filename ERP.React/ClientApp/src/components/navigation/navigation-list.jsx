@@ -24,15 +24,17 @@ export class Navigation extends React.Component {
             navigations: [],
             selectedEntity: "",
             loading: false,
-            showModal: false
+            showModal: false,
+            selectedNavigation: {}
         }
     }
 
     componentDidMount = async () => {
-        this.setState({loading: true})
+        this.setState({loading: true});
         let navigationTypes = await getCategoriesByEntity('NavigationType');
         navigations = await getNavigations();
         this.setState({ navigationTypes, navigations, loading: false });
+        console.log(this.props)
     }
 
     CommandCell = props => (
@@ -62,7 +64,14 @@ export class Navigation extends React.Component {
     }
 
     handleAdd = () => {
-        this.setState({showModal: true})
+        this.setState({showModal: true, selectedNavigation: {}});
+    }
+
+    handleGridRowDoubleClick = (e) => {
+        console.log(e);
+        let selectedNavigation = e.dataItem;
+        this.setState({ selectedNavigation, showModal: true });
+        console.log(this.state);
     }
 
     render = () => {
@@ -114,6 +123,7 @@ export class Navigation extends React.Component {
                                 <Grid style={{ height: "550px" }}
                                         data={this.state.navigations}
                                         onItemChange={this.itemChange}
+                                        onRowDoubleClick={this.handleGridRowDoubleClick}
                                         pageable={true}
                                         resizable={true}
                                         editField={this.editField}>
@@ -145,7 +155,8 @@ export class Navigation extends React.Component {
                                     onHide={this.handleModalHide}
                                     enforceFocus={false}
                                     show={this.state.showModal}>
-                                    <NavigationModal onHide={this.handleModalHide}></NavigationModal>
+                                    <NavigationModal onHide={this.handleModalHide}
+                                        model={this.state.selectedNavigation}></NavigationModal>
                                 </Modal>
                                 </div>
                             </div>
