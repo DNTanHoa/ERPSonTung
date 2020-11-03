@@ -75,49 +75,5 @@ namespace ERP.Repository
             var employee = context.Employee.Where(item => item.Code.Equals(Code)).FirstOrDefault();
             return employee != null ? true : false;
         }
-
-        public List<EmployeeImportDataTransfer> ImportDataTableToList(DataTable table)
-        {
-            List<EmployeeImportDataTransfer> entities = new List<EmployeeImportDataTransfer>();
-
-            //loop all row in table
-            foreach (DataRow row in table.Rows)
-            {
-                //new instance of T
-                Type temp = typeof(EmployeeImportDataTransfer);
-                EmployeeImportDataTransfer entity = new EmployeeImportDataTransfer();
-
-                //loop all column in table
-                foreach (DataColumn column in table.Columns)
-                {
-                    //loop all property in T class
-                    foreach (PropertyInfo pro in temp.GetProperties())
-                    {
-                        // T property equal with table's column name
-                        // And value of cell not null
-                        if (pro.Name == column.ColumnName
-                            && row[column.ColumnName] != DBNull.Value)
-                        {
-                            try
-                            {
-                                Type t = Nullable.GetUnderlyingType(pro.PropertyType) ?? pro.PropertyType;
-                                pro.SetValue(entity, Convert.ChangeType(row[column.ColumnName], t), null);
-                                continue;
-                            }
-                            catch (Exception ex)
-                            {
-                                entity.IsError = true;
-                                entity.ErrorMessage.Add(ex.Message);
-                            }
-                        }
-                    }
-                }
-
-                //add entity to list
-                entities.Add(entity);
-            }
-
-            return entities;
-        }
     }
 }

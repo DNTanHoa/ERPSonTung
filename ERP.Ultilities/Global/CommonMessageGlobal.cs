@@ -26,6 +26,7 @@ namespace ERP.Ultilities.Global
         public static string CheckSuccess => GetMessage("CheckSuccess");
         public static string CheckFail => GetMessage("CheckFail");
         public static string Require(string fieldName) => GetMessage("Require", fieldName);
+        public static string NotExist(string fieldName) => GetMessage("NotExist", fieldName);
         public static string Minimum(string fieldName, int minCharacter) => GetMessage("Minimum", fieldName, minCharacter);
         public static string Maximum(string fieldName, int maxCharacter) => GetMessage("Maximum", fieldName, maxCharacter);
         public static string NotExistInCategory(string fieldName) => GetMessage("NotExistInCategory", fieldName);

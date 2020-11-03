@@ -399,5 +399,38 @@ namespace ERP.Ultilities.Global
             }
         }
 
+        /// <summary>
+        /// Thư mục lưu file excel upload
+        /// </summary>
+        public static string ExcelImportDestFolder
+        {
+            get
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Storages");
+                if (!Directory.Exists(path))
+                {
+                    path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Storages");
+                }
+
+                return path;
+            }
+        }
+
+        /// <summary>
+        /// Thư mục lưu xml template folder
+        /// </summary>
+        public static string XmlTemplateImportFolder
+        {
+            get
+            {
+                string pathXmlCheck = Path.Combine(Directory.GetCurrentDirectory(), "TemplateImport", "Xml");
+                if (!Directory.Exists(pathXmlCheck))
+                {
+                    pathXmlCheck = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "TemplateImport", "Xml");
+                }
+
+                return pathXmlCheck;
+            }
+        }
     }
 }

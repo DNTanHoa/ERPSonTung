@@ -18,7 +18,10 @@ namespace ERP.Ultilities.Extensions
                 {
                     result.Add(row.AsObjectCheckError<T>());
                 }
-                result.Add(row.AsObject<T>());
+                else
+                {
+                    result.Add(row.AsObject<T>());
+                }
             }    
             return result;
         }
@@ -76,7 +79,7 @@ namespace ERP.Ultilities.Extensions
                         catch(Exception ex)
                         {
                             obj.GetType().GetProperty("IsError")?.SetValue(obj, true);
-                            var errorList = (IList<string>)obj.GetType().GetProperty("ErrorMessage");
+                            var errorList = (IList<string>)obj.GetType().GetProperty("ErrorMessage").GetValue(obj);
                             if(errorList != null)
                             {
                                 errorList.Add(ex.Message);

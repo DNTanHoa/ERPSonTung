@@ -1,28 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Tasks;
-using ERP.Helpers;
-using ERP.Model.DataTransferObjects;
+﻿using ERP.Helpers;
 using ERP.Model.Extensions;
 using ERP.Model.Models;
 using ERP.Repository;
 using ERP.RequestModel.Employee;
 using ERP.ResponeModel;
-using ERP.TemplateImport;
 using ERP.Ultilities.Enum;
 using ERP.Ultilities.Extensions;
 using ERP.Ultilities.Factory.Implement;
 using ERP.Ultilities.Global;
 using ERP.Ultilities.Results;
-using ExcelDataReader;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Controllers
@@ -181,7 +169,7 @@ namespace ERP.Controllers
 
             if (model.Id == 0)
             {
-                Result = new ErrorResult(ActionType.Insert, "Mã nhân viên không tồn tại");
+                Result = new ErrorResult(ActionType.Insert, CommonMessageGlobal.NotExist("Mã nhân viên"));
                 return GetCommonRespone();
             }
             else
@@ -200,68 +188,6 @@ namespace ERP.Controllers
             else
             {
                 Result = new ErrorResult(ActionType.Edit, AppGlobal.SaveChangeFalse);
-            }
-
-            return GetCommonRespone();
-        }
-
-        [HttpPost]
-        public ActionResult<CommonResponeModel> CheckFileEmployees(IFormFile file)
-        {
-            if(file == null || string.IsNullOrWhiteSpace(file.FileName))
-            {
-                Result = new ErrorResult(ActionType.CheckFileExcel, CommonMessageGlobal.Require("File Excel"));
-                return GetCommonRespone();
-            }
-
-            try
-            {
-                //string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Storages", DateTime.Now.ToString("yyyyMMddHHmmss") + file.FileName);
-                //string pathXmlCheck = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "TemplateImport", "Xml", "Employee.xml");
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "Storages", DateTime.Now.ToString("yyyyMMddHHmmss") + file.FileName);
-                string pathXmlCheck = Path.Combine(Directory.GetCurrentDirectory(), "TemplateImport", "Xml", "Employee.xml");
-
-                //save file to server
-                file.SaveTo(path);
-
-                //read file to check
-                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-                using (var stream = System.IO.File.Open(path, FileMode.Open, FileAccess.Read))
-                {
-                    using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream))
-                    {
-                        var dataSet = reader.AsDataSet(new ExcelDataSetConfiguration
-                        {
-                            ConfigureDataTable = _ => new ExcelDataTableConfiguration
-                            {
-                                UseHeaderRow = true // Use first row is ColumnName here 
-                            }
-                        });
-
-                        if (dataSet.Tables.Count > 0)
-                        {
-                            SheetTemplateImport templateImport = new SheetTemplateImport(pathXmlCheck);
-
-                            DataTable table = dataSet.Tables[templateImport.SheetName];
-
-                            foreach (var column in templateImport.Columns)
-                            {
-                                if (!string.IsNullOrWhiteSpace(column.excelHeader))
-                                {
-                                    table.Columns[column.excelHeader].ColumnName = column.propertyName;
-                                }
-                            }
-
-                            Data = employeeRepository.ImportDataTableToList(table);
-                        }
-                    }
-                }
-
-                Result = new SuccessResultFactory().Factory(ActionType.CheckFileExcel);
-            }
-            catch (Exception)
-            {
-                Result = new ErrorResultFactory().Factory(ActionType.CheckFileExcel);
             }
 
             return GetCommonRespone();
