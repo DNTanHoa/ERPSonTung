@@ -852,28 +852,16 @@
 
 
           var parentLi = $relativeTarget.parents(Selector.LI).first();
-              console.log(parentLi);
               var isOpen = parentLi.hasClass(ClassName.OPEN);
-              console.log(isOpen);
 
           if (isOpen) {
             this.collapse($(treeviewMenu), parentLi);
           } else {
 
-            let menuOpens = parentLi.parent().find('.' + ClassName.OPEN);
-
+            let menuOpens = parentLi.parent().find(Selector.OPEN);
 
             if (menuOpens.length > 0) {
-              // for (let i = 0; i < menuOpens.length; i++) {
-              //   console.log(menuOpens[i]);
-              //   const element = menuOpens[i];
-              //   this.collapse($(treeviewMenu), $(element));
-              // }
-
-              parentLi= menuOpens.children(Selector.LI).first();
-
-            this.collapse($(treeviewMenu), parentLi);
-
+              $(parentLi).siblings(Selector.OPEN).removeClass(ClassName.OPEN).children(Selector.TREEVIEW_MENU).slideToggle();
             }
 
             this.expand($(treeviewMenu), parentLi);
