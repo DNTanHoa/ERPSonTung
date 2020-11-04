@@ -1,6 +1,4 @@
-import { support } from 'jquery';
-import React, { Component } from 'react';
-import { SideBar } from './sidebar';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default class SideBarNavigation extends React.Component {

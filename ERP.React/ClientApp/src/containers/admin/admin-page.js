@@ -1,10 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Header } from '../../components/header/header';
 import { SideBar } from '../../components/sidebar/sidebar';
 import { Footer } from '../../components/footer/footer';
 import { Employee } from '../../components/employee/employee-list';
 import { Category } from '../../components/category/category';
-import { BrowserRouter as Router, Route, Redirect, useHistory, useLocation, Switch } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import DailyMonitor from '../../components/dashboard/daily-monitor';
 import { User } from '../../components/user/user-list';
 import { Navigation } from '../../components/navigation/navigation-list';

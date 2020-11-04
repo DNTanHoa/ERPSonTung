@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import { SidebarInfor } from '../user/sidebar-info'
 import SideBarNavigation from './sidebar-navigation';
 import { getItems } from '../../apis/role/role-service';
