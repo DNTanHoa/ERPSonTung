@@ -18,13 +18,10 @@ export class SideBar extends Component {
 
     componentDidMount = async () => {
         roles = await getItems();
-        this.setState({roles});
+        this.setState({roles:roles});
         loadTree();
     }
 
-    handleNavigationClick = (role) => {
-        //console.log(role);
-    }
 
     render() {
         return (
@@ -45,14 +42,11 @@ export class SideBar extends Component {
                                             key={role.item.navigation.code}
                                             code={role.item.navigation.code}
                                             childs={role.childrens}
-                                            isActive={role.isActive}
-                                            onClick={this.handleNavigationClick(role.item)}
                                             iconName={role.item.navigation.icon}></SideBarNavigation>
                                     )
                                 }
                                 return(
-                                    <SideBarNavigation displayName={role.item.navigation.displayName} 
-                                        onClick={this.handleNavigationClick(role.item)}
+                                    <SideBarNavigation displayName={role.item.navigation.displayName}
                                         key={role.item.navigation.code}
                                         code={role.item.navigation.code}
                                         href={role.item.navigation.componentPath != null ? role.item.navigation.componentPath : null}

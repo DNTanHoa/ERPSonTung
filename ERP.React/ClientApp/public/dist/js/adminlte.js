@@ -852,16 +852,20 @@
 
 
           var parentLi = $relativeTarget.parents(Selector.LI).first();
-              var isOpen = parentLi.hasClass(ClassName.OPEN);
+          var isOpen = parentLi.hasClass(ClassName.OPEN);
 
           if (isOpen) {
+
+            parentLi.parent().find(Selector.OPEN).find('.active').removeClass('active');
             this.collapse($(treeviewMenu), parentLi);
+
           } else {
 
             let menuOpens = parentLi.parent().find(Selector.OPEN);
 
             if (menuOpens.length > 0) {
               $(parentLi).siblings(Selector.OPEN).removeClass(ClassName.OPEN).children(Selector.TREEVIEW_MENU).slideToggle();
+              menuOpens.find('.active').removeClass('active');
             }
 
             this.expand($(treeviewMenu), parentLi);
