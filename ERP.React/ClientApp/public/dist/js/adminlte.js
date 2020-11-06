@@ -856,7 +856,7 @@
 
           if (isOpen) {
 
-            parentLi.parent().find(Selector.OPEN).find('.active').removeClass('active');
+            // parentLi.parent().find(Selector.OPEN).find('.active').removeClass('active');
             this.collapse($(treeviewMenu), parentLi);
 
           } else {
@@ -865,7 +865,7 @@
 
             if (menuOpens.length > 0) {
               $(parentLi).siblings(Selector.OPEN).removeClass(ClassName.OPEN).children(Selector.TREEVIEW_MENU).slideToggle();
-              menuOpens.find('.active').removeClass('active');
+              // menuOpens.find('.active').removeClass('active');
             }
 
             this.expand($(treeviewMenu), parentLi);
