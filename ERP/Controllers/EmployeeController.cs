@@ -12,6 +12,7 @@ using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace ERP.Controllers
 {
@@ -131,12 +132,20 @@ namespace ERP.Controllers
 
                 if (employeeRepository.IsExistCode(databaseObject.Code))
                 {
-                    Result = new ErrorResult(ActionType.Insert, AppGlobal.ExistCodeError);
+                    Result = new ErrorResult(ActionType.Insert, CommonMessageGlobal.Exist("Mã nhân viên"));
                     return GetCommonRespone();
                 }
 
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
                 databaseObject.InitDefault();
+
+                //lưu hình nếu tồn tại
+                if (model.ImageFile != null && string.IsNullOrWhiteSpace(model.ImageFile.FileName))
+                {
+                    model.ImageFile.SaveTo(AppGlobal.AvatarFolder);
+                    databaseObject.Image = Path.Combine(AppGlobal.AvatarFolder, model.ImageFile.FileName);
+                }
+
                 result = employeeRepository.Insert(databaseObject);
             }
             else
@@ -145,6 +154,14 @@ namespace ERP.Controllers
                 databaseObject.MapFrom(model);
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Update);
                 databaseObject.InitDefault();
+
+                //lưu hình nếu tồn tại
+                if (model.ImageFile != null && string.IsNullOrWhiteSpace(model.ImageFile.FileName))
+                {
+                    model.ImageFile.SaveTo(AppGlobal.AvatarFolder);
+                    databaseObject.Image = Path.Combine(AppGlobal.AvatarFolder, model.ImageFile.FileName);
+                }
+
                 result = employeeRepository.Update(databaseObject);
             }
 
@@ -178,6 +195,7 @@ namespace ERP.Controllers
                 databaseObject.MapFrom(model);
                 databaseObject.InitBeforeSave(RequestUsername, InitType.Update);
                 databaseObject.InitDefault();
+
                 result = employeeRepository.Update(databaseObject);
             }
 
