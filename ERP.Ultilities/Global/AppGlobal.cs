@@ -431,5 +431,22 @@ namespace ERP.Ultilities.Global
                 return pathXmlCheck;
             }
         }
+
+        /// <summary>
+        /// Thư mục lưu hình đại diện nhân viên
+        /// </summary>
+        public static string AvatarFolder
+        {
+            get
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Storages", "Avatars");
+                if (!Directory.Exists(path))
+                {
+                    path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Storages", "Avatars");
+                }
+
+                return path;
+            }
+        }
     }
 }

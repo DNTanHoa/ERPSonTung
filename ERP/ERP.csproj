@@ -13,7 +13,7 @@
     <Folder Include="RequestModel\EmployeePayroll\" />
     <Folder Include="RequestModel\Navigation\" />
     <Folder Include="RequestModel\Post\" />
-    <Folder Include="Storages\" />
+    <Folder Include="Storages\Avatars\" />
   </ItemGroup>
 
   <ItemGroup>
