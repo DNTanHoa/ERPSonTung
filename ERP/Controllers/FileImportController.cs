@@ -1,5 +1,6 @@
 ﻿using ERP.Helpers;
 using ERP.Model.DataTransferObjects;
+using ERP.Repository;
 using ERP.ResponeModel;
 using ERP.TemplateImport;
 using ERP.Ultilities.Enum;
@@ -12,6 +13,7 @@ using ExcelDataReader;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -29,14 +31,20 @@ namespace ERP.Controllers
     public class FileImportController : BaseController
     {
         private readonly ILogger<CandidateController> logger;
+        private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly ICategoryRepository categoryRepository;
 
-        public FileImportController(ILogger<CandidateController> logger)
+        public FileImportController(ILogger<CandidateController> logger,
+            IWebHostEnvironment webHostEnvironment,
+            ICategoryRepository categoryRepository)
         {
             this.logger = logger;
+            this.webHostEnvironment = webHostEnvironment;
+            this.categoryRepository = categoryRepository;
         }
 
         [HttpPost]
-        public ActionResult<CommonResponeModel> CheckFileEmployees(IFormFile file)
+        public ActionResult<CommonResponeModel> CheckFileEmployees([FromForm]IFormFile file)
         {
             if (file == null || string.IsNullOrWhiteSpace(file.FileName))
             {
@@ -81,7 +89,7 @@ namespace ERP.Controllers
                             }
 
                             //validate data
-                            var validator = new ImportEmployeeExcelFileValidator();
+                            var validator = new ImportEmployeeExcelFileValidator(categoryRepository);
                             List<EmployeeImportDataTransfer> employees = table.ToList<EmployeeImportDataTransfer>(true);
                             foreach (var employee in employees)
                             {
@@ -91,6 +99,7 @@ namespace ERP.Controllers
                                 {
                                     foreach (var failure in results.Errors)
                                     {
+                                        employee.IsError = true;
                                         employee.ErrorMessage.Add(failure.ErrorMessage);
                                     }
                                 }

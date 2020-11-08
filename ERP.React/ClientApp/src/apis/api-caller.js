@@ -17,3 +17,23 @@ export const getInit = (method) => {
     return init;
 }
 
+
+export const getInitToPostFormData = (method) => {
+
+    let token = localStorage.getItem('token');
+
+    if(token == undefined) {
+        
+    }
+
+    let init = { 
+        method: method,
+        headers: new Headers({
+            Accept: 'application/json, text/plain',
+            'Content-Type': 'multipart/form-data',
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+        })
+    };
+    return init;
+}
+

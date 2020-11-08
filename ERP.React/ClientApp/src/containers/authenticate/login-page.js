@@ -94,7 +94,7 @@ export class Login extends Component {
                                     <form id="loginForm" onSubmit={this.handleSubmit}>
                                         <div className="input-group mb-2">
                                             <div className="input-group-append w-100">
-                                                <input  type="text"
+                                                <input type="text"
                                                     name="username"
                                                     className="form-control"
                                                     placeholder="Tài khoản"
@@ -108,11 +108,11 @@ export class Login extends Component {
                                         <div className="input-group mb-2">
                                             <div className="input-group-append w-100">
                                                 <input name="password"
-                                                        className="form-control"
-                                                        placeholder="Mật khẩu"
-                                                        type="password"
-                                                        value={this.state.password}
-                                                        onChange={this.handleChange}/>
+                                                    className="form-control"
+                                                    placeholder="Mật khẩu"
+                                                    type="password"
+                                                    value={this.state.password}
+                                                    onChange={this.handleChange}/>
                                                 <div className="input-group-text">
                                                     <FontAwesomeIcon icon="key" size="xs" />
                                                 </div>

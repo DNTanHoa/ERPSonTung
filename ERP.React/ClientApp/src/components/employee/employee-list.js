@@ -19,7 +19,7 @@ export class Employee extends React.Component {
             employees: [],
             editID: null,
             skip: 0,
-            take: 50,
+            take: 100,
             showInforModal:false,
             showImportModal:false,
         }
@@ -44,7 +44,7 @@ export class Employee extends React.Component {
     );
 
     handleModalHide = () => {
-        this.setState({showInforModal: false})
+        this.setState({showInforModal: false, showImportModal: false})
     }
 
     pageChange = (event) => {

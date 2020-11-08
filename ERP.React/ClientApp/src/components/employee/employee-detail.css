@@ -35,3 +35,6 @@
     z-index: 10005;
 }
 
+.k-action-buttons {
+    display: none;
+}

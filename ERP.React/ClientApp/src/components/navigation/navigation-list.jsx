@@ -113,7 +113,7 @@ export class Navigation extends React.Component {
                                                 style={{width: '100%'}}/>
                                         </div>
                                         <div className="col-md-1 mt-1 mt-md-0">
-                                            <button type="button" class="btn btn-success w-100" onClick={this.search}>
+                                            <button type="button" className="btn btn-success w-100" onClick={this.search}>
                                                 <span className="fa fa-search"></span>
                                             </button>
                                         </div>
@@ -121,33 +121,33 @@ export class Navigation extends React.Component {
                                 </div>
                                 <div className="card-body">
                                 <Grid style={{ height: "550px" }}
-                                        data={this.state.navigations}
-                                        onItemChange={this.itemChange}
-                                        onRowDoubleClick={this.handleGridRowDoubleClick}
-                                        pageable={true}
-                                        resizable={true}
-                                        editField={this.editField}>
-                                        <GridToolbar>
-                                            <button title="Thêm mới"
-                                                    className="btn btn-success"
-                                                    onClick={this.handleAdd}>
-                                                <i className="fas fa-plus-circle"></i>
-                                            </button>
-                                            <button title="Tải lại"
-                                                    className="btn btn-success"
-                                                    onClick={this.search}>
-                                                <i class="fas fa-sync"></i>
-                                            </button>
-                                        </GridToolbar>
-                                        <Column field="id" title="ID" width="80px" editable={false} />
-                                        <Column field="type" title="Phân loại" width="200px" />
-                                        <Column field="displayName" title="Tên hiển thị" width="200px" />
-                                        <Column field="code" title="Mã" width="200px" />
-                                        <Column field="icon" title="Biểu tượng" width="200px" />
-                                        <Column field="componentPath" title="ComponentPath" width="200px" />
-                                        <Column field="sortOrder" title="Sắp xếp" width="200px" />
-                                        <Column field="note" title="Ghi chú" width="300px"/>
-                                        <Column cell={this.CommandCell} width="200px" />
+                                    data={this.state.navigations}
+                                    onItemChange={this.itemChange}
+                                    onRowDoubleClick={this.handleGridRowDoubleClick}
+                                    pageable={true}
+                                    resizable={true}
+                                    editField={this.editField}>
+                                    <GridToolbar>
+                                        <button title="Thêm mới"
+                                                className="btn btn-success"
+                                                onClick={this.handleAdd}>
+                                            <i className="fas fa-plus-circle"></i>
+                                        </button>
+                                        <button title="Tải lại"
+                                                className="btn btn-success"
+                                                onClick={this.search}>
+                                            <i className="fas fa-sync"></i>
+                                        </button>
+                                    </GridToolbar>
+                                    <Column field="id" title="ID" width="80px" editable={false} />
+                                    <Column field="type" title="Phân loại" width="200px" />
+                                    <Column field="displayName" title="Tên hiển thị" width="200px" />
+                                    <Column field="code" title="Mã" width="200px" />
+                                    <Column field="icon" title="Biểu tượng" width="200px" />
+                                    <Column field="componentPath" title="ComponentPath" width="200px" />
+                                    <Column field="sortOrder" title="Sắp xếp" width="200px" />
+                                    <Column field="note" title="Ghi chú" width="300px"/>
+                                    <Column cell={this.CommandCell} width="200px" />
                                 </Grid>
                                 {this.state.loading === true ? <Loading></Loading> : null}
                                 <Modal centered={false} 
