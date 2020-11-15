@@ -5,6 +5,7 @@ using ERP.Model.Models;
 using ERP.Repository;
 using ERP.ResponeModel;
 using ERP.Ultilities.Enum;
+using ERP.Ultilities.Extensions;
 using ERP.Ultilities.Factory.Implement;
 using ERP.Ultilities.Global;
 using ERP.Ultilities.Results;
@@ -74,15 +75,17 @@ namespace ERP.MVC.Controllers
 
             model.InitBeforeSave(RequestUsername, InitType.Create);
             model.InitDefault();
-            int result = navigationRepository.Insert(model);
+            int result = navigationRepository.Insert(model, out model);
 
             if (result > 0)
             {
                 Result = new SuccessResultFactory().Factory(ActionType.Insert);
+                Data = model;
             }
             else
             {
                 Result = new ErrorResultFactory().Factory(ActionType.Insert);
+                Data = model;
             }
 
             return GetCommonRespone();
@@ -94,15 +97,21 @@ namespace ERP.MVC.Controllers
         {
             model.InitBeforeSave(RequestUsername, InitType.Update);
             model.InitDefault();
-            int result = navigationRepository.Update(model);
+            
+            var existModel = navigationRepository.GetById(model.Id);
+            ObjectExtensions.CopyValues(existModel, model);
+            
+            int result = navigationRepository.Update(existModel, out existModel);
 
             if (result > 0)
             {
                 Result = new SuccessResultFactory().Factory(ActionType.Edit);
+                Data = existModel;
             }
             else
             {
                 Result = new ErrorResultFactory().Factory(ActionType.Edit);
+                Data = existModel;
             }
 
             return GetCommonRespone();

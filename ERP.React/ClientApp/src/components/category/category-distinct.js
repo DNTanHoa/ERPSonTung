@@ -9,6 +9,8 @@ import { Loading } from '../loading';
 import { ToastContainer, toast } from 'react-toastify';
 import { insertCategory, getCategories, updateItem, deleteItem, getCategoriesByEntity } from "../../apis/category/category-service";
 import { filterBy } from '@progress/kendo-data-query';
+import CategoryModal from './category-modal';
+import { Modal } from 'react-bootstrap';
 
 let categories = [];
 
@@ -23,7 +25,8 @@ export class CategoryDistinct extends React.Component {
             take: 1000,
             selectedEntity:"",
             loading: false,
-            entities:[]
+            entities:[],
+            showModal: false
         }
     }
 
@@ -45,6 +48,10 @@ export class CategoryDistinct extends React.Component {
             editField={this.editField}
         />
     );
+
+    addNew = () => {
+        this.setState({showModal: true});
+    }
 
     render = () => {
         return(
@@ -96,7 +103,15 @@ export class CategoryDistinct extends React.Component {
                                         <Column field="note" title="Ghi chú" />
                                         <Column cell={this.CommandCell} width="200px" />
                                 </Grid>
-                                {this.state.loading === true ? <Loading></Loading> : null} 
+                                {this.state.loading === true ? <Loading></Loading> : null}
+                                <Modal centered={false} 
+                                    size="md"
+                                    onHide={this.handleModalHide}
+                                    enforceFocus={false}
+                                    show={this.state.showModal}>
+                                    <CategoryModal onHide={this.handleModalHide}
+                                        model={this.state.selectedNavigation}></CategoryModal>
+                                </Modal>
                                 </div>
                             </div>
                         </div>

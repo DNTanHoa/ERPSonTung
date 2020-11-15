@@ -5,13 +5,15 @@ import { insertNavigation, updateNavigation } from "../../apis/navigation/naviga
 import { getCategoriesByEntity } from "../../apis/category/category-service";
 import { getNavigations } from '../../apis/navigation/navigation-service';
 import config from '../../appsettings.json';
+import { ToastContainer, toast } from 'react-toastify';    
 import { filterBy } from '@progress/kendo-data-query';
 
 let navigationTypes = [];
-
 let navigations = [];
+let container;
 
 const delay = 300;
+
 
 export default class NavigationModal extends React.Component {
     constructor(props) {
@@ -61,17 +63,26 @@ export default class NavigationModal extends React.Component {
             controller: this.state.componentPath,
             action: this.state.action,
             note: this.state.note,
+            parentCode: this.state.parentCode
         }
 
-        let result = {}
+        let respone = {}
 
         if(this.state.id > 0) {
-            result = insertNavigation(dataItem);
+            respone = await updateNavigation(dataItem);
         } 
         else {
-            result = updateNavigation(dataItem);
+            respone = await insertNavigation(dataItem);
+            this.setState(respone.data);
         }
-        console.log(result);
+
+        if(respone.result.resultType === 0) {
+            toast.success(`Cập nhật điều hướng ${respone.data.code} thành công`, 2000);
+        }
+        else {
+            toast.error(`Thao tác thất bại`);
+        }
+        console.log(respone);
     }
 
     handleChange = (event) => {
@@ -111,6 +122,9 @@ export default class NavigationModal extends React.Component {
     render = () => {
         return(
             <>
+                <ToastContainer ref={ref => container = ref}
+                    className="toast-top-right">
+                </ToastContainer>
                 <Modal.Header closeButton>
                     <h5 className="modal-title">Chi tiết điều hướng</h5>
                 </Modal.Header>
@@ -140,7 +154,7 @@ export default class NavigationModal extends React.Component {
                                 <DropDownList data={this.state.navigations} 
                                     textField="textname"
                                     dataItemKey="code"
-                                    name="parentNavigation"
+                                    name="parentCode"
                                     delay={1000}
                                     filterable={true}
                                     value={this.state.selectedNavigationGroup}
@@ -178,7 +192,7 @@ export default class NavigationModal extends React.Component {
                         <div className="col-md-12">
                             <div className="form-group m-0">
                                 <label className="m-0">Component</label>
-                                <input name="component" 
+                                <input name="componentPath" 
                                     className="form-control"
                                     placeholder="Đường dẫn"
                                     value={this.state.componentPath}

@@ -48,7 +48,7 @@ export const insertNavigation = async (navigation) => {
 export const updateNavigation = async (navigation) => {
     let url = config.appSettings.ServerUrl + 'navigation/update';
 
-    let init = getInit('POST');
+    let init = getInit('PUT');
 
     init.body = JSON.stringify(navigation);
 
