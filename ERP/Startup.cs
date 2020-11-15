@@ -34,7 +34,7 @@ namespace ERP
             {
                 opt.AddPolicy(MyAllowSpecificOrigins, builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000");
+                    builder.WithOrigins("http://localhost:3000", "http://10.0.0.40:82/");
                 });
             });
 
