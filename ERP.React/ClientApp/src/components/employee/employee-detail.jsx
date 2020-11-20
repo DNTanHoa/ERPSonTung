@@ -25,7 +25,20 @@ export default class EmployeeDetail extends React.Component {
                     <div className="row mb-2">
                         <div className="card w-100">
                             <div className="card-header">
-                                <h3 className="card-title">Thông tin nhân viên</h3>
+                                <div className="row">
+                                    <h3 className="card-title col-sm-6 px-0">Thông tin nhân viên</h3>
+                                    <div className="col-sm-4"></div>
+                                    <div className="col-6 col-md-1 px-1 py-1 py-md-0">
+                                        <button className="btn btn-primary w-100" title="Lưu thông tin nhân viên">
+                                            <i className="far fa-save"></i>
+                                        </button>
+                                    </div>
+                                    <div className="col-6 col-md-1 px-1 py-1 py-md-0">
+                                        <button className="btn btn-dark w-100" title="Thoát">
+                                            <i className="fas fa-arrow-left"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <div className="card-body">
                                <div className="row">
@@ -35,7 +48,7 @@ export default class EmployeeDetail extends React.Component {
                                             <input type="text" class="form-control" placeholder="Upload hình ảnh"/>
                                             <div className="input-group-append">
                                                 <button className="btn btn-success">
-                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                    <i class="fas fa-cloud-upload-alt"></i>
                                                 </button>
                                             </div>
                                         </div>

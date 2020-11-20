@@ -15,7 +15,7 @@ export default class RecruitmentPlanModal extends React.Component {
     render = () => {
         return (
             <>
-                <Modal.Header>
+                <Modal.Header closeButton>
                     <h5 className="modal-title">Kế hoạch tuyển dụng</h5>
                 </Modal.Header>
                 <Modal.Body>

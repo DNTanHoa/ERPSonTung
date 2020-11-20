@@ -71,7 +71,7 @@ export class Login extends Component {
     render() {
         if(this.state.redirect === true) {
             return(
-                <Redirect to='/hrm'/>
+                <Redirect push to='/hrm'/>
             )
         }
         return (

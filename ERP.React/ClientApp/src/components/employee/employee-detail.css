@@ -1,3 +1,11 @@
+html, body {
+    height: 100%;
+}
+
+.k-grid-edit-row td {
+    padding: 2px;;
+}
+
 .k-animation-container-relative {
     width: 100%;
 }

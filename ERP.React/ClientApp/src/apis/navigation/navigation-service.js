@@ -3,7 +3,6 @@ import axios from "axios";
 import { getInit } from '../api-caller';
 import React from 'react';
 import { Loading} from '../../components/loading';
-import { JsxEmit } from 'typescript';
 
 export const getNavigations = async (entity)  => {
     let url = config.appSettings.ServerUrl + 'navigation/get';

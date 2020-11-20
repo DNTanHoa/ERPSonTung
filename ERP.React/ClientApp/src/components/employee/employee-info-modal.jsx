@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
-import { AutoComplete, ComboBox, DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
+import { DropDownList } from '@progress/kendo-react-dropdowns';
 import { getCategoriesByEntity } from "../../apis/category/category-service";
 import { getModelTemplates } from "../../apis/employee/employee-service";
 import config from '../../appsettings.json'

@@ -20,11 +20,13 @@ export const EmployeeCommandCell = props => {
   ) : (
     <td className="k-command-cell">
       <button
+        title="Xem hồ sơ chi tiết"
         className="btn btn-success mx-1 k-grid-edit-command"
-        onClick={() => props.edit(dataItem)}>
-        <i className="far fa-edit"></i>
+        onClick={() => props.openDetail(dataItem)}>
+        <i className="fas fa-external-link-square-alt"></i>
       </button>
       <button
+        title="Xóa hồ sơ nhân viên"
         className="btn btn-danger mx-1 k-grid-remove-command"
         onClick={() =>
           window.confirm("Xác nhận xóa: " + dataItem.displayName) &&

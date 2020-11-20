@@ -73,7 +73,6 @@ namespace ERP.Validators
             return this._categoryRepository.IsExistEntityWithCode("Department", code, out Category category);
         }
 
-
         private bool IsValidStatusCode(string code)
         {
             return this._categoryRepository.IsExistEntityWithCode("EmployeeStatus", code, out Category category);
