@@ -26,15 +26,18 @@ export default class EmployeeDetail extends React.Component {
                         <div className="card w-100">
                             <div className="card-header">
                                 <div className="row">
-                                    <h3 className="card-title col-sm-6 px-0">Thông tin nhân viên</h3>
-                                    <div className="col-sm-4"></div>
-                                    <div className="col-6 col-md-1 px-1 py-1 py-md-0">
-                                        <button className="btn btn-primary w-100" title="Lưu thông tin nhân viên">
+                                    <p className="col-sm-6 px-1 mt-1 mb-0">Thông tin nhân viên</p>
+                                    <div className="col-md-6 px-1 py-1 py-md-0">
+                                        <button className="btn btn-primary mx-1 float-md-right float-sm-left" title="Lưu thay đổi">
                                             <i className="far fa-save"></i>
                                         </button>
-                                    </div>
-                                    <div className="col-6 col-md-1 px-1 py-1 py-md-0">
-                                        <button className="btn btn-dark w-100" title="Thoát">
+                                        <button className="btn btn-warning mx-1 float-md-right float-sm-left text-white" title="Lưu và tạo mới">
+                                            <i className="far fa-save"></i>
+                                        </button>
+                                        <button className="btn btn-success mx-1 float-md-right float-sm-left" title="Lưu và thoát">
+                                            <i className="far fa-save"></i>
+                                        </button>
+                                        <button className="btn btn-dark mx-1 float-md-right float-sm-left" title="Thoát">
                                             <i className="fas fa-arrow-left"></i>
                                         </button>
                                     </div>

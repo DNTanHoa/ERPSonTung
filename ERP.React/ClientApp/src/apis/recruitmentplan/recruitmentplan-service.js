@@ -1,11 +1,8 @@
 import config from '../../appsettings.json';
-import axios from "axios";
 import { getInit } from '../api-caller';
-import React from 'react';
-import { Loading} from '../../components/loading';
 
-export const getRecruitmentPlans = () => {
-    let url = config.appSettings.ServerUrl + '/recruitmentplan/getall';
+export const getRecruitmentPlans = async () => {
+    let url = config.appSettings.ServerUrl + 'recruitmentplan/getall';
 
     let init = getInit('GET');
 
@@ -22,8 +19,8 @@ export const getRecruitmentPlans = () => {
     return data;
 }
 
-export const insertRecruitmentPlan = (dataItem) => {
-    let url = config.appSettings.ServerUrl + '/recruitmentplan/create';
+export const insertRecruitmentPlan = async (dataItem) => {
+    let url = config.appSettings.ServerUrl + 'recruitmentplan/create';
 
     let init = getInit('POST');
 
@@ -31,5 +28,58 @@ export const insertRecruitmentPlan = (dataItem) => {
 
     let result = {};
 
-    
+    await fetch(url, init)
+        .then(response =>
+            response.json()
+        )
+        .then(json => {
+            result = json;
+            return result;
+        });
+    return result;
+}
+
+export const updateRecruitmentPlan = async (dataItem) => {
+    let url = config.appSettings.ServerUrl + 'recruitmentplan/update';
+
+    let init = getInit('POST');
+
+    init.body = JSON.stringify(dataItem);
+
+    let result = {};
+
+    await fetch(url, init)
+        .then(response =>
+            response.json()
+        )
+        .then(json => {
+            result = json;
+            return result;
+        });
+    return result;
+}
+
+export const deleteRecruitmentPlan = async (dataItem) => {
+    let url = config.appSettings.ServerUrl + 'recruitmentplan/update';
+
+    let init = getInit('DELETE');
+
+    let params = {
+        id: dataItem.id
+    }
+
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+    let result = {};
+
+    await fetch(url, init)
+        .then(response =>
+            response.json()
+        )
+        .then(json => {
+            result = json.data;
+            return result;
+        });
+    return result;
+
 }

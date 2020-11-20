@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
 import { DropDownList } from '@progress/kendo-react-dropdowns';
 import config from '../../appsettings.json';
@@ -8,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import RecruitmentPlanModal from './recruimentplan-modal';
 import { getCategoriesByEntity } from "../../apis/category/category-service";
 import { Modal } from 'react-bootstrap';
+import { getRecruitmentPlans } from '../../apis/recruitmentplan/recruitmentplan-service';
 
 export class RecruitmentPlan extends React.Component {
     constructor(props){
@@ -15,6 +15,8 @@ export class RecruitmentPlan extends React.Component {
 
         this.state = {
             showModal: false,
+            loading: false,
+            recruitmentPlans:[],
             departments:[],
             department: {},
         }
@@ -23,9 +25,16 @@ export class RecruitmentPlan extends React.Component {
     }
 
     componentDidMount = async () => {
+        this.setState({loading:true});
+        
         let departments = await (await getCategoriesByEntity(config.entities.department))
         .map((department) => {return {...department, textname: department.code +' - '+ department.name}});
-        this.setState({departments})
+        
+        let recruitmentPlans = await (await getRecruitmentPlans()).map((recruitmentPlan) => {
+            return {...recruitmentPlan, startDate: new Date()}
+        });
+
+        this.setState({departments, recruitmentPlans, loading:false})
     }
 
     handleModalHide = () => {
@@ -89,7 +98,13 @@ export class RecruitmentPlan extends React.Component {
                                 </div>
                             </div>
                             <div className="card-body p-1">
-                                <Grid style={{ height: "550px" }}>
+                                <Grid style={{ height: "550px" }}
+                                    resizable={true}
+                                    reorderable={true}
+                                    total={this.state.recruitmentPlans.length}
+                                    skip={this.state.skip}
+                                    pageable={{buttonCount: 5, info: true, pageSizes:true}}
+                                    data={this.state.recruitmentPlans}>
                                     <GridToolbar>
                                         <div className="d-flex">
                                             <button className="btn btn-success"
@@ -117,6 +132,7 @@ export class RecruitmentPlan extends React.Component {
                     </div>
                 </div>
             </section>
+            {this.state.loading === true ? <Loading></Loading> : null} 
             <Modal centered={true} 
                 size="xl"
                 onHide={this.handleModalHide}
