@@ -1,11 +1,9 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
 import config from '../../appsettings.json';
 import { EmployeeCommandCell } from "./employee-command.jsx";
 import { getEmployeesHasFillter } from "../../apis/employee/employee-service"
 import EmployeeImportModal from './employee-import-modal'
-import { CustomDatePicker } from '../editortemplates/date-picker';
 import EmployeeInfoModal from './employee-info-modal';
 import { Redirect } from "react-router-dom";
 import { Loading } from '../loading';
@@ -31,7 +29,8 @@ export class Employee extends React.Component {
             showImportModal:false,
             group: {},
             department: {},
-            redirectToDetail: false
+            redirectToDetail: false,
+            paramId:Number
         }
 
     }
@@ -99,16 +98,18 @@ export class Employee extends React.Component {
     }
 
     openDetail = (dataItem) => {
-        console.log(dataItem);
-        this.setState({redirectToDetail:true})
+        this.setState({paramId:dataItem.id});
+        this.setState({redirectToDetail:true});
     }
 
     
     render() {
         if(this.state.redirectToDetail) {
             return(
-                <Redirect push to="/hrm/employee/detail"/>
-            )
+                <Redirect push to={{
+                    pathname:'/hrm/employee/detail',
+                    state: { id: this.state.paramId }
+            }}/>)
         }
         return(
             <div className="container-fluid px-1 h-100">
