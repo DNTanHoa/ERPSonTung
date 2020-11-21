@@ -50,7 +50,7 @@ export const EmployeeDetail = () => {
                             <div className="card-body">
                                <div className="row">
                                     <div className="col-md-4 col-lg-2 text-center p-1">
-                                        <img src="/images/avatar.png" style={{height: '160px', width: '160px'}}></img>
+                                        <img alt="avatar" src="/images/avatar.png" style={{height: '160px', width: '160px'}}></img>
                                         <div className="input-group mt-md-5 mt-1">
                                             <input type="text" className="form-control" placeholder="Upload hình ảnh"/>
                                             <div className="input-group-append">
@@ -84,7 +84,7 @@ export const EmployeeDetail = () => {
                                             </div>
                                             <div className="col-6">
                                                 <div className="form-group m-0">
-                                                    <label className="m-0" htmlFor="Code">Chấn công</label>
+                                                    <label className="m-0" htmlFor="Code">Chấm công</label>
                                                     <input type="text" className="form-control" placeholder="Chấm công"></input>
                                                 </div>
                                             </div>
@@ -120,7 +120,7 @@ export const EmployeeDetail = () => {
                                             <div className="col-6">
                                                 <div className="form-group m-0">
                                                     <label className="m-0" htmlFor="Code">Tổ</label>
-                                                    <input type="text" className="form-control" placeholder="Chấm công"></input>
+                                                    <input type="text" className="form-control" placeholder="Tổ"></input>
                                                 </div>
                                             </div>
                                         </div>
@@ -128,13 +128,13 @@ export const EmployeeDetail = () => {
                                             <div className="col-6">
                                                 <div className="form-group m-0">
                                                     <label className="m-0" htmlFor="Code">Chức vụ</label>
-                                                    <input type="text" className="form-control" placeholder="Mã"></input>
+                                                    <input type="text" className="form-control" placeholder="Chức vụ"></input>
                                                 </div>
                                             </div>
                                             <div className="col-6">
                                                 <div className="form-group m-0">
                                                     <label className="m-0" htmlFor="Code">Công việc</label>
-                                                    <input type="text" className="form-control" placeholder="Chấm công"></input>
+                                                    <input type="text" className="form-control" placeholder="Công việc"></input>
                                                 </div>
                                             </div>
                                         </div>
@@ -142,13 +142,13 @@ export const EmployeeDetail = () => {
                                             <div className="col-6">
                                                 <div className="form-group m-0">
                                                     <label className="m-0" htmlFor="Code">Nhóm</label>
-                                                    <input type="text" className="form-control" placeholder="Mã"></input>
+                                                    <input type="text" className="form-control" placeholder="Nhóm"></input>
                                                 </div>
                                             </div>
                                             <div className="col-6">
                                                 <div className="form-group m-0">
                                                     <label className="m-0" htmlFor="Code">Quản lý</label>
-                                                    <input type="text" className="form-control" placeholder="Chấm công"></input>
+                                                    <input type="text" className="form-control" placeholder="Quản lý"></input>
                                                 </div>
                                             </div>
                                         </div>
