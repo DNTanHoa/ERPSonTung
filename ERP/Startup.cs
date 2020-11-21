@@ -34,14 +34,14 @@ namespace ERP
             {
                 opt.AddPolicy(MyAllowSpecificOrigins, builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "http://10.0.0.40:82/");
+                    builder.WithOrigins("http://localhost:3000", "http://hr.sontungjeans.com");
                 });
             });
 
-           
+
 
             services.AddTokenAuthentication(Configuration);
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HRM API", Version = "v1" });
