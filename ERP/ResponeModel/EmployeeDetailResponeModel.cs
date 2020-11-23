@@ -16,13 +16,17 @@ namespace ERP.ResponeModel
         [Required(ErrorMessage = "không được để trống")]
         public DateTime? StartDate { get; set; }
 
+        public DateTime? DateOfBirth { get; set; }
+
         public string StatusCode { get; set; }
+
+        public string CheckInOutCode { get; set; }
 
         [Required(ErrorMessage = "không được để trống")]
         public string DepartmentCode { get; set; }
-        
+
         public string GroupCode { get; set; }
-        
+
         public string LaborGroupCode { get; set; }
 
         public string PositionCode { get; set; }
