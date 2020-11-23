@@ -10,6 +10,9 @@ import {
 import { useHistory, useLocation } from "react-router-dom";
 import { getCategoriesByEntity } from "../../apis/category/category-service";
 import config from "../../appsettings.json";
+import { DropDownList } from "@progress/kendo-react-dropdowns";
+import { getById } from "../../apis/employee/employee-service";
+import { getModelTemplates } from "../../apis/employee/employee-service";
 
 export const EmployeeDetail = () => {
   const history = useHistory();
@@ -17,13 +20,35 @@ export const EmployeeDetail = () => {
   const location = useLocation();
 
   const [selected, setSelected] = useState(Number);
-  const [getDepartment, setDepartment] = useState("");
+
+  const [departments, setDepartments] = useState([]);
+  const [department, setDepartment] = useState({});
+
+  const [employeeStatuses, setEmployeeStatuses] = useState([]);
+  const [employeeStatus, setEmployeeStatus] = useState({});
+
+  const [jobs, setJobs] = useState([]);
+  const [job, setJob] = useState({});
+
+  const [groups, setGroups] = useState([]);
+  const [group, setGroup] = useState({});
+
+  const [positions, setPositions] = useState([]);
+  const [position, setPosition] = useState({});
+
+  const [laborGroups, setLaborGroups] = useState([]);
+  const [laborGroup, setLaborGroup] = useState({});
+
+  const [supervisors, setSupervisors] = useState([]);
+  const [supervisor, setSupervisor] = useState({});
+
+  const [employee, setEmployee] = useState({});
 
   const handleTabSelect = (e) => {
     setSelected(e.selected);
   };
 
-  const departments = async () => {
+  const loadDepartments = async () => {
     let data = (await getCategoriesByEntity(config.entities.department)).map(
       (department) => {
         return {
@@ -36,57 +61,155 @@ export const EmployeeDetail = () => {
     return data;
   };
 
-  const employeeStatuses = async () => {
-    let data = (await getCategoriesByEntity(config.entities.employeeStatus)).map(
-      (employeeStatus) => {
-        return {
-          ...employeeStatus,
-          textname: employeeStatus.code + " - " + employeeStatus.name,
-        };
-      }
-    );
+  const loadEmployeeStatuses = async () => {
+    let data = (
+      await getCategoriesByEntity(config.entities.employeeStatus)
+    ).map((employeeStatus) => {
+      return {
+        ...employeeStatus,
+        textname: employeeStatus.code + " - " + employeeStatus.name,
+      };
+    });
     return data;
   };
 
-  const jobs = async () => {
+  const loadJobs = async () => {
     let data = (await getCategoriesByEntity(config.entities.job)).map((job) => {
       return { ...job, textname: job.code + " - " + job.name };
     });
     return data;
   };
 
-  const groups = async () => {
-    let data = (await getCategoriesByEntity(config.entities.group)).map((group) => {
-      return { ...group, textname: group.code + " - " + group.name };
-    });
+  const loadGroups = async () => {
+    let data = (await getCategoriesByEntity(config.entities.group)).map(
+      (group) => {
+        return { ...group, textname: group.code + " - " + group.name };
+      }
+    );
     return data;
   };
 
-  const positions = async () => {
-    let data = (await  getCategoriesByEntity(config.entities.position)).map((position) => {
-      return { ...position, textname: position.code + " - " + position.name };
-    });
+  const loadPositions = async () => {
+    let data = (await getCategoriesByEntity(config.entities.position)).map(
+      (position) => {
+        return { ...position, textname: position.code + " - " + position.name };
+      }
+    );
     return data;
   };
 
-  const laborGroups = async () => {
-    let data = (await  getCategoriesByEntity(config.entities.laborGroup)).map((laborGroup) => {
-      return {
-        ...laborGroup,
-        textname: laborGroup.code + " - " + laborGroup.name,
-      };
-    });
+  const loadLaborGroups = async () => {
+    let data = (await getCategoriesByEntity(config.entities.laborGroup)).map(
+      (laborGroup) => {
+        return {
+          ...laborGroup,
+          textname: laborGroup.code + " - " + laborGroup.name,
+        };
+      }
+    );
     return data;
+  };
+
+  const loadEmployee = async (id) => {
+    let data = await getById(id);
+    return data;
+  };
+
+  const loadSupervisors = async () => {
+    let data = await getModelTemplates();
+    return data;
+  };
+
+  const handleSelectChange = (e) => {
+    let name = e.target.name;
+
+    switch (name) {
+      case "department":
+        setDepartment({ ...department, ...e.target.value });
+        break;
+
+      case "group":
+        setGroup({ ...group, ...e.target.value });
+        break;
+
+      case "employeeStatus":
+        setEmployeeStatus({ ...employeeStatus, ...e.target.value });
+        break;
+
+      case "job":
+        setJob({ ...job, ...e.target.value });
+        break;
+
+      case "position":
+        setPosition({ ...position, ...e.target.value });
+        break;
+
+        case "laborGroup":
+        setLaborGroup({ ...laborGroup,...e.target.value });
+        break;
+
+        case "supervisor":
+        setSupervisor({ ...supervisor,...e.target.value });
+        break;
+        
+        
+
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
     if (location.state === undefined) {
       history.push("/hrm/employee");
     } else {
-        
       const load = async () => {
-        let one = await departments();
-        setDepartment(one);
+        let departments = await loadDepartments();
+        let employeeStatuses = await loadEmployeeStatuses();
+        let jobs = await loadJobs();
+        let groups = await loadGroups();
+        let positions = await loadPositions();
+        let laborGroups = await loadLaborGroups();
+        let employee = await loadEmployee(location.state.id);
+        let supervisors = await loadSupervisors();
+
+        setDepartments(departments);
+        let department = departments.find(
+          (n) => n.code === employee.departmentCode
+        );
+        setDepartment(department);
+
+        setEmployeeStatuses(employeeStatuses);
+        let employeeStatus = employeeStatuses.find(
+          (n) => n.code === employee.statusCode
+        );
+        setEmployeeStatus(employeeStatus);
+
+        setJobs(jobs);
+        let job = jobs.find((n) => n.code === employee.jobCode);
+        setJob(job);
+
+        setGroups(groups);
+        let group = groups.find((n) => n.code === employee.groupCode);
+        setGroup(group);
+
+        setPositions(positions);
+        let position = positions.find((n) => n.code === employee.positionCode);
+        setPosition(position);
+
+        setLaborGroups(laborGroups);
+        let laborGroup = laborGroups.find(
+          (n) => n.code === employee.laborGroupCode
+        );
+        setPosition(laborGroup);
+
+        setSupervisor(supervisors);
+        let supervisor = laborGroups.find(
+          (n) => n.code === employee.supervisorCode
+        );
+        setPosition(supervisor);
+
+        setEmployee(employee);
       };
 
       setTimeout(() => {
@@ -94,6 +217,8 @@ export const EmployeeDetail = () => {
       }, 1000);
     }
   }, [location, history]);
+
+  console.log(employee);
 
   return (
     <div>
@@ -167,6 +292,7 @@ export const EmployeeDetail = () => {
                               type="text"
                               className="form-control"
                               placeholder="Họ tên đệm"
+                              value={employee.firstName}
                             ></input>
                           </div>
                         </div>
@@ -235,11 +361,17 @@ export const EmployeeDetail = () => {
                         <label className="m-0" htmlFor="Code">
                           Trạng thái
                         </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Trạng thái"
-                        ></input>
+                        <DropDownList
+                          data={employeeStatuses}
+                          textField="textname"
+                          dataItemKey="code"
+                          name="employeeStatus"
+                          delay={1000}
+                          filterable={true}
+                          value={employeeStatus}
+                          onChange={handleSelectChange}
+                          style={{ width: "100%" }}
+                        />
                       </div>
                     </div>
                     <div className="col-md-5 p-1">
@@ -249,11 +381,16 @@ export const EmployeeDetail = () => {
                             <label className="m-0" htmlFor="Code">
                               Bộ phận
                             </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Mã"
-                            ></input>
+                            <DropDownList
+                              data={departments}
+                              textField="textname"
+                              dataItemKey="code"
+                              name="department"
+                              filterable={true}
+                              value={department}
+                              onChange={handleSelectChange}
+                              style={{ width: "100%" }}
+                            />
                           </div>
                         </div>
                         <div className="col-6">
@@ -261,11 +398,17 @@ export const EmployeeDetail = () => {
                             <label className="m-0" htmlFor="Code">
                               Tổ
                             </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Tổ"
-                            ></input>
+                            <DropDownList
+                              data={groups}
+                              textField="textname"
+                              dataItemKey="code"
+                              name="group"
+                              delay={1000}
+                              filterable={true}
+                              value={group}
+                              onChange={handleSelectChange}
+                              style={{ width: "100%" }}
+                            />
                           </div>
                         </div>
                       </div>
@@ -275,11 +418,17 @@ export const EmployeeDetail = () => {
                             <label className="m-0" htmlFor="Code">
                               Chức vụ
                             </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Chức vụ"
-                            ></input>
+                            <DropDownList
+                              data={positions}
+                              textField="textname"
+                              dataItemKey="code"
+                              name="position"
+                              delay={1000}
+                              filterable={true}
+                              value={position}
+                              onChange={handleSelectChange}
+                              style={{ width: "100%" }}
+                            />
                           </div>
                         </div>
                         <div className="col-6">
@@ -287,11 +436,17 @@ export const EmployeeDetail = () => {
                             <label className="m-0" htmlFor="Code">
                               Công việc
                             </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Công việc"
-                            ></input>
+                            <DropDownList
+                              data={jobs}
+                              textField="textname"
+                              dataItemKey="code"
+                              name="job"
+                              delay={1000}
+                              filterable={true}
+                              value={job}
+                              onChange={handleSelectChange}
+                              style={{ width: "100%" }}
+                            />
                           </div>
                         </div>
                       </div>
@@ -299,13 +454,17 @@ export const EmployeeDetail = () => {
                         <div className="col-6">
                           <div className="form-group m-0">
                             <label className="m-0" htmlFor="Code">
-                              Nhóm
+                              Nhóm lao động
                             </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Nhóm"
-                            ></input>
+                            <DropDownList data={laborGroups} 
+                                    textField="textname"
+                                    dataItemKey="code"
+                                    name="laborGroup"
+                                    delay={1000}
+                                    filterable={true}
+                                    value={laborGroup}
+                                    onChange={handleSelectChange}
+                                    style={{width: '100%'}}/>
                           </div>
                         </div>
                         <div className="col-6">
@@ -313,11 +472,15 @@ export const EmployeeDetail = () => {
                             <label className="m-0" htmlFor="Code">
                               Quản lý
                             </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Quản lý"
-                            ></input>
+                            <DropDownList data={supervisors} 
+                                    textField="display"
+                                    dataItemKey="code"
+                                    name="supervisor"
+                                    delay={1000}
+                                    filterable={true}
+                                    value={supervisor}
+                                    onChange={handleSelectChange}
+                                    style={{width: '100%'}}/>
                           </div>
                         </div>
                       </div>

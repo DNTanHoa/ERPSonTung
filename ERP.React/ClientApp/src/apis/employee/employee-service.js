@@ -1,6 +1,4 @@
 import config from '../../appsettings.json';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { getInit } from '../api-caller.js';
 
 export const getEmployeesHasFillter = async (filter) => {
@@ -27,6 +25,24 @@ export const getModelTemplates = async () => {
     let init = getInit('GET');
 
     let data = [];
+
+    await fetch(url, init)
+        .then(response =>
+            response.json()
+        )
+        .then(json => {
+            data = json.data;
+            return data;
+        });
+    return data;
+}
+
+export const getById = async (id) => {
+    let url = config.appSettings.ServerUrl + 'employee/Detail?Id='+id
+
+    let init = getInit('GET');
+
+    let data = {};
 
     await fetch(url, init)
         .then(response =>
