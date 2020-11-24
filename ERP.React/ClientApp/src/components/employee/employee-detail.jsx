@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { DatePicker } from "@progress/kendo-react-dateinputs";
 import { TabStrip, TabStripTab } from "@progress/kendo-react-layout";
 import "./employee-detail.css";
@@ -14,6 +14,7 @@ import { DropDownList } from "@progress/kendo-react-dropdowns";
 import { getById } from "../../apis/employee/employee-service";
 import { getModelTemplates } from "../../apis/employee/employee-service";
 import { Loading } from "../loading";
+import { buildFormData } from "../../utils/ulti-helper";
 
 export const EmployeeDetail = () => {
   const history = useHistory();
@@ -22,6 +23,10 @@ export const EmployeeDetail = () => {
 
   const [selected, setSelected] = useState(Number);
   const [isBusy, setBusy] = useState(true);
+  const [avatar, setAvartar] = useState("");
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const inputFile = useRef(null);
 
   const [departments, setDepartments] = useState([]);
   const [department, setDepartment] = useState({});
@@ -124,43 +129,82 @@ export const EmployeeDetail = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     switch (name) {
       case "department":
         setDepartment({ ...department, ...value });
+        setEmployee({ ...employee, [name]: value.code });
+
         break;
 
       case "group":
         setGroup({ ...group, ...value });
+        setEmployee({ ...employee, [name]: value.code });
         break;
 
       case "employeeStatus":
         setEmployeeStatus({ ...employeeStatus, ...value });
+        setEmployee({ ...employee, [name]: value.code });
         break;
 
       case "job":
         setJob({ ...job, ...value });
+        setEmployee({ ...employee, [name]: value.code });
         break;
 
       case "position":
         setPosition({ ...position, ...value });
+        setEmployee({ ...employee, [name]: value.code });
         break;
 
       case "laborGroup":
         setLaborGroup({ ...laborGroup, ...value });
+        setEmployee({ ...employee, [name]: value.code });
         break;
 
       case "supervisor":
         setSupervisor({ ...supervisor, ...value });
+        setEmployee({ ...employee, [name]: value.code });
         break;
 
       default:
+        setEmployee({ ...employee, [name]: value });
         break;
     }
   };
 
-  const handleClickExit=()=>{
-    history.push('/hrm/employee');
+  const handleClickExit = () => {
+    history.push("/hrm/employee");
+  };
+
+  const handleClickUpload = (e) => {
+    inputFile.current.click();
+  };
+
+  const fileHandle = (e) => {
+    setSelectedFile(e.target.files[0]);
+    let reader = new FileReader();
+    reader.onload = function (e) {
+      setAvartar(e.target.result);
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  const handleClickSaveEmployee=(typeSubmit)=>{
+
+
+    let formData = new FormData();
+
+    if(selectedFile!==null){
+      formData.append('image', selectedFile, selectedFile.name);
+    }
+
+  buildFormData(formData,employee,null);
+    
+    console.log(formData);
+
   }
+
 
   useEffect(() => {
     if (location.state === undefined) {
@@ -223,6 +267,10 @@ export const EmployeeDetail = () => {
           dateOfBirth: dateOfBirth,
         });
 
+        setAvartar(
+          employee.image === null ? "/images/avatar.png" : employee.image
+        );
+
         setBusy(false);
       };
 
@@ -231,6 +279,7 @@ export const EmployeeDetail = () => {
       }, 1000);
     }
   }, [location, history]);
+
 
   if (isBusy) {
     return <Loading />;
@@ -251,6 +300,7 @@ export const EmployeeDetail = () => {
                         <button
                           className="btn btn-primary mx-1 float-md-right float-sm-left"
                           title="Lưu thay đổi"
+                          onClick={()=>handleClickSaveEmployee(1)}
                         >
                           <i className="far fa-save"></i>
                         </button>
@@ -281,7 +331,7 @@ export const EmployeeDetail = () => {
                       <div className="col-md-4 col-lg-2 text-center p-1">
                         <img
                           alt="avatar"
-                          src="/images/avatar.png"
+                          src={avatar}
                           style={{ height: "160px", width: "160px" }}
                         ></img>
                         <div className="input-group mt-md-5 mt-1">
@@ -290,8 +340,18 @@ export const EmployeeDetail = () => {
                             className="form-control"
                             placeholder="Upload hình ảnh"
                           />
+                          <input
+                            type="file"
+                            hidden
+                            ref={inputFile}
+                            onChange={fileHandle}
+                            accept="image/*"
+                          />
                           <div className="input-group-append">
-                            <button className="btn btn-success">
+                            <button
+                              className="btn btn-success"
+                              onClick={handleClickUpload}
+                            >
                               <i className="fas fa-cloud-upload-alt"></i>
                             </button>
                           </div>
@@ -301,10 +361,11 @@ export const EmployeeDetail = () => {
                         <div className="row">
                           <div className="col-6">
                             <div className="form-group m-0">
-                              <label className="m-0" htmlFor="Code">
+                              <label className="m-0" htmlFor="firstName">
                                 Họ và đệm
                               </label>
                               <input
+                                name="firstName"
                                 type="text"
                                 className="form-control"
                                 placeholder="Họ tên đệm"
@@ -315,10 +376,11 @@ export const EmployeeDetail = () => {
                           </div>
                           <div className="col-6">
                             <div className="form-group m-0">
-                              <label className="m-0" htmlFor="Code">
+                              <label className="m-0" htmlFor="lastName">
                                 Tên
                               </label>
                               <input
+                                name="lastName"
                                 type="text"
                                 className="form-control"
                                 placeholder="Tên"
@@ -331,10 +393,11 @@ export const EmployeeDetail = () => {
                         <div className="row">
                           <div className="col-6">
                             <div className="form-group m-0">
-                              <label className="m-0" htmlFor="Code">
+                              <label className="m-0" htmlFor="code">
                                 Mã
                               </label>
                               <input
+                                name="code"
                                 type="text"
                                 className="form-control"
                                 placeholder="Mã"
@@ -345,10 +408,11 @@ export const EmployeeDetail = () => {
                           </div>
                           <div className="col-6">
                             <div className="form-group m-0">
-                              <label className="m-0" htmlFor="Code">
+                              <label className="m-0" htmlFor="checkInOutCode">
                                 Chấm công
                               </label>
                               <input
+                                name="checkInOutCode"
                                 type="text"
                                 className="form-control"
                                 placeholder="Chấm công"
@@ -360,28 +424,32 @@ export const EmployeeDetail = () => {
                         </div>
                         <div className="row">
                           <div className="col-6">
-                            <label className="m-0" htmlFor="Code">
+                            <label className="m-0" htmlFor="startDate">
                               Vào làm
                             </label>
                             <DatePicker
+                              name="startDate"
                               format="dd-MM-yyyy"
                               className="w-100"
+                              onChange={handleChange}
                               defaultValue={new Date(employee.startDate)}
                             />
                           </div>
                           <div className="col-6">
-                            <label className="m-0" htmlFor="Code">
+                            <label className="m-0" htmlFor="dateOfBirth">
                               Ngày sinh
                             </label>
                             <DatePicker
+                              name="dateOfBirth"
                               format="dd-MM-yyyy"
                               className="form-control"
                               defaultValue={new Date(employee.dateOfBirth)}
+                              onChange={handleChange}
                             />
                           </div>
                         </div>
                         <div className="form-group m-0">
-                          <label className="m-0" htmlFor="Code">
+                          <label className="m-0" htmlFor="employeeStatus">
                             Trạng thái
                           </label>
                           <DropDownList

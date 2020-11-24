@@ -36,5 +36,8 @@ namespace ERP.ResponeModel
         public string JobCode { get; set; }
 
         public string TaxNumber { get; set; }
+
+        public string Image { get; set; }                       //Path avata
+
     }
 }
