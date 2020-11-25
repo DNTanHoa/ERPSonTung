@@ -108,7 +108,7 @@ namespace ERP.Controllers
 
         [HttpPost]
         [ApiValidationFilter]
-        public ActionResult<CommonResponeModel> SaveChange(EmployeeSaveChangeRequestModel model)
+        public ActionResult<CommonResponeModel> SaveChange([FromForm] EmployeeSaveChangeRequestModel model)
         {
             var databaseObject = new Employee();
             int result;

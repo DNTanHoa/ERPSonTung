@@ -1,5 +1,8 @@
+import axios from 'axios';
 import config from '../../appsettings.json';
-import { getInit } from '../api-caller.js';
+import {
+    getInit
+} from '../api-caller.js';
 
 export const getEmployeesHasFillter = async (filter) => {
     let url = config.appSettings.ServerUrl + 'employee/getdatatransferhasfilter'
@@ -38,7 +41,7 @@ export const getModelTemplates = async () => {
 }
 
 export const getById = async (id) => {
-    let url = config.appSettings.ServerUrl + 'employee/Detail?Id='+id
+    let url = config.appSettings.ServerUrl + 'employee/Detail?Id=' + id
 
     let init = getInit('GET');
 
@@ -53,4 +56,25 @@ export const getById = async (id) => {
             return data;
         });
     return data;
+}
+
+export const saveEmployeeDetail = async (formData) => {
+    let token = localStorage.getItem('token');
+    let url = config.appSettings.ServerUrl + 'employee/SaveChange';
+
+    await axios({
+            method: 'post',
+            url: url,
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }

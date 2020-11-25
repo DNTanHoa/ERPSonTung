@@ -11,7 +11,10 @@ import { useHistory, useLocation } from "react-router-dom";
 import { getCategoriesByEntity } from "../../apis/category/category-service";
 import config from "../../appsettings.json";
 import { DropDownList } from "@progress/kendo-react-dropdowns";
-import { getById } from "../../apis/employee/employee-service";
+import {
+  getById,
+  saveEmployeeDetail,
+} from "../../apis/employee/employee-service";
 import { getModelTemplates } from "../../apis/employee/employee-service";
 import { Loading } from "../loading";
 import { buildFormData } from "../../utils/ulti-helper";
@@ -131,40 +134,50 @@ export const EmployeeDetail = () => {
     const { name, value } = e.target;
 
     switch (name) {
-      case "department":
+      case "departmentCode":
         setDepartment({ ...department, ...value });
         setEmployee({ ...employee, [name]: value.code });
 
         break;
 
-      case "group":
+      case "groupCode":
         setGroup({ ...group, ...value });
         setEmployee({ ...employee, [name]: value.code });
         break;
 
-      case "employeeStatus":
+      case "statusCode":
         setEmployeeStatus({ ...employeeStatus, ...value });
         setEmployee({ ...employee, [name]: value.code });
         break;
 
-      case "job":
+      case "jobCode":
         setJob({ ...job, ...value });
         setEmployee({ ...employee, [name]: value.code });
         break;
 
-      case "position":
+      case "positionCode":
         setPosition({ ...position, ...value });
         setEmployee({ ...employee, [name]: value.code });
         break;
 
-      case "laborGroup":
+      case "laborGroupCode":
         setLaborGroup({ ...laborGroup, ...value });
         setEmployee({ ...employee, [name]: value.code });
         break;
 
-      case "supervisor":
+      case "supervisorCode":
         setSupervisor({ ...supervisor, ...value });
         setEmployee({ ...employee, [name]: value.code });
+        break;
+
+      case "startDate":
+        var formatDate = value.toISOString();
+        setEmployee({ ...employee, [name]: formatDate });
+        break;
+
+      case "dateOfBirth":
+        var formatDate = value.toISOString();
+        setEmployee({ ...employee, [name]: formatDate });
         break;
 
       default:
@@ -190,21 +203,17 @@ export const EmployeeDetail = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const handleClickSaveEmployee=(typeSubmit)=>{
-
-
+  const handleClickSaveEmployee = async (typeSubmit) => {
     let formData = new FormData();
 
-    if(selectedFile!==null){
-      formData.append('image', selectedFile, selectedFile.name);
+    if (selectedFile !== null) {
+      formData.append("image", selectedFile, selectedFile.name);
     }
 
-  buildFormData(formData,employee,null);
-    
-    console.log(formData);
+    buildFormData(formData, employee, null);
 
-  }
-
+    await saveEmployeeDetail(formData);
+  };
 
   useEffect(() => {
     if (location.state === undefined) {
@@ -280,7 +289,6 @@ export const EmployeeDetail = () => {
     }
   }, [location, history]);
 
-
   if (isBusy) {
     return <Loading />;
   } else {
@@ -300,7 +308,7 @@ export const EmployeeDetail = () => {
                         <button
                           className="btn btn-primary mx-1 float-md-right float-sm-left"
                           title="Lưu thay đổi"
-                          onClick={()=>handleClickSaveEmployee(1)}
+                          onClick={() => handleClickSaveEmployee(1)}
                         >
                           <i className="far fa-save"></i>
                         </button>
@@ -449,14 +457,14 @@ export const EmployeeDetail = () => {
                           </div>
                         </div>
                         <div className="form-group m-0">
-                          <label className="m-0" htmlFor="employeeStatus">
+                          <label className="m-0" htmlFor="statusCode">
                             Trạng thái
                           </label>
                           <DropDownList
                             data={employeeStatuses}
                             textField="textname"
                             dataItemKey="code"
-                            name="employeeStatus"
+                            name="statusCode"
                             delay={1000}
                             filterable={true}
                             value={employeeStatus}
@@ -469,14 +477,14 @@ export const EmployeeDetail = () => {
                         <div className="row">
                           <div className="col-6">
                             <div className="form-group m-0">
-                              <label className="m-0" htmlFor="Code">
+                              <label className="m-0" htmlFor="departmentCode">
                                 Bộ phận
                               </label>
                               <DropDownList
                                 data={departments}
                                 textField="textname"
                                 dataItemKey="code"
-                                name="department"
+                                name="departmentCode"
                                 filterable={true}
                                 value={department}
                                 onChange={handleChange}
@@ -486,14 +494,14 @@ export const EmployeeDetail = () => {
                           </div>
                           <div className="col-6">
                             <div className="form-group m-0">
-                              <label className="m-0" htmlFor="Code">
+                              <label className="m-0" htmlFor="groupCode">
                                 Tổ
                               </label>
                               <DropDownList
                                 data={groups}
                                 textField="textname"
                                 dataItemKey="code"
-                                name="group"
+                                name="groupCode"
                                 delay={1000}
                                 filterable={true}
                                 value={group}
@@ -506,14 +514,14 @@ export const EmployeeDetail = () => {
                         <div className="row">
                           <div className="col-6">
                             <div className="form-group m-0">
-                              <label className="m-0" htmlFor="Code">
+                              <label className="m-0" htmlFor="positionCode">
                                 Chức vụ
                               </label>
                               <DropDownList
                                 data={positions}
                                 textField="textname"
                                 dataItemKey="code"
-                                name="position"
+                                name="positionCode"
                                 delay={1000}
                                 filterable={true}
                                 value={position}
@@ -524,14 +532,14 @@ export const EmployeeDetail = () => {
                           </div>
                           <div className="col-6">
                             <div className="form-group m-0">
-                              <label className="m-0" htmlFor="Code">
+                              <label className="m-0" htmlFor="jobCode">
                                 Công việc
                               </label>
                               <DropDownList
                                 data={jobs}
                                 textField="textname"
                                 dataItemKey="code"
-                                name="job"
+                                name="jobCode"
                                 delay={1000}
                                 filterable={true}
                                 value={job}
@@ -544,14 +552,14 @@ export const EmployeeDetail = () => {
                         <div className="row">
                           <div className="col-6">
                             <div className="form-group m-0">
-                              <label className="m-0" htmlFor="Code">
+                              <label className="m-0" htmlFor="laborGroupCode">
                                 Nhóm lao động
                               </label>
                               <DropDownList
                                 data={laborGroups}
                                 textField="textname"
                                 dataItemKey="code"
-                                name="laborGroup"
+                                name="laborGroupCode"
                                 delay={1000}
                                 filterable={true}
                                 value={laborGroup}
@@ -562,14 +570,14 @@ export const EmployeeDetail = () => {
                           </div>
                           <div className="col-6">
                             <div className="form-group m-0">
-                              <label className="m-0" htmlFor="Code">
+                              <label className="m-0" htmlFor="supervisorCode">
                                 Quản lý
                               </label>
                               <DropDownList
                                 data={supervisors}
                                 textField="display"
                                 dataItemKey="code"
-                                name="supervisor"
+                                name="supervisorCode"
                                 delay={1000}
                                 filterable={true}
                                 value={supervisor}
