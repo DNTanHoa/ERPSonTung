@@ -22,7 +22,7 @@ namespace ERP.Validators
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Tên nhân viên", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Tên nhân viên", 20));
 
-            RuleFor(x => x.FullName).NotEmpty().WithMessage(CommonMessageGlobal.Require("Họ và tên nhân viên"))
+            RuleFor(x => x.FullName)
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Họ và tên nhân viên", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Họ và tên nhân viên", 256));
 
@@ -46,12 +46,12 @@ namespace ERP.Validators
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Trạng thái nhân viên", 20))
                 .Must(IsValidStatusCode).WithMessage(CommonMessageGlobal.NotExistInCategory("Trạng thái nhân viên"));
 
-            RuleFor(x => x.TitleCode).NotEmpty().WithMessage(CommonMessageGlobal.Require("Danh xưng"))
+            RuleFor(x => x.TitleCode)
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Danh xưng", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Danh xưng", 20));
 
 
-            RuleFor(x => x.GenderCode).NotEmpty().WithMessage(CommonMessageGlobal.Require("Giới tính"))
+            RuleFor(x => x.GenderCode)
                 .MinimumLength(2).WithMessage(CommonMessageGlobal.Minimum("Giới tính", 2))
                 .MaximumLength(20).WithMessage(CommonMessageGlobal.Maximum("Giới tính", 20));
 

@@ -198,7 +198,7 @@ export default class EmployeeInfoModal extends React.Component {
                                 <DropDownList data={this.state.supervisors} 
                                     textField="display"
                                     dataItemKey="code"
-                                    name="laborGroup"
+                                    name="supervisor"
                                     delay={1000}
                                     filterable={true}
                                     value={this.state.supervisor}

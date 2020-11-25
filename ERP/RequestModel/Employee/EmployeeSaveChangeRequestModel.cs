@@ -32,7 +32,6 @@ namespace ERP.RequestModel.Employee
         public string PositionCode { get; set; }
         public string Image { get; set; }
 
-        [Microsoft.AspNetCore.Mvc.FromForm]
         public IFormFile ImageFile { get; set; }
         public string BankCode { get; set; }
         public string JobCode { get; set; }
