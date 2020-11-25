@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\" />
     <Folder Include="RequestModel\EmployeeCheckInOut\" />
     <Folder Include="RequestModel\EmployeeDocument\" />
     <Folder Include="RequestModel\EmployeeHistory\" />

@@ -31,6 +31,8 @@ namespace ERP.RequestModel.Employee
         public string SupervisorCode { get; set; }
         public string PositionCode { get; set; }
         public string Image { get; set; }
+        public string CheckInOutCode { get; set; }              //Mã chấm công
+
 
         public IFormFile ImageFile { get; set; }
         public string BankCode { get; set; }
