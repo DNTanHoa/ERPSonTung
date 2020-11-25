@@ -9,6 +9,7 @@ using ERP.Ultilities.Extensions;
 using ERP.Ultilities.Factory.Implement;
 using ERP.Ultilities.Global;
 using ERP.Ultilities.Results;
+using ERP.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -25,14 +26,17 @@ namespace ERP.Controllers
     {
         private readonly IRecruitmentPlanRepository recruitmentPlanRepository;
         private readonly IEntityCenterRepository entityCenterRepository;
+        private readonly ICategoryRepository categoryRepository;
         private readonly ILogger<RecruitmentPlan> logger;
 
         public RecruitmentPlanController(IRecruitmentPlanRepository recruitmentPlanRepository, 
                                         IEntityCenterRepository entityCenterRepository,
+                                        ICategoryRepository categoryRepository,
                                         ILogger<RecruitmentPlan> logger)
         {
             this.recruitmentPlanRepository = recruitmentPlanRepository;
             this.entityCenterRepository = entityCenterRepository;
+            this.categoryRepository = categoryRepository;
             this.logger = logger;
         }
 
@@ -40,6 +44,8 @@ namespace ERP.Controllers
         [ApiValidationFilter]
         public ActionResult<CommonResponeModel> Create(RecruitmentPlanCreateRequestModel model)
         {
+            var validator = new RecruitmentPlanCreateValidator(categoryRepository);
+
             var databaseObject = model.MapTo<RecruitmentPlan>();
 
             //empty code
@@ -50,6 +56,7 @@ namespace ERP.Controllers
                 if (string.IsNullOrEmpty(code))
                 {
                     Result = new ErrorResult(ActionType.Insert, AppGlobal.MakeCodeError);
+                    Data = model;
                     return GetCommonRespone();
                 }
 
@@ -64,14 +71,17 @@ namespace ERP.Controllers
             }
 
             databaseObject.InitBeforeSave(RequestUsername, InitType.Create);
+
             int result = recruitmentPlanRepository.Insert(databaseObject);
             if (result > 0)
             {
                 Result = new SuccessResultFactory().Factory(ActionType.Insert);
+                Data = databaseObject;
             }
             else
             {
                 Result = new ErrorResultFactory().Factory(ActionType.Insert);
+                Data = databaseObject;
             }
 
             return GetCommonRespone();
@@ -166,6 +176,22 @@ namespace ERP.Controllers
         public ActionResult<CommonResponeModel> GetAll()
         {
             Data = recruitmentPlanRepository.Get().ToList();
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+            return GetCommonRespone();
+        }
+
+        [HttpGet]
+        public ActionResult<CommonResponeModel> GetById(long Id)
+        {
+            Data = recruitmentPlanRepository.GetById(Id);
+            Result = new SuccessResultFactory().Factory(ActionType.Select);
+            return GetCommonRespone();
+        }
+
+        [HttpGet]
+        public ActionResult<CommonResponeModel> GetDataTransfer()
+        {
+            Data = recruitmentPlanRepository.GetDataTransfer();
             Result = new SuccessResultFactory().Factory(ActionType.Select);
             return GetCommonRespone();
         }

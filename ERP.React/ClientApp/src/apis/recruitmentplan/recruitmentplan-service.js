@@ -2,7 +2,7 @@ import config from '../../appsettings.json';
 import { getInit } from '../api-caller';
 
 export const getRecruitmentPlans = async () => {
-    let url = config.appSettings.ServerUrl + 'recruitmentplan/getall';
+    let url = config.appSettings.ServerUrl + 'recruitmentplan/getDataTransfer';
 
     let init = getInit('GET');
 
@@ -81,5 +81,28 @@ export const deleteRecruitmentPlan = async (dataItem) => {
             return result;
         });
     return result;
+}
 
+export const getRecruitmentPlanById = async (Id) => {
+    let url = new URL(config.appSettings.ServerUrl + 'recruitmentplan/getbyid');
+
+    let init = getInit('GET');
+
+    let params = {
+        id: Id
+    }
+
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+    let result = {};
+
+    await fetch(url, init)
+        .then(response =>
+            response.json()
+        )
+        .then(json => {
+            result = json;
+            return result;
+        });
+    return result;
 }
