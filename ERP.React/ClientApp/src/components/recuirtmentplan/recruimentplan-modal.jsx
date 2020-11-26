@@ -107,7 +107,6 @@ export default class RecruitmentPlanModal extends React.Component {
     }
 
     handleSelectChange = (e) => {
-        console.log(e)
         this.setState({
             [e.target.name]: e.value
         });
@@ -180,8 +179,8 @@ export default class RecruitmentPlanModal extends React.Component {
                                 <DatePicker format="dd-MM-yyyy"
                                     className="w-100"
                                     name="startDate"
-                                    onChange={this.handleInputChange}
-                                    defaultValue={new Date()}/>
+                                    value={this.state.startDate}
+                                    onChange={this.handleInputChange}/>
                             </div>
                             <div className="col-md-2 col-lg-1">
                                 <label className="text-nowrap m-0 mr-2 mt-md-1">Đến ngày</label>
@@ -190,8 +189,8 @@ export default class RecruitmentPlanModal extends React.Component {
                                 <DatePicker format="dd-MM-yyyy"
                                     className="w-100"
                                     name="endDate"
-                                    onChange={this.handleInputChange}
-                                    defaultValue={new Date()}/>
+                                    value={this.state.endDate}
+                                    onChange={this.handleInputChange}/>
                             </div>
                         </div>
                         <div className="row mb-1">
@@ -225,7 +224,11 @@ export default class RecruitmentPlanModal extends React.Component {
                                 <label className="text-nowrap m-0 mr-2 mt-md-1">Yêu cầu</label>
                             </div>
                             <div className="col-md-10 col-lg-11">
-                                <textarea className="form-control" rows="5"  name="description" onChange={this.handleInputChange}></textarea>
+                                <textarea className="form-control" 
+                                    rows="5" 
+                                    value={this.state.description}  
+                                    name="description" 
+                                    onChange={this.handleInputChange}></textarea>
                             </div>
                         </div>
                     </form>

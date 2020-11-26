@@ -32,7 +32,8 @@ namespace ERP.Ultilities.Extensions
                 try
                 {
                     var pairValue = obj.GetType().GetProperty(prop.Name)?.GetValue(obj);
-                    result.GetType().GetProperty(prop.Name).SetValue(result, pairValue);
+                    var type = obj.GetType()?.GetProperty(prop.Name)?.GetType();
+                    result.GetType().GetProperty(prop.Name).SetValue(result, Convert.ChangeType(pairValue, type));
                 }
                 catch (Exception ex)
                 {
@@ -55,7 +56,8 @@ namespace ERP.Ultilities.Extensions
                     try
                     {
                         var pairValue = obj.GetType().GetProperty(prop.Name).GetValue(obj);
-                        result.GetType().GetProperty(((MapPropertyName)mapPropertyName).Name).SetValue(result, pairValue);
+                        var type = obj.GetType().GetProperty(((MapPropertyName)mapPropertyName).Name).GetType();
+                        result.GetType().GetProperty(((MapPropertyName)mapPropertyName).Name).SetValue(result, Convert.ChangeType(pairValue, type));
                     }
                     catch (Exception ex)
                     {
@@ -73,9 +75,9 @@ namespace ERP.Ultilities.Extensions
                 PropertyInfo[] props = obj.GetType().GetProperties();
                 foreach (var prop in props)
                 {
-                    var pairValue = source.GetType()?.GetProperty(prop.Name)?.GetValue(source);
-                    if (pairValue != null)
-                        obj.GetType().GetProperty(prop.Name).SetValue(obj, pairValue);
+                    var pairValue = source.GetType().GetProperty(prop.Name)?.GetValue(source);
+                    var type = obj.GetType().GetProperty(prop.Name).GetType();
+                    obj.GetType().GetProperty(prop.Name).SetValue(obj, Convert.ChangeType(pairValue, type));
                 }
             }
         }
@@ -93,8 +95,9 @@ namespace ERP.Ultilities.Extensions
                     {
                         try
                         {
-                            var pairValue = source.GetType().GetProperty(((MapPropertyName)mapPropertyName).Name).GetValue(source);
-                            obj.GetType().GetProperty(prop.Name).SetValue(obj, pairValue);
+                            var pairValue = source.GetType().GetProperty(((MapPropertyName)mapPropertyName).Name)?.GetValue(source);
+                            var type = prop.PropertyType;
+                            obj.GetType().GetProperty(prop.Name).SetValue(obj, Convert.ChangeType(pairValue, type));
                         }
                         catch (Exception ex)
                         {
