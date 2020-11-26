@@ -19,9 +19,11 @@ import { getModelTemplates } from "../../apis/employee/employee-service";
 import { Loading } from "../loading";
 import { buildFormData } from "../../utils/ulti-helper";
 import configData from "../../appsettings.json";
+import { ToastContainer, toast } from "react-toastify";
+
+let container;
 
 export const EmployeeDetail = () => {
-
   const history = useHistory();
 
   const location = useLocation();
@@ -29,6 +31,7 @@ export const EmployeeDetail = () => {
   const [selected, setSelected] = useState(Number);
   const [isBusy, setBusy] = useState(true);
   const [avatar, setAvartar] = useState("");
+  const [defaultItem, setDefaultItem] = useState({ text: "Select item...", value: null });
 
   const [selectedFile, setSelectedFile] = useState(null);
   const inputFile = useRef(null);
@@ -216,18 +219,41 @@ export const EmployeeDetail = () => {
 
     await saveEmployeeDetail(formData)
       .then((response) => {
-        console.log("SUCCESS RESPONSE", response);
-        if(response.data.result.resultType===-1){
-          let errorArr=response.data.result.message.split(';');
-          for (let index = 0; index < errorArr.length; index++) {
-            let element = errorArr[index];
-            console.log(element);
+        if (response.data.result.resultType === 0) {
+
+          switch (typeSubmit) {
+
+            case 1:
+              toast.success("Cập nhật thành công", 2000);              
+              break;
+
+              case 2:
+              toast.success("Cập nhật thành công", 2000);              
+              break;
+
+              case 3:
+              history.push("/hrm/employee");         
+              break;
+          
+            default:
+              break;
+          }
+
+        } else {
+          let errorArr = response.data.result.message.split(";");
+
+          if (errorArr.length === 0) {
+            toast.error(response.data.result.message, 2000);
+          } else {
+            for (let index = 0; index < errorArr.length; index++) {
+              let message = errorArr[index];
+              toast.error(message, 2000);
+            }
           }
         }
-
       })
       .catch((error) => {
-        console.log("ERROR RESPONSE", error);
+        toast.error(error, 2000);
       });
   };
 
@@ -313,6 +339,10 @@ export const EmployeeDetail = () => {
   } else {
     return (
       <div>
+        <ToastContainer
+          refs={(ref) => (container = ref)}
+          className="toast-top-right"
+        ></ToastContainer>
         <div className="container-fluid">
           <section className="content-header">
             <div className="container-fluid px-1">
@@ -334,12 +364,14 @@ export const EmployeeDetail = () => {
                         <button
                           className="btn btn-warning mx-1 float-md-right float-sm-left text-white"
                           title="Lưu và tạo mới"
+                          onClick={() => handleClickSaveEmployee(2)}
                         >
                           <i className="far fa-save"></i>
                         </button>
                         <button
                           className="btn btn-success mx-1 float-md-right float-sm-left"
                           title="Lưu và thoát"
+                          onClick={() => handleClickSaveEmployee(3)}
                         >
                           <i className="far fa-save"></i>
                         </button>
@@ -960,7 +992,6 @@ export const EmployeeDetail = () => {
             </div>
           </section>
         </div>
-      
       </div>
     );
   }
