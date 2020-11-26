@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import axios from "axios";
 import style from './login-page.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Checkbox, Radio} from 'react-icheck';
+import { Checkbox} from 'react-icheck';
 import 'icheck/skins/all.css';
 import config from '../../appsettings.json';
-import { isForOfStatement } from 'typescript';
-import { BrowserRouter as Router, Route, Redirect, useHistory, useLocation } from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import AppContext from '../../providers/context/app-context';
-import { AppProvider } from '../../providers/context/app-provider';
 
 
 export class Login extends Component {
@@ -33,8 +31,7 @@ export class Login extends Component {
     handleSubmit(event) {
         const {
             username, 
-            password, 
-            rememberPassword
+            password
         } = this.state;
         axios
             .post(
@@ -87,7 +84,7 @@ export class Login extends Component {
                         <div className="card">
                             <div className="card-body login-card-body">
                                 <div className="d-flex justify-content-center flex-row align-items-center">
-                                    <img src="../images/sontung.png" style={{width:'20%'}} />
+                                    <img src="../images/sontung.png" style={{width:'20%'}} alt="son tung"/>
                                 </div>
                                 <div className="mt-2">
                                     <div className="text-danger text-center" id="loginResult">{this.state.errorMessage}</div>
@@ -131,9 +128,9 @@ export class Login extends Component {
                                             </div>
                                         </div>
                                         <div className="social-auth-links text-center mb-3">
-                                            <a id="loginEmailButton" className="btn btn-block btn-danger text-white">
+                                            <button id="loginEmailButton" className="btn btn-block btn-danger text-white">
                                                 <i className="fab fa-google-plus mr-2"></i> Sử dụng email
-                                            </a>
+                                            </button>
                                         </div>
                                     </form>
                                 </div>

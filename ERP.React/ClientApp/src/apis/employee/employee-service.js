@@ -62,19 +62,13 @@ export const saveEmployeeDetail = async (formData) => {
     let token = localStorage.getItem('token');
     let url = config.appSettings.ServerUrl + 'employee/SaveChange';
 
-    await axios({
-            method: 'post',
-            url: url,
-            data: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer ' + token
-            }
-        })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    return await axios({
+        method: 'post',
+        url: url,
+        data: formData,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + token
+        }
+    });
 }

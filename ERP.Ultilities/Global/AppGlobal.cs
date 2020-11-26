@@ -79,7 +79,7 @@ namespace ERP.Ultilities.Global
                 return builder.Build().GetSection("AppSettings").GetSection("LoginFailMessage").Value;
             }
         }
-        
+
         /// <summary>
         /// Key bảo mật của server
         /// </summary>
@@ -181,7 +181,7 @@ namespace ERP.Ultilities.Global
                 return builder.Build().GetSection("AppSettings").GetSection("DepartmentCode").Value;
             }
         }
-        
+
         public static string GroupCode
         {
             get
@@ -190,7 +190,7 @@ namespace ERP.Ultilities.Global
                 return builder.Build().GetSection("AppSettings").GetSection("GroupCode").Value;
             }
         }
-        
+
         public static string LaborGroupCode
         {
             get

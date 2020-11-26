@@ -11,6 +11,7 @@ using ERP.Ultilities.Global;
 using ERP.Ultilities.Results;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 
@@ -23,12 +24,16 @@ namespace ERP.Controllers
     {
         private readonly IEmployeeRepository employeeRepository;
         private readonly IEntityCenterRepository entityCenterRepository;
+        private readonly IWebHostEnvironment _env;
+
 
         public EmployeeController(IEmployeeRepository employeeRepository,
-                                  IEntityCenterRepository entityCenterRepository)
+                                  IEntityCenterRepository entityCenterRepository,
+                                    IWebHostEnvironment env)
         {
             this.employeeRepository = employeeRepository;
             this.entityCenterRepository = entityCenterRepository;
+            this._env = env;
         }
 
         [HttpGet]
@@ -94,7 +99,7 @@ namespace ERP.Controllers
         {
             int result = employeeRepository.Delete(Code);
 
-            if(result > 0)
+            if (result > 0)
             {
                 Result = new SuccessResultFactory().Factory(ActionType.Delete);
             }
@@ -156,10 +161,23 @@ namespace ERP.Controllers
                 databaseObject.InitDefault();
 
                 //lưu hình nếu tồn tại
-                if (model.ImageFile != null && string.IsNullOrWhiteSpace(model.ImageFile.FileName))
+                if (model.ImageFile != null && !string.IsNullOrWhiteSpace(model.ImageFile.FileName))
                 {
-                    model.ImageFile.SaveTo(AppGlobal.AvatarFolder);
-                    databaseObject.Image = Path.Combine(AppGlobal.AvatarFolder, model.ImageFile.FileName);
+                    var pathFolder = $@"\Storages\Avatars";
+                    var folder = this._env.WebRootPath + pathFolder;
+                    if (!Directory.Exists(folder))
+                    {
+                        Directory.CreateDirectory(folder);
+                    }
+
+                    string filePath = Path.Combine(folder, model.ImageFile.FileName);
+                    using (FileStream fs = System.IO.File.Create(filePath))
+                    {
+                        model.ImageFile.CopyTo(fs);
+                        fs.Flush();
+                    }
+
+                    databaseObject.Image = Path.Combine(pathFolder, model.ImageFile.FileName).Replace(@"\", @"/");
                 }
 
                 result = employeeRepository.Update(databaseObject);
