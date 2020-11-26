@@ -18,10 +18,10 @@ import {
 import { getModelTemplates } from "../../apis/employee/employee-service";
 import { Loading } from "../loading";
 import { buildFormData } from "../../utils/ulti-helper";
-import configData from '../../appsettings.json';
-
+import configData from "../../appsettings.json";
 
 export const EmployeeDetail = () => {
+
   const history = useHistory();
 
   const location = useLocation();
@@ -214,7 +214,21 @@ export const EmployeeDetail = () => {
 
     buildFormData(formData, employee, null);
 
-    await saveEmployeeDetail(formData);
+    await saveEmployeeDetail(formData)
+      .then((response) => {
+        console.log("SUCCESS RESPONSE", response);
+        if(response.data.result.resultType===-1){
+          let errorArr=response.data.result.message.split(';');
+          for (let index = 0; index < errorArr.length; index++) {
+            let element = errorArr[index];
+            console.log(element);
+          }
+        }
+
+      })
+      .catch((error) => {
+        console.log("ERROR RESPONSE", error);
+      });
   };
 
   useEffect(() => {
@@ -274,13 +288,15 @@ export const EmployeeDetail = () => {
 
         setEmployee({
           ...employee,
-          id:location.state.id,
+          id: location.state.id,
           startDate: startDate,
           dateOfBirth: dateOfBirth,
         });
 
         setAvartar(
-          employee.image === null ? "/images/avatar.png" : configData.appSettings.ServerBackendUrl+employee.image
+          employee.image === null
+            ? "/images/avatar.png"
+            : configData.appSettings.ServerBackendUrl + employee.image
         );
 
         setBusy(false);
@@ -944,6 +960,8 @@ export const EmployeeDetail = () => {
             </div>
           </section>
         </div>
+        <ToastContainer ref={ref => container = ref} className="toast-top-right" />
+      
       </div>
     );
   }
