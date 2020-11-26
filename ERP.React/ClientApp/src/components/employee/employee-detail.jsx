@@ -960,7 +960,6 @@ export const EmployeeDetail = () => {
             </div>
           </section>
         </div>
-        <ToastContainer ref={ref => container = ref} className="toast-top-right" />
       
       </div>
     );
