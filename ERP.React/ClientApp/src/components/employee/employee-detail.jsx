@@ -11,11 +11,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { getCategoriesByEntity } from "../../apis/category/category-service";
 import config from "../../appsettings.json";
 import { DropDownList } from "@progress/kendo-react-dropdowns";
-import {
-  getById,
-  saveEmployeeDetail,
-} from "../../apis/employee/employee-service";
-import { getModelTemplates } from "../../apis/employee/employee-service";
+import EmployeeService from "../../apis/employee/employee-service";
 import { Loading } from "../loading";
 import { buildFormData } from "../../utils/ulti-helper";
 import configData from "../../appsettings.json";
@@ -126,12 +122,12 @@ export const EmployeeDetail = () => {
   };
 
   const loadEmployee = async (id) => {
-    let data = await getById(id);
+    let data = await EmployeeService.getById(id);
     return data;
   };
 
   const loadSupervisors = async () => {
-    let data = await getModelTemplates();
+    let data = await EmployeeService.getModelTemplates();
     return data;
   };
 
@@ -217,7 +213,7 @@ export const EmployeeDetail = () => {
 
     buildFormData(formData, employee, null);
 
-    await saveEmployeeDetail(formData)
+    await EmployeeService.saveEmployeeDetail(formData)
       .then((response) => {
         if (response.data.result.resultType === 0) {
 

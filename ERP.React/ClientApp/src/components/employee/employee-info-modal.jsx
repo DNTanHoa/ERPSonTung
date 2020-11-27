@@ -3,8 +3,8 @@ import { Modal } from 'react-bootstrap';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { DropDownList } from '@progress/kendo-react-dropdowns';
 import { getCategoriesByEntity } from "../../apis/category/category-service";
-import { getModelTemplates } from "../../apis/employee/employee-service";
 import config from '../../appsettings.json'
+import EmployeeService from "../../apis/employee/employee-service";
 
 export default class EmployeeInfoModal extends React.Component {
     constructor(props){
@@ -51,7 +51,7 @@ export default class EmployeeInfoModal extends React.Component {
         let laborGroups = await (await getCategoriesByEntity(config.entities.laborGroup))
         .map((laborGroup) =>  {return {...laborGroup, textname: laborGroup.code +' - '+ laborGroup.name}})
 
-        let supervisors = await getModelTemplates()
+        let supervisors = await EmployeeService.getModelTemplates()
 
         this.setState({departments, employeeStatuses, jobs, groups, positions, laborGroups, supervisors});
     }
