@@ -32,7 +32,7 @@ namespace ERP.Ultilities.Extensions
                 try
                 {
                     var pairValue = obj.GetType().GetProperty(prop.Name)?.GetValue(obj);
-                    var type = obj.GetType()?.GetProperty(prop.Name)?.GetType();
+                    var type = result.GetType()?.GetProperty(prop.Name)?.PropertyType;
                     result.GetType().GetProperty(prop.Name).SetValue(result, Convert.ChangeType(pairValue, type));
                 }
                 catch (Exception ex)
