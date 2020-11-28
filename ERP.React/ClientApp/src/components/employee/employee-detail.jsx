@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import { DatePicker } from "@progress/kendo-react-dateinputs";
 import { TabStrip, TabStripTab } from "@progress/kendo-react-layout";
 import "./employee-detail.css";
@@ -19,7 +19,20 @@ import { ToastContainer, toast } from "react-toastify";
 
 let container;
 
-export const EmployeeDetail = () => {
+const initialStateEmployee = {
+  id:0,
+  firstName: "",
+  lastName: "",
+  code: "",
+  checkInOutCode: "",
+  startDate: new Date(),
+  dateOfBirth: new Date(),
+
+};
+
+
+export const EmployeeDetail = () => {  
+
   const history = useHistory();
 
   const location = useLocation();
@@ -27,7 +40,7 @@ export const EmployeeDetail = () => {
   const [selected, setSelected] = useState(Number);
   const [isBusy, setBusy] = useState(true);
   const [avatar, setAvartar] = useState("");
-  const [defaultItem, setDefaultItem] = useState({ text: "Select item...", value: null });
+  const [defaultItem] = useState({ textname: "----Chọn----", code: null });
 
   const [selectedFile, setSelectedFile] = useState(null);
   const inputFile = useRef(null);
@@ -53,7 +66,7 @@ export const EmployeeDetail = () => {
   const [supervisors, setSupervisors] = useState([]);
   const [supervisor, setSupervisor] = useState({});
 
-  const [employee, setEmployee] = useState({});
+  const [employee, setEmployee] = useState(initialStateEmployee);
 
   const handleTabSelect = (e) => {
     setSelected(e.selected);
@@ -204,7 +217,8 @@ export const EmployeeDetail = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const handleClickSaveEmployee = async (typeSubmit) => {
+  const handleClickSaveEmployee = async (typeSubmit) => {    
+
     let formData = new FormData();
 
     if (selectedFile !== null) {
@@ -220,17 +234,19 @@ export const EmployeeDetail = () => {
           switch (typeSubmit) {
 
             case 1:
-              toast.success("Cập nhật thành công", 2000);              
+              toast.success("Cập nhật thành công", 2000);
               break;
 
               case 2:
-              toast.success("Cập nhật thành công", 2000);              
+              toast.success("Cập nhật thành công", 2000);
+              setEmployee(initialStateEmployee);
+
               break;
 
               case 3:
-              history.push("/hrm/employee");         
+              history.push("/hrm/employee");
               break;
-          
+
             default:
               break;
           }
@@ -257,6 +273,7 @@ export const EmployeeDetail = () => {
     if (location.state === undefined) {
       history.push("/hrm/employee");
     } else {
+
       const load = async () => {
         let departments = await loadDepartments();
         let employeeStatuses = await loadEmployeeStatuses();
@@ -508,6 +525,7 @@ export const EmployeeDetail = () => {
                             Trạng thái
                           </label>
                           <DropDownList
+                            defaultItem={defaultItem}
                             data={employeeStatuses}
                             textField="textname"
                             dataItemKey="code"
@@ -528,6 +546,7 @@ export const EmployeeDetail = () => {
                                 Bộ phận
                               </label>
                               <DropDownList
+                                defaultItem={defaultItem}
                                 data={departments}
                                 textField="textname"
                                 dataItemKey="code"
@@ -545,6 +564,7 @@ export const EmployeeDetail = () => {
                                 Tổ
                               </label>
                               <DropDownList
+                                defaultItem={defaultItem}
                                 data={groups}
                                 textField="textname"
                                 dataItemKey="code"
@@ -565,6 +585,7 @@ export const EmployeeDetail = () => {
                                 Chức vụ
                               </label>
                               <DropDownList
+                                defaultItem={defaultItem}
                                 data={positions}
                                 textField="textname"
                                 dataItemKey="code"
@@ -583,6 +604,7 @@ export const EmployeeDetail = () => {
                                 Công việc
                               </label>
                               <DropDownList
+                                defaultItem={defaultItem}
                                 data={jobs}
                                 textField="textname"
                                 dataItemKey="code"
@@ -603,6 +625,7 @@ export const EmployeeDetail = () => {
                                 Nhóm lao động
                               </label>
                               <DropDownList
+                                defaultItem={defaultItem}
                                 data={laborGroups}
                                 textField="textname"
                                 dataItemKey="code"
@@ -621,6 +644,7 @@ export const EmployeeDetail = () => {
                                 Quản lý
                               </label>
                               <DropDownList
+                                defaultItem={defaultItem}
                                 data={supervisors}
                                 textField="display"
                                 dataItemKey="code"
