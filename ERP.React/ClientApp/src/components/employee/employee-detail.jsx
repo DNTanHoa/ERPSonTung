@@ -25,9 +25,16 @@ const initialStateEmployee = {
   lastName: "",
   code: "",
   checkInOutCode: "",
-  startDate: new Date(),
-  dateOfBirth: new Date(),
-
+  startDate: new Date().toISOString().slice(0, 10),
+  dateOfBirth: new Date().toISOString().slice(0, 10),
+  departmentCode:null,
+  groupCode:null,
+  image:null,
+  jobCode:null,
+  laborGroupCode:null,
+  positionCode:null,
+  supervisorCode:null,
+  statusCode:null
 };
 
 
@@ -39,8 +46,8 @@ export const EmployeeDetail = () => {
 
   const [selected, setSelected] = useState(Number);
   const [isBusy, setBusy] = useState(true);
-  const [avatar, setAvartar] = useState("");
-  const [defaultItem] = useState({ textname: "----Chọn----", code: null });
+  const [avatar, setAvartar] = useState('');
+  const [defaultItem] = useState({ textname: "----Chọn----",display: "----Chọn----", code: null });
 
   const [selectedFile, setSelectedFile] = useState(null);
   const inputFile = useRef(null);
@@ -66,7 +73,7 @@ export const EmployeeDetail = () => {
   const [supervisors, setSupervisors] = useState([]);
   const [supervisor, setSupervisor] = useState({});
 
-  const [employee, setEmployee] = useState(initialStateEmployee);
+  const [employee, setEmployee] = useState({initialStateEmployee});
 
   const handleTabSelect = (e) => {
     setSelected(e.selected);
@@ -219,54 +226,68 @@ export const EmployeeDetail = () => {
 
   const handleClickSaveEmployee = async (typeSubmit) => {    
 
-    let formData = new FormData();
 
-    if (selectedFile !== null) {
-      formData.append("imageFile", selectedFile, selectedFile.name);
-    }
+    console.log(employee);
 
-    buildFormData(formData, employee, null);
+    setEmployee({...employee,...initialStateEmployee});
+    setDepartment(null);
+    setPosition(null);
+    setGroup(null);
+    setJob(null);
+    setLaborGroup(null);
+    setSupervisor(null);
+    setEmployeeStatus(null);
+    setAvartar("/images/avatar.png");
 
-    await EmployeeService.saveEmployeeDetail(formData)
-      .then((response) => {
-        if (response.data.result.resultType === 0) {
 
-          switch (typeSubmit) {
+    // let formData = new FormData();
 
-            case 1:
-              toast.success("Cập nhật thành công", 2000);
-              break;
+    // if (selectedFile !== null) {
+    //   formData.append("imageFile", selectedFile, selectedFile.name);
+    // }
 
-              case 2:
-              toast.success("Cập nhật thành công", 2000);
-              setEmployee(initialStateEmployee);
+    // buildFormData(formData, employee, null);
 
-              break;
+    // await EmployeeService.saveEmployeeDetail(formData)
+    //   .then((response) => {
+    //     if (response.data.result.resultType === 0) {
 
-              case 3:
-              history.push("/hrm/employee");
-              break;
+    //       switch (typeSubmit) {
 
-            default:
-              break;
-          }
+    //         case 1:
+    //           toast.success("Cập nhật thành công", 2000);
+    //           break;
 
-        } else {
-          let errorArr = response.data.result.message.split(";");
+    //           case 2:
+    //           toast.success("Cập nhật thành công", 2000);
+    //           setEmployee(initialStateEmployee);
 
-          if (errorArr.length === 0) {
-            toast.error(response.data.result.message, 2000);
-          } else {
-            for (let index = 0; index < errorArr.length; index++) {
-              let message = errorArr[index];
-              toast.error(message, 2000);
-            }
-          }
-        }
-      })
-      .catch((error) => {
-        toast.error(error, 2000);
-      });
+    //           break;
+
+    //           case 3:
+    //           history.push("/hrm/employee");
+    //           break;
+
+    //         default:
+    //           break;
+    //       }
+
+    //     } else {
+    //       let errorArr = response.data.result.message.split(";");
+
+    //       if (errorArr.length === 0) {
+    //         toast.error(response.data.result.message, 2000);
+    //       } else {
+    //         for (let index = 0; index < errorArr.length; index++) {
+    //           let message = errorArr[index];
+    //           toast.error(message, 2000);
+    //         }
+    //       }
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     toast.error(error, 2000);
+    //   });
   };
 
   useEffect(() => {
