@@ -20,34 +20,36 @@ import { ToastContainer, toast } from "react-toastify";
 let container;
 
 const initialStateEmployee = {
-  id:0,
+  id: 0,
   firstName: "",
   lastName: "",
   code: "",
   checkInOutCode: "",
   startDate: new Date().toISOString().slice(0, 10),
   dateOfBirth: new Date().toISOString().slice(0, 10),
-  departmentCode:null,
-  groupCode:null,
-  image:null,
-  jobCode:null,
-  laborGroupCode:null,
-  positionCode:null,
-  supervisorCode:null,
-  statusCode:null
+  departmentCode: null,
+  groupCode: null,
+  image: null,
+  jobCode: null,
+  laborGroupCode: null,
+  positionCode: null,
+  supervisorCode: null,
+  statusCode: null,
 };
 
-
-export const EmployeeDetail = () => {  
-
+export const EmployeeDetail = () => {
   const history = useHistory();
 
   const location = useLocation();
 
   const [selected, setSelected] = useState(Number);
   const [isBusy, setBusy] = useState(true);
-  const [avatar, setAvartar] = useState('');
-  const [defaultItem] = useState({ textname: "----Chọn----",display: "----Chọn----", code: null });
+  const [avatar, setAvartar] = useState("");
+  const [defaultItem] = useState({
+    textname: "----Chọn----",
+    display: "----Chọn----",
+    code: null,
+  });
 
   const [selectedFile, setSelectedFile] = useState(null);
   const inputFile = useRef(null);
@@ -73,7 +75,7 @@ export const EmployeeDetail = () => {
   const [supervisors, setSupervisors] = useState([]);
   const [supervisor, setSupervisor] = useState({});
 
-  const [employee, setEmployee] = useState({initialStateEmployee});
+  const [employee, setEmployee] = useState({ initialStateEmployee });
 
   const handleTabSelect = (e) => {
     setSelected(e.selected);
@@ -192,13 +194,17 @@ export const EmployeeDetail = () => {
         break;
 
       case "startDate":
-        let startDate = value.toISOString();
-        setEmployee({ ...employee, [name]: startDate });
+        if (value !== null) {
+          let startDate = value.toISOString();
+          setEmployee({ ...employee, [name]: startDate });
+        }
         break;
 
       case "dateOfBirth":
-        let dateOfBirth = value.toISOString();
-        setEmployee({ ...employee, [name]: dateOfBirth });
+        if (value !== null) {
+          let dateOfBirth = value.toISOString();
+          setEmployee({ ...employee, [name]: dateOfBirth });
+        }
         break;
 
       default:
@@ -224,77 +230,66 @@ export const EmployeeDetail = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const handleClickSaveEmployee = async (typeSubmit) => {    
+  const handleClickSaveEmployee = async (typeSubmit) => {
+    let formData = new FormData();
 
+    if (selectedFile !== null) {
+      formData.append("imageFile", selectedFile, selectedFile.name);
+    }
 
-    console.log(employee);
+    buildFormData(formData, employee, null);
 
-    setEmployee({...employee,...initialStateEmployee});
-    setDepartment(null);
-    setPosition(null);
-    setGroup(null);
-    setJob(null);
-    setLaborGroup(null);
-    setSupervisor(null);
-    setEmployeeStatus(null);
-    setAvartar("/images/avatar.png");
+    await EmployeeService.saveEmployeeDetail(formData)
+      .then((response) => {
+        if (response.data.result.resultType === 0) {
+          switch (typeSubmit) {
+            case 1:
+              toast.success("Cập nhật thành công", 2000);
+              break;
 
+            case 2:
+              toast.success("Cập nhật thành công", 2000);
+              setEmployee({ ...employee, ...initialStateEmployee });
+              setDepartment(null);
+              setPosition(null);
+              setGroup(null);
+              setJob(null);
+              setLaborGroup(null);
+              setSupervisor(null);
+              setEmployeeStatus(null);
+              setAvartar("/images/avatar.png");
 
-    // let formData = new FormData();
+              break;
 
-    // if (selectedFile !== null) {
-    //   formData.append("imageFile", selectedFile, selectedFile.name);
-    // }
+            case 3:
+              history.push("/hrm/employee");
+              break;
 
-    // buildFormData(formData, employee, null);
+            default:
+              break;
+          }
+        } else {
+          let errorArr = response.data.result.message.split(";");
 
-    // await EmployeeService.saveEmployeeDetail(formData)
-    //   .then((response) => {
-    //     if (response.data.result.resultType === 0) {
-
-    //       switch (typeSubmit) {
-
-    //         case 1:
-    //           toast.success("Cập nhật thành công", 2000);
-    //           break;
-
-    //           case 2:
-    //           toast.success("Cập nhật thành công", 2000);
-    //           setEmployee(initialStateEmployee);
-
-    //           break;
-
-    //           case 3:
-    //           history.push("/hrm/employee");
-    //           break;
-
-    //         default:
-    //           break;
-    //       }
-
-    //     } else {
-    //       let errorArr = response.data.result.message.split(";");
-
-    //       if (errorArr.length === 0) {
-    //         toast.error(response.data.result.message, 2000);
-    //       } else {
-    //         for (let index = 0; index < errorArr.length; index++) {
-    //           let message = errorArr[index];
-    //           toast.error(message, 2000);
-    //         }
-    //       }
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     toast.error(error, 2000);
-    //   });
+          if (errorArr.length === 0) {
+            toast.error(response.data.result.message, 2000);
+          } else {
+            for (let index = 0; index < errorArr.length; index++) {
+              let message = errorArr[index];
+              toast.error(message, 2000);
+            }
+          }
+        }
+      })
+      .catch((error) => {
+        toast.error(error, 2000);
+      });
   };
 
   useEffect(() => {
     if (location.state === undefined) {
       history.push("/hrm/employee");
     } else {
-
       const load = async () => {
         let departments = await loadDepartments();
         let employeeStatuses = await loadEmployeeStatuses();
@@ -525,7 +520,7 @@ export const EmployeeDetail = () => {
                               format="dd-MM-yyyy"
                               className="w-100"
                               onChange={handleChange}
-                              defaultValue={new Date(employee.startDate)}
+                              value={new Date(employee.startDate)}
                             />
                           </div>
                           <div className="col-6">
@@ -536,7 +531,7 @@ export const EmployeeDetail = () => {
                               name="dateOfBirth"
                               format="dd-MM-yyyy"
                               className="form-control"
-                              defaultValue={new Date(employee.dateOfBirth)}
+                              value={new Date(employee.dateOfBirth)}
                               onChange={handleChange}
                             />
                           </div>
