@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
 import config from '../../appsettings.json';
 import { EmployeeCommandCell } from "./employee-command.jsx";
-import { getEmployeesHasFillter } from "../../apis/employee/employee-service"
+import EmployeeService from "../../apis/employee/employee-service";
 import EmployeeImportModal from './employee-import-modal'
 import EmployeeInfoModal from './employee-info-modal';
 import { Redirect } from "react-router-dom";
@@ -38,7 +38,7 @@ export class Employee extends React.Component {
     componentDidMount = async() => {
         this.setState({loading:true});
         
-        let employees = await (await getEmployeesHasFillter()).map((item) => {
+        let employees = await (await EmployeeService.getEmployeesHasFillter()).map((item) => {
             return {...item, startDate: new Date(item.startDate), dateOfBirth: new Date(item.dateOfBirth)}
         });
 
@@ -81,7 +81,7 @@ export class Employee extends React.Component {
 
     handleRefresh = async () => {
         this.setState({loading:true});
-        let employees = await (await getEmployeesHasFillter()).map((item) => {
+        let employees = await (await EmployeeService.getEmployeesHasFillter()).map((item) => {
             return {...item, startDate: new Date(item.startDate), dateOfBirth: new Date(item.dateOfBirth)}
         });
         this.setState({employees, loading: false})

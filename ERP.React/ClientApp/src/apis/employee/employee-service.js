@@ -4,71 +4,77 @@ import {
     getInit
 } from '../api-caller.js';
 
-export const getEmployeesHasFillter = async (filter) => {
-    let url = config.appSettings.ServerUrl + 'employee/getdatatransferhasfilter'
+class EmployeeService{
 
-    let init = getInit('GET');
-
-    let data = [];
-
-    await fetch(url, init)
-        .then(response =>
-            response.json()
-        )
-        .then(json => {
-            data = json.data;
-            return data;
+    saveEmployeeDetail = async (formData) => {
+        let token = localStorage.getItem('token');
+        let url = config.appSettings.ServerUrl + 'employee/SaveChange';
+    
+        return await axios({
+            method: 'post',
+            url: url,
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token
+            }
         });
-    return data;
+    }
+
+    getById = async (id) => {
+        let url = config.appSettings.ServerUrl + 'employee/Detail?Id=' + id
+    
+        let init = getInit('GET');
+    
+        let data = {};
+    
+        await fetch(url, init)
+            .then(response =>
+                response.json()
+            )
+            .then(json => {
+                data = json.data;
+                return data;
+            });
+        return data;
+    }
+
+    getModelTemplates = async () => {
+        let url = config.appSettings.ServerUrl + 'employee/GetModelTemplates'
+    
+        let init = getInit('GET');
+    
+        let data = [];
+    
+        await fetch(url, init)
+            .then(response =>
+                response.json()
+            )
+            .then(json => {
+                data = json.data;
+                return data;
+            });
+        return data;
+    }
+
+    getEmployeesHasFillter = async (filter) => {
+        let url = config.appSettings.ServerUrl + 'employee/getdatatransferhasfilter'
+    
+        let init = getInit('GET');
+    
+        let data = [];
+    
+        await fetch(url, init)
+            .then(response =>
+                response.json()
+            )
+            .then(json => {
+                data = json.data;
+                return data;
+            });
+        return data;
+    }
+   
 }
 
-export const getModelTemplates = async () => {
-    let url = config.appSettings.ServerUrl + 'employee/GetModelTemplates'
-
-    let init = getInit('GET');
-
-    let data = [];
-
-    await fetch(url, init)
-        .then(response =>
-            response.json()
-        )
-        .then(json => {
-            data = json.data;
-            return data;
-        });
-    return data;
-}
-
-export const getById = async (id) => {
-    let url = config.appSettings.ServerUrl + 'employee/Detail?Id=' + id
-
-    let init = getInit('GET');
-
-    let data = {};
-
-    await fetch(url, init)
-        .then(response =>
-            response.json()
-        )
-        .then(json => {
-            data = json.data;
-            return data;
-        });
-    return data;
-}
-
-export const saveEmployeeDetail = async (formData) => {
-    let token = localStorage.getItem('token');
-    let url = config.appSettings.ServerUrl + 'employee/SaveChange';
-
-    return await axios({
-        method: 'post',
-        url: url,
-        data: formData,
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + token
-        }
-    });
-}
+export default new EmployeeService();
