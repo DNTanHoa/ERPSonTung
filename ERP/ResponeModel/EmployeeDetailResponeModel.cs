@@ -14,9 +14,9 @@ namespace ERP.ResponeModel
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "không được để trống")]
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public DateTime? DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         public string StatusCode { get; set; }
 

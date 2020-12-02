@@ -37,6 +37,8 @@ const initialStateEmployee = {
   statusCode: null,
 };
 
+const WAIT_INTERVAL = 300;
+
 export const EmployeeDetail = () => {
   const history = useHistory();
 
@@ -205,10 +207,12 @@ export const EmployeeDetail = () => {
           let dateOfBirth = value.toISOString();
           setEmployee({ ...employee, [name]: dateOfBirth });
         }
+
         break;
 
       default:
         setEmployee({ ...employee, [name]: value });
+
         break;
     }
   };
