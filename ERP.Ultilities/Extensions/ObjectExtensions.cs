@@ -76,7 +76,7 @@ namespace ERP.Ultilities.Extensions
                 foreach (var prop in props)
                 {
                     var pairValue = source.GetType().GetProperty(prop.Name)?.GetValue(source);
-                    var type = obj.GetType().GetProperty(prop.Name).GetType();
+                    var type = obj.GetType().GetProperty(prop.Name).PropertyType;
                     obj.GetType().GetProperty(prop.Name).SetValue(obj, Convert.ChangeType(pairValue, type));
                 }
             }
