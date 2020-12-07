@@ -36,6 +36,7 @@ export class Employee extends React.Component {
     }
 
     componentDidMount = async() => {
+
         this.setState({loading:true});
         
         let employees = await (await EmployeeService.getEmployeesHasFillter()).map((item) => {
@@ -47,6 +48,7 @@ export class Employee extends React.Component {
         
         let departments = await (await getCategoriesByEntity(config.entities.department))
         .map((department) => {return {...department, textname: department.code +' - '+ department.name}});
+
         
         this.setState({employees, departments, groups, loading: false});
     }
@@ -135,7 +137,7 @@ export class Employee extends React.Component {
                                 <div className="card-header p-1">
                                     <div className="row w-100 m-0">
                                         <div className="col-md-4 col-lg-3 p-1">
-                                            <DropDownList data={this.state.departments} 
+                                            <DropDownList data={this.state.departments}
                                                 textField="textname"
                                                 dataItemKey="code"
                                                 name="department"

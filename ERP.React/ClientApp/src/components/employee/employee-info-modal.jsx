@@ -5,12 +5,16 @@ import { DropDownList } from '@progress/kendo-react-dropdowns';
 import { getCategoriesByEntity } from "../../apis/category/category-service";
 import config from '../../appsettings.json'
 import EmployeeService from "../../apis/employee/employee-service";
+import { buildFormData } from '../../utils/ulti-helper';
 
 export default class EmployeeInfoModal extends React.Component {
+
     constructor(props){
+
         super(props)
 
         this.state = {
+            employee:{},
             departments:[],
             defaultDepartment: {},
             employeeStatuses: [],
@@ -23,16 +27,17 @@ export default class EmployeeInfoModal extends React.Component {
             job: {},
             positions: [],
             position: {},
-            laborGroups: [],
             laborGroup: {},
             supervisors:[],
-            supervisor:{}
+            supervisor:{},
+            defaultItem:{}
         }
 
         this.handleSelectChange = this.handleSelectChange.bind(this)
     }
 
     componentDidMount = async () => {
+
         let departments = await (await getCategoriesByEntity(config.entities.department))
         .map((department) => {return {...department, textname: department.code +' - '+ department.name}});
 
@@ -51,9 +56,11 @@ export default class EmployeeInfoModal extends React.Component {
         let laborGroups = await (await getCategoriesByEntity(config.entities.laborGroup))
         .map((laborGroup) =>  {return {...laborGroup, textname: laborGroup.code +' - '+ laborGroup.name}})
 
-        let supervisors = await EmployeeService.getModelTemplates()
+        let supervisors = await EmployeeService.getModelTemplates();
 
-        this.setState({departments, employeeStatuses, jobs, groups, positions, laborGroups, supervisors});
+        let defaultItem={textname: "----Chọn----", display: "----Chọn----",code: null};
+
+        this.setState({departments, employeeStatuses, jobs, groups, positions, laborGroups, supervisors,defaultItem});
     }
 
     handleSelectChange = (event) => {
@@ -61,6 +68,34 @@ export default class EmployeeInfoModal extends React.Component {
             [event.target.name]: event.value
         });
     }
+
+    handleClickSave = async () => {
+        let formData = new FormData();
+    
+    
+        buildFormData(formData, this.state.employee, null);
+    
+        await EmployeeService.saveEmployeeDetail(formData)
+          .then((response) => {
+            if (response.data.result.resultType === 0) {
+
+            } else {
+              let errorArr = response.data.result.message.split(";");
+    
+              if (errorArr.length === 0) {
+                    console.log(response.data.result.message);
+                } else {
+                        for (let index = 0; index < errorArr.length; index++) {
+                        let message = errorArr[index];
+                    console.log(message);
+                }
+              }
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
 
     render = () => {
         return (
@@ -107,7 +142,8 @@ export default class EmployeeInfoModal extends React.Component {
                         <div className="col-md-4">
                             <div className="form-group m-0">
                                 <label className="m-0">Trạng thái</label>
-                                <DropDownList data={this.state.employeeStatuses} 
+                                <DropDownList data={this.state.employeeStatuses}
+                                    defaultItem={this.state.defaultItem}
                                     textField="textname"
                                     dataItemKey="code"
                                     name="employeeStatus"
@@ -124,6 +160,7 @@ export default class EmployeeInfoModal extends React.Component {
                             <div className="form-group m-0">
                                 <label className="m-0">Bộ phận</label>
                                 <DropDownList data={this.state.departments} 
+                                    defaultItem={this.state.defaultItem}
                                     textField="textname"
                                     dataItemKey="code"
                                     name="department"
@@ -138,6 +175,7 @@ export default class EmployeeInfoModal extends React.Component {
                             <div className="form-group m-0">
                                 <label className="m-0">Tổ nhóm</label>
                                 <DropDownList data={this.state.groups} 
+                                    defaultItem={this.state.defaultItem}
                                     textField="textname"
                                     dataItemKey="code"
                                     name="group"
@@ -152,6 +190,7 @@ export default class EmployeeInfoModal extends React.Component {
                             <div className="form-group m-0">
                                 <label className="m-0">Công việc</label>
                                 <DropDownList data={this.state.jobs} 
+                                    defaultItem={this.state.defaultItem}
                                     textField="textname"
                                     dataItemKey="code"
                                     name="job"
@@ -168,6 +207,7 @@ export default class EmployeeInfoModal extends React.Component {
                             <div className="form-group m-0">
                                 <label className="m-0">Chức vụ</label>
                                 <DropDownList data={this.state.positions} 
+                                    defaultItem={this.state.defaultItem}
                                     textField="textname"
                                     dataItemKey="code"
                                     name="position"
@@ -182,6 +222,7 @@ export default class EmployeeInfoModal extends React.Component {
                             <div className="form-group m-0">
                                 <label className="m-0">Nhóm lao động</label>
                                 <DropDownList data={this.state.laborGroups} 
+                                    defaultItem={this.state.defaultItem}
                                     textField="textname"
                                     dataItemKey="code"
                                     name="laborGroup"
@@ -196,6 +237,7 @@ export default class EmployeeInfoModal extends React.Component {
                             <div className="form-group m-0">
                                 <label className="m-0">Người quản lý</label>
                                 <DropDownList data={this.state.supervisors} 
+                                    defaultItem={this.state.defaultItem}
                                     textField="display"
                                     dataItemKey="code"
                                     name="supervisor"

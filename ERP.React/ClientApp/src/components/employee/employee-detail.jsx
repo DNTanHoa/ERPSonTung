@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { DatePicker } from "@progress/kendo-react-dateinputs";
 import { TabStrip, TabStripTab } from "@progress/kendo-react-layout";
 import "./employee-detail.css";
@@ -17,9 +17,9 @@ import { buildFormData } from "../../utils/ulti-helper";
 import configData from "../../appsettings.json";
 import { ToastContainer, toast } from "react-toastify";
 
-let container;
 
-const initialStateEmployee = {
+  let container;
+  const initialStateEmployee = {
   id: 0,
   firstName: "",
   lastName: "",
@@ -37,9 +37,10 @@ const initialStateEmployee = {
   statusCode: null,
 };
 
-const WAIT_INTERVAL = 300;
-
 export const EmployeeDetail = () => {
+
+
+
   const history = useHistory();
 
   const location = useLocation();
@@ -197,14 +198,16 @@ export const EmployeeDetail = () => {
 
       case "startDate":
         if (value !== null) {
-          let startDate = value.toISOString();
+          let startDate = value.toISOString().slice(0, 10);
+          console.log(startDate);
           setEmployee({ ...employee, [name]: startDate });
         }
         break;
 
       case "dateOfBirth":
+
         if (value !== null) {
-          let dateOfBirth = value.toISOString();
+          let dateOfBirth = value.toISOString().slice(0, 10);
           setEmployee({ ...employee, [name]: dateOfBirth });
         }
 
@@ -240,6 +243,8 @@ export const EmployeeDetail = () => {
     if (selectedFile !== null) {
       formData.append("imageFile", selectedFile, selectedFile.name);
     }
+
+
 
     buildFormData(formData, employee, null);
 
@@ -295,6 +300,7 @@ export const EmployeeDetail = () => {
       history.push("/hrm/employee");
     } else {
       const load = async () => {
+
         let departments = await loadDepartments();
         let employeeStatuses = await loadEmployeeStatuses();
         let jobs = await loadJobs();
@@ -340,10 +346,8 @@ export const EmployeeDetail = () => {
         );
         setSupervisor(supervisor);
 
-        var startDate = new Date(employee.startDate).toISOString().slice(0, 10);
-        var dateOfBirth = new Date(employee.dateOfBirth)
-          .toISOString()
-          .slice(0, 10);
+        var startDate = employee.startDate.slice(0, 10);
+        var dateOfBirth = employee.dateOfBirth.slice(0, 10);
 
         setEmployee({
           ...employee,
@@ -351,6 +355,7 @@ export const EmployeeDetail = () => {
           startDate: startDate,
           dateOfBirth: dateOfBirth,
         });
+
 
         setAvartar(
           employee.image === null
@@ -364,6 +369,7 @@ export const EmployeeDetail = () => {
       setTimeout(() => {
         load();
       }, 1000);
+
     }
   }, [location, history]);
 
@@ -524,7 +530,7 @@ export const EmployeeDetail = () => {
                               format="dd-MM-yyyy"
                               className="w-100"
                               onChange={handleChange}
-                              value={new Date(employee.startDate)}
+                              defaultValue={new Date(employee.startDate)}
                             />
                           </div>
                           <div className="col-6">
@@ -535,7 +541,7 @@ export const EmployeeDetail = () => {
                               name="dateOfBirth"
                               format="dd-MM-yyyy"
                               className="form-control"
-                              value={new Date(employee.dateOfBirth)}
+                              defaultValue={new Date(employee.dateOfBirth)}
                               onChange={handleChange}
                             />
                           </div>
