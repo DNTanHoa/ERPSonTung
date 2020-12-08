@@ -10,6 +10,10 @@ import { Loading } from '../loading';
 import { DropDownList } from '@progress/kendo-react-dropdowns';
 import { Modal } from 'react-bootstrap';
 import { getCategoriesByEntity } from "../../apis/category/category-service";
+import { ToastContainer } from "react-toastify";
+
+
+let container;
 
 export class Employee extends React.Component {
 
@@ -115,6 +119,10 @@ export class Employee extends React.Component {
         }
         return(
             <div className="container-fluid px-1 h-100">
+                 <ToastContainer
+                    refs={(ref) => (container = ref)}
+                    className="toast-top-right"
+                ></ToastContainer>
                 <section className="content-header py-1">
                     <div className="container-fluid">
                         <div className="row mb-2">
@@ -241,7 +249,8 @@ export class Employee extends React.Component {
                                     size="xl"
                                     onHide={this.handleModalHide}
                                     enforceFocus={false}
-                                    show={this.state.showImportModal}>
+                                    show={this.state.showImportModal}
+                                    >
                                     <EmployeeImportModal onHide={this.handleModalHide}></EmployeeImportModal>
                                 </Modal>
                                 {this.state.loading === true ? <Loading></Loading> : null} 

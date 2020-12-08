@@ -39,8 +39,6 @@ import { ToastContainer, toast } from "react-toastify";
 
 export const EmployeeDetail = () => {
 
-
-
   const history = useHistory();
 
   const location = useLocation();
@@ -157,6 +155,7 @@ export const EmployeeDetail = () => {
   };
 
   const handleChange = (e) => {
+    
     const { name, value } = e.target;
 
     switch (name) {

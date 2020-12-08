@@ -120,7 +120,7 @@ namespace ERP.Controllers
 
             if (model.Id == 0)
             {
-                databaseObject = model.MapTo<Employee>();
+                databaseObject.MapFrom(model);
 
                 if (string.IsNullOrEmpty(databaseObject.Code))
                 {
