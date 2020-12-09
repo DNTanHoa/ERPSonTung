@@ -76,7 +76,7 @@ namespace ERP.Controllers
         }
 
         [HttpGet]
-        public ActionResult<CommonResponeModel> GetDataTransferHasFilter(EmployeeFilterRequestModel filterModel)
+        public ActionResult<CommonResponeModel> GetDataTransferHasFilter([FromQuery] EmployeeFilterRequestModel filterModel)
         {
             Data = employeeRepository.GetDataTransferHasFilter(filterModel?.DepartmentCode, filterModel?.GroupCode, filterModel?.LaborGroupCode, filterModel?.StatusCode, filterModel?.StartFromDate, filterModel?.StartToDate);
             Result = new SuccessResultFactory().Factory(ActionType.Select);

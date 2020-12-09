@@ -31,10 +31,23 @@ export class Employee extends React.Component {
             loading: false,
             showInforModal:false,
             showImportModal:false,
-            group: {},
-            department: {},
+            group: null,
+            department: null,
             redirectToDetail: false,
-            paramId:Number
+            paramId:Number,
+            filter:{
+                departmentCode:null,
+                groupCode:null,
+                laborGroupCode:null,
+                statusCode:null,
+                startFromDate:null,
+                startToDate:null
+            },
+            defaultItem: {
+                textname: "----Chọn----",
+                display: "----Chọn----",
+                code: null
+              }
         }
 
     }
@@ -43,7 +56,9 @@ export class Employee extends React.Component {
 
         this.setState({loading:true});
         
-        let employees = await (await EmployeeService.getEmployeesHasFillter()).map((item) => {
+        let employees = await EmployeeService.getEmployeesHasFillter(this.state.filter);
+
+        employees.map((item) => {
             return {...item, startDate: new Date(item.startDate), dateOfBirth: new Date(item.dateOfBirth)}
         });
 
@@ -87,7 +102,9 @@ export class Employee extends React.Component {
 
     handleRefresh = async () => {
         this.setState({loading:true});
-        let employees = await (await EmployeeService.getEmployeesHasFillter()).map((item) => {
+        let employees = await EmployeeService.getEmployeesHasFillter(this.state.filter);
+
+        employees.map((item) => {
             return {...item, startDate: new Date(item.startDate), dateOfBirth: new Date(item.dateOfBirth)}
         });
         this.setState({employees, loading: false})
@@ -97,10 +114,34 @@ export class Employee extends React.Component {
         this.setState({
             [e.target.name]: e.value
         });
+
+        if(e.target.name==='department'){
+            this.setState({
+                filter:{
+                    ...this.state.filter,departmentCode:e.value.code
+                }
+            });
+        }else{
+            this.setState({
+                filter:{
+                    ...this.state.filter,groupCode:e.value.code
+                }
+            })
+        }
     }
 
     handleFilterChange = (e) => {
 
+    }
+
+    handleOnClickSearch=async ()=>{
+        this.setState({loading:true});
+        let employees = await EmployeeService.getEmployeesHasFillter(this.state.filter);
+
+        employees.map((item) => {
+            return {...item, startDate: new Date(item.startDate), dateOfBirth: new Date(item.dateOfBirth)}
+        });
+        this.setState({employees, loading: false})
     }
 
     openDetail = (dataItem) => {
@@ -146,6 +187,7 @@ export class Employee extends React.Component {
                                     <div className="row w-100 m-0">
                                         <div className="col-md-4 col-lg-3 p-1">
                                             <DropDownList data={this.state.departments}
+                                                defaultItem={this.state.defaultItem}
                                                 textField="textname"
                                                 dataItemKey="code"
                                                 name="department"
@@ -158,6 +200,7 @@ export class Employee extends React.Component {
                                         </div>
                                         <div className="col-md-4 col-lg-3 mt-1 mt-md-0 p-1">
                                             <DropDownList data={this.state.groups} 
+                                                defaultItem={this.state.defaultItem}
                                                 textField="textname"
                                                 dataItemKey="code"
                                                 name="group"
@@ -172,7 +215,7 @@ export class Employee extends React.Component {
                                             <input className="form-control" placeholder="Tìm...."></input>
                                         </div>
                                         <div className="col-md-1 col-12 mt-1 mt-md-0 p-1">
-                                            <button className="btn btn-success w-100" title="Tìm kết quả">
+                                            <button className="btn btn-success w-100" title="Tìm kết quả" onClick={this.handleOnClickSearch}>
                                                 <i className="fas fa-search"></i>
                                             </button>
                                         </div>
